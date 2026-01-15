@@ -18,7 +18,10 @@ jobs:
         continue-on-error: true
         with:
           root_file: main.tex
-          args: -pdf -file-line-error -interaction=nonstopmode -use-biber
+          pre_compile: |
+            pdflatex -file-line-error -interaction=nonstopmode main.tex
+            biber main
+          args: -pdf -file-line-error -interaction=nonstopmode
 
       - name: Rename PDF (optional)
         run: mv main.pdf Thesis.pdf
