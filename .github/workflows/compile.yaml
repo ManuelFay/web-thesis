@@ -19,6 +19,7 @@ jobs:
         with:
           root_file: main.tex
           args: -pdf -file-line-error -interaction=nonstopmode
+          latexmk_use_biber: true
 
       - name: Rename PDF (optional)
         run: mv main.pdf Thesis.pdf
