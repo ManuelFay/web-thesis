@@ -13,15 +13,29 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v6
 
-      - name: Compile LaTeX document
-        uses: xu-cheng/latex-action@v4
+      - name: LaTeX pass 1 (generate .bcf)
+        uses: xu-cheng/texlive-action@v4
         continue-on-error: true
         with:
-          root_file: main.tex
-          pre_compile: |
-            pdflatex -file-line-error -interaction=nonstopmode main.tex
-            biber main
-          args: -pdf -file-line-error -interaction=nonstopmode
+          run: pdflatex -file-line-error -interaction=nonstopmode main.tex
+
+      - name: Run biber (build bibliography)
+        uses: xu-cheng/texlive-action@v4
+        continue-on-error: true
+        with:
+          run: biber main
+
+      - name: LaTeX pass 2 (resolve citations)
+        uses: xu-cheng/texlive-action@v4
+        continue-on-error: true
+        with:
+          run: pdflatex -file-line-error -interaction=nonstopmode main.tex
+
+      - name: LaTeX pass 3 (finalize output)
+        uses: xu-cheng/texlive-action@v4
+        continue-on-error: true
+        with:
+          run: pdflatex -file-line-error -interaction=nonstopmode main.tex
 
       - name: Rename PDF (optional)
         run: mv main.pdf Thesis.pdf
