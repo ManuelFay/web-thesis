@@ -157,7 +157,7 @@ In this paper, we consider the traditional retrieval framework where a retrieval
 \end{equation}
 where \(\phi\) maps text into an \(n\)-dimensional vector space and \(f: \mathbb{R}^n \times \mathbb{R}^n \to \mathbb{R}\) is a similarity function, such as cosine similarity or dot product.
 
-In applied settings, individual documents are often too long to be practical for retrieval purposes \sidecite{Liu_LlamaIndex_2022, zhong2025mixofgranularityoptimizechunkinggranularity}. % \manu{expand and illustrate}
+In applied settings, individual documents are often too long to be practical for retrieval purposes \sidecite{Liu_LlamaIndex_2022, mixofgranularity}. % \manu{expand and illustrate}
 Each document \(d\) is thus divided into segments called \emph{chunks} by a partitioning function \(\mathcal{P}\) defined as
 \begin{equation}
 \mathcal{P}(d) = \{c_1, c_2, \dots, c_{N_d}\} \nonumber%, d = \bigcup_{i=1}^n c_i \nonumber
@@ -521,7 +521,7 @@ The full dataset contains 9881 unique long documents (3698 tokens on average), c
 %\pc{Pour moi faut se positionner et dire pourquoi on pool au niveau de la sentnece.} More recently, approaches such as late interaction models \sidecite{khattab_colbert_2020, chen_bge_2024} and  gained in popularity, setting new performance standards for encoder-based models. \pc{cokokok}
 
 
-\noindent\textbf{Training-Free.} We evaluate a selection of off-the-shelf methods that are strong in their size categories such as a standard single-vector embedding model based on ModernBERT (\texttt{modernbert-embed-large} \sidecite{warner2024smarterbetterfasterlonger, ModernBERT-embed-large}), its multi-vector ColBERT equivalent \sidecite{khattab_colbert_2020, GTE-ModernColBERT} and \emph{Okapi BM25} \sidecite{robertson_okapi_1994}, a strong lexical matching method. 
+\noindent\textbf{Training-Free.} We evaluate a selection of off-the-shelf methods that are strong in their size categories such as a standard single-vector embedding model based on ModernBERT (\texttt{modernbert-embed-large} \cite{modernbert, ModernBERT-embed-large}), its multi-vector ColBERT equivalent \sidecite{khattab_colbert_2020, GTE-ModernColBERT} and \emph{Okapi BM25} \sidecite{robertson_okapi_1994}, a strong lexical matching method. 
 Additionally, we compare against various contextualization approaches. Specifically, we include Anthropic’s contextual retrieval approach~\sidecite{contextual_anthropic}\sidenote{We use \texttt{Qwen-2.5-7B-Instruct} as the generative model which we serve on a 80GB A100 GPU with vLLM and \texttt{modernbert-embed-large} as the embedding model}, and evaluate Late Chunking \sidecite{LateChunking} without specific fine-tuning using \texttt{modernbert-embed-large}. These methods cover standard practices with varying level of complexities and indexing budgets.\sidenote{We also evaluate RAPTOR \cite{raptor} with \texttt{Qwen-2.5-7B-Instruct} and \texttt{cde-small-v2}~\cite{morris2024contextualdocumentembeddings} but find them to be poorly adapted to our problem settings.}
 
 \noindent\textbf{Training-Based.} For fair evaluation, we also fine-tune the sentence embedding method \texttt{modernbert-embed-large} on the training dataset with the same batch construction strategy as when training our main method, ensuring performance differences only stem from methodological design.
