@@ -138,7 +138,7 @@ The full results per category are reported in Table \ref{tab:exp1a}.
         Logic Reasoning & 0.71 & 0.88 & 0.52 & 0.73 & 0.80 & 0.33 & 0.49 \\
         \bottomrule
         \end{tabular}
-    \caption{Averaged score over samples and models of each metric on each category. Category \textit{Other} is not listed as it  consists in synthetic instructions often not answerable by LLMs without external tooling.}
+    \caption[Averaged metric scores]{Averaged score over samples and models of each metric on each category. Category \textit{Other} is not listed as it  consists in synthetic instructions often not answerable by LLMs without external tooling.}
     \label{tab:exp1a}
 \end{table*}
 
@@ -320,7 +320,7 @@ Table \ref{tab:exp1b_corr} and Table \ref{tab:exp1b_mean} display the scorer cor
     Human & 0.22 & 0.68 & -0.19 & 0.22 & 0.29 & 0.28 & 1.00 \\
     \bottomrule
     \end{tabular}
-    \caption{\textbf{Spearman $\rho$ between scorers} on non-synthetic data in the CAT setting.}
+    \caption[Spearman $\rho$ between scorers]{\textbf{Spearman $\rho$ between scorers} on non-synthetic data in the CAT setting.}
     \label{tab:exp1b_corr}
 \end{table*}
 
@@ -340,7 +340,7 @@ Table \ref{tab:exp1b_corr} and Table \ref{tab:exp1b_mean} display the scorer cor
     Human & 0.57 & 0.77 & 0.48 & 0.13 & 0.43 & 0.29 & 1.00 \\
     \bottomrule
     \end{tabular}
-    \caption{\textbf{Spearman $\rho$ between metrics} on non-synthetic data in the CIT setting.}
+    \caption[Spearman $\rho$ between metrics]{\textbf{Spearman $\rho$ between metrics} on non-synthetic data in the CIT setting.}
     \label{tab:exp1b_mean}
 \end{table*}
 
@@ -355,7 +355,7 @@ Models are trained in the default conditions explicited in \autoref{sec:default-
 \begin{figure}[ht]
     \centering
     \includegraphics[width=0.5\textwidth]{images/learning_dynamics/exp1b_1.pdf}
-    \caption{LLaMA performance after incorporating $0 \leq N \leq 1000$ real task samples from respectively CONLL, MNLI, QNLI, SquadV2, SST2 and XSUM into the base training mixture}
+    \caption[LLaMA performance with task samples]{LLaMA performance after incorporating $0 \leq N \leq 1000$ real task samples from respectively CONLL, MNLI, QNLI, SquadV2, SST2 and XSUM into the base training mixture}
     \label{fig:exp2}
 \end{figure}
 
@@ -377,7 +377,7 @@ Full performance degradation results after 1000 samples of task-specific data ar
     \bottomrule
     \end{tabular}
     
-    \caption{Performance degradation on the Alpaca test set, after introducing 1000 samples of specialized data to the train set. Base denotes the reference scores, computed from the initial zero-shot performance.}
+    \caption[Alpaca test degradation]{Performance degradation on the Alpaca test set, after introducing 1000 samples of specialized data to the train set. Base denotes the reference scores, computed from the initial zero-shot performance.}
     \label{tab:perf_deg}
 \end{table}
 
@@ -396,7 +396,6 @@ To evaluate the impact of IFT quality of the findings of the $\mathcal{S}_2$ exp
 \begin{figure*}[ht]
     \centering
     \includegraphics[width=0.8\textwidth]{images/learning_dynamics/exp4_all_old.pdf}
-    \caption{GPT4 score on SST-2 test set after finetuning with $0 \leq N \leq 1000$  samples on a (base) LM, an "off-the-shelf" IFT model, and an IFT model fine-tuned on Alpaca.}
+    \caption[GPT4 SST-2 scores]{GPT4 score on SST-2 test set after finetuning with $0 \leq N \leq 1000$  samples on a (base) LM, an "off-the-shelf" IFT model, and an IFT model fine-tuned on Alpaca.}
     \label{fig:exp4_old}
 \end{figure*}
-

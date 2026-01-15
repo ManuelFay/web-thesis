@@ -62,7 +62,7 @@ Economics & En & En &  4 &  18 &  260 &  86 & 4.7 & Cross-document queries, high
 ESG Reports            & En & Fr  & 30 &  57 & 1,538 & 222 & 3.9 & Natively cross-lingual, industry-specific \\
 \bottomrule
 \end{tabular}
-\caption{Summary of dataset statistics. Feel free to explore datasets on HuggingFace.% \footnote{Since the dataset release, the insurance dataset was removed from the dataset for legal copyright reasons.}
+\caption[Dataset statistics summary]{Summary of dataset statistics. Feel free to explore datasets on HuggingFace.% \footnote{Since the dataset release, the insurance dataset was removed from the dataset for legal copyright reasons.}
 }
 \label{tab:compact-dataset-summary}
 \end{table*}
@@ -114,7 +114,7 @@ colSmol-500M & 0.522 & 0.587 & 0.377 & 0.503 & 0.543 & 0.421 & 0.392 & 0.391 & 0
 colpali-v1.1 & 0.465 & 0.547 & 0.484 & 0.567 & 0.564 & 0.507 & 0.461 & 0.481 & 0.438 & 0.502 \\
 \bottomrule
 \end{tabular}
-\caption{Model performance across datasets (nDCG@5). Highest per column in \textbf{bold}.}
+\caption[Model performance across datasets]{Model performance across datasets (nDCG@5). Highest per column in \textbf{bold}.}
 \label{tab:model-results-transposed}
 \end{table*}
 
@@ -130,7 +130,7 @@ colpali-v1.1 & 0.465 & 0.547 & 0.484 & 0.567 & 0.564 & 0.507 & 0.461 & 0.481 & 0
 \begin{figure*}[ht]
     \centering
     \includegraphics[width=\textwidth]{images/images_vidorev2/vsplot.png}
-    \caption{Performance results across models for V1 and V2. We observe strong correlations, although a clear saturation on V1 for top models. Results are in nDCG@5.}
+    \caption[V1 vs V2 performance results]{Performance results across models for V1 and V2. We observe strong correlations, although a clear saturation on V1 for top models. Results are in nDCG@5.}
     \label{fig:v1vsv2}
 \end{figure*}
 
@@ -150,14 +150,14 @@ Analyzing the results, we can extract a few general takeaways:
 \begin{figure*}[ht]
     \centering
     \includegraphics[width=\textwidth]{images/images_vidorev2/im1.png}
-    \caption{Performance results across monolingual tasks. ViDoRe v2 leaves substantial room for future improvements, contrasting with ViDoRe v1, which was approaching performance saturation. }
+    \caption[Monolingual task performance]{Performance results across monolingual tasks. ViDoRe v2 leaves substantial room for future improvements, contrasting with ViDoRe v1, which was approaching performance saturation. }
     \label{fig:monolingual}
 \end{figure*}
 
 \begin{figure*}[ht]
     \centering
     \includegraphics[width=\textwidth]{images/images_vidorev2/im2.png}
-    \caption{Performance results across crosslingual tasks.We observe a significant performance gap between models trained exclusively in English using an English-only VLM and those that are not.}
+    \caption[Crosslingual task performance]{Performance results across crosslingual tasks.We observe a significant performance gap between models trained exclusively in English using an English-only VLM and those that are not.}
     \label{fig:multilingual}
 \end{figure*}
 

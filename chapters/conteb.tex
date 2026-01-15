@@ -39,7 +39,7 @@ The ability to rapidly process and query large-scale textual corpora is a corner
 \begin{figure}[t]
     \centering
     \includegraphics[width=0.65\textwidth]{images/conteb_images/reformulated.pdf}
-    \caption{\textbf{Importance of Contextual Information:} Starting from a set of queries and mostly self-contained document paragraphs from the \emph{Football}, we progressively reformulate paragraphs to remove information redundant with the rest of the document. This leads to sharp performance declines in standard retrieval approaches, but not in contextual retrieval approaches.}
+    \caption[Importance of contextual information]{\textbf{Importance of Contextual Information:} Starting from a set of queries and mostly self-contained document paragraphs from the \emph{Football}, we progressively reformulate paragraphs to remove information redundant with the rest of the document. This leads to sharp performance declines in standard retrieval approaches, but not in contextual retrieval approaches.}
     \label{fig:reformulated}
 \end{figure}
 
@@ -49,7 +49,7 @@ The ability to rapidly process and query large-scale textual corpora is a corner
 \begin{figure*}[ht]
     \centering
     \includegraphics[width =\linewidth]{images/conteb_images/training_inference_final.pdf}
-    \caption{
+    \caption[Training vs inference overview]{
     \textit{Training (Left).} With respect to a single query, each chunk inside a batch plays a different role, depending on its original document, and the positive chunk.
     \textit{Inference (Right).} Traditional embedding methods (top) produce embeddings that do not include potentially essential contextual information. Contextualized embeddings (bottom) can integrate document-wide information in individual chunk representations, augmenting embedding relevance and improving downstream retrieval performance.}
     \label{fig:contextualized_exemple}
@@ -401,7 +401,7 @@ Neural embedding models for passage-level text representation, popularized by Se
   \bottomrule
   \end{tabular}
 
-  \caption{Merged \emph{ConTEB} dataset details. Controlled datasets are highlighted in {\color{navyblue}\textbf{bold blue}}. NanoBEIR values are summed over the 13 datasets that compose it.}
+  \caption[ConTEB dataset details]{Merged \emph{ConTEB} dataset details. Controlled datasets are highlighted in {\color{navyblue}\textbf{bold blue}}. NanoBEIR values are summed over the 13 datasets that compose it.}
   \label{table:merged_conteb}
 \end{table*}
 
@@ -478,7 +478,7 @@ We also evaluate more practical retrieval settings at larger scale where we susp
 \begin{figure*}[htbp]
   \centering
   \includegraphics[width=\textwidth]{images/conteb_images/benchmark_creation_horizontal.pdf}
-  \caption{Benchmark creation process.}
+  \caption[Benchmark creation process]{Benchmark creation process.}
   \label{fig:benchmark_creation}
 \end{figure*}
 
@@ -775,7 +775,7 @@ Batches are constructed by sampling 4 long documents per device, retrieving all 
     \bottomrule
   \end{tabular}%
   }
-  \caption{Evaluation (nDCG@10) of baseline models and our proposed method on \textit{ConTEB}. Runtime is per‐document indexing time in milliseconds; smaller is better, so the fastest model is bolded.}
+  \caption[ConTEB evaluation results]{Evaluation (nDCG@10) of baseline models and our proposed method on \textit{ConTEB}. Runtime is per‐document indexing time in milliseconds; smaller is better, so the fastest model is bolded.}
   \label{table:results}
 \end{table*}
 
@@ -870,7 +870,7 @@ As expected, the gap is even more notable in \emph{ConTEB}'s controlled setting 
 \begin{figure}[btp!]
     \centering
     \includegraphics[width=0.65\textwidth]{images/conteb_images/lambda_seq_2x2.pdf}
-    \caption{\textbf{Importance of $\lambda_{seq}$}: Results for ModernBERT-Large trained with varying $\lambda_{seq}$. Optimal values depend on the task, but integrating both in-sequence and in-batch negatives is crucial to performance.}
+    \caption[Importance of $\lambda_{seq}$]{\textbf{Importance of $\lambda_{seq}$}: Results for ModernBERT-Large trained with varying $\lambda_{seq}$. Optimal values depend on the task, but integrating both in-sequence and in-batch negatives is crucial to performance.}
     \label{fig:lambda_seq}
 \end{figure}
 \label{ablation_lambda_seq}
@@ -887,7 +887,7 @@ As expected, the gap is even more notable in \emph{ConTEB}'s controlled setting 
 \begin{figure*}
     \centering
     \includegraphics[width = 1\textwidth]{images/conteb_images/squad_football_retrieval.pdf}
-    \caption{Contextualized models trained with InSeNT are more robust to aggressive chunking strategies that remove essential information from chunks (left), and scale better with corpus size and ambiguity (right).}
+    \caption[InSeNT robustness]{Contextualized models trained with InSeNT are more robust to aggressive chunking strategies that remove essential information from chunks (left), and scale better with corpus size and ambiguity (right).}
     \label{fig:robustness}
 \end{figure*}
 
@@ -1012,4 +1012,3 @@ This work is partially supported by Illuin Technology, and by a grant from ANRT 
 
 Antoine Bosselut gratefully acknowledges the support of the Swiss National Science Foundation (No. 215390), Innosuisse (PFFS-21-29), the EPFL Center for Imaging, Sony Group Corporation, and a Meta LLM Evaluation Research Grant.
 % We extend our warm thanks to Jonathan Dong, Caio Corro, Victor Pellegrain and Ender Konukoglu for their valuable feedback on the paper.
-
