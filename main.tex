@@ -40,8 +40,6 @@
 \else
 	\usepackage[english]{babel} % Load characters and hyphenation
 \fi
-\usepackage[english=british]{csquotes}	% English quotes
-
 % Load packages for testing
 \usepackage{blindtext}
 %\usepackage{showframe} % Uncomment to show boxes around the text area, margin, header and footer
@@ -98,6 +96,7 @@
 \newcommand{\code}[1]{\texttt{#1}}
 \usepackage{tcolorbox}
 \usepackage{fvextra}
+\usepackage[english=british]{csquotes}	% English quotes
 
 % Custom extr packages
 \usepackage{comment}
@@ -322,11 +321,11 @@
 \pagelayout{margin} % Restore margins
 % \input{chapters/canaries}
 % \input{chapters/reranking_short}
-% \input{chapters/colpali_appendix}
-% \input{chapters/modernvbert_appendix}
-% \input{chapters/conteb_appendix}
-% \input{chapters/croissant_appendix}
-% \input{chapters/learning_dynamics_appendix}
+\input{chapters/colpali_appendix}
+\input{chapters/modernvbert_appendix}
+\input{chapters/conteb_appendix}
+\input{chapters/croissant_appendix}
+\input{chapters/learning_dynamics_appendix}
 \chapter{Introduction Appendix}
 
 
@@ -339,7 +338,7 @@
     \label{fig:hbs_meme}
 \end{figure*}
 
-% \input{chapters/appendix.tex}
+\input{chapters/appendix.tex}
 
 %----------------------------------------------------------------------------------------
 

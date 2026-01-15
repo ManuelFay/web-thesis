@@ -96,7 +96,7 @@ Here is the page:
 \noindent\textbf{Human Validation.} We manually validate every single synthetically created query in \textit{ViDoRe} to ensure quality, query relevance, and consistency with the benchmark objective of evaluating retrieval in practical industrial settings. During this step, we randomly assign document-pair queries to 4 volunteer annotators and instruct them to filter out queries that do not fit the above-listed criteria. We also instruct annotators to flag any documents they deem to contain PII information or content not suited for an academic benchmark. No flag was raised during the entirety of the process, validating our prior PDF collection strategy. 100 queries per topic are collected in this manner. Annotators are colleagues and collaborators of the authors who volunteered to help. Each annotator spent approximately 3 hours filtering the larger query set down to 100 high-quality queries per topic.
 
 \subsection{Training Dataset}
-\label{subsection: training_dataset}
+\label{subsection:training_dataset}
 The statistics of the train set are given in the following table. The creation of the train set follows the same methodology as in \autoref{subsection:docvisbench_methodology}. We made sure that a PDF document cannot have pages in both the training set and the test set to prevent data leakage and that there are no duplicate documents in each split.
 
 \begin{table}[ht]
@@ -157,7 +157,7 @@ Minimizing storage footprint can be essential to industrial retrieval systems if
 
 
 \subsection{Latency computations}
-\label{paragraph:lantency_app} 
+\label{paragraph:latency_app} 
 To ensure comparison fairness, the latencies of the different retrieval systems shown in \autoref{fig:latency-comparison} are measured on the same \texttt{g2-standard-8} GCP VM with a NVIDIA L4 GPU. Document pages are embedded using the highest settings of \texttt{Unstructured} with captioning (see \autoref{subsection:baseline_models}). SigLIP and \textit{ColPali} are both loaded with \texttt{bfloat16} parameter dtypes. The reported times in \autoref{table:latency-comparison} are the average per-page latencies for each indexing operation on 1000 randomly chosen documents across all splits of the \textit{ViDoRe} benchmark test set. A batch size of $8$ was used for the BGE-M3 model used with \texttt{Unstructured}, and a batch size of $4$ was used for SigLIP and \textit{ColPali}.
 
 \begin{table}[ht]
