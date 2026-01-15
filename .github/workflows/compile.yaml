@@ -16,9 +16,17 @@ jobs:
       - name: Compile LaTeX document
         uses: xu-cheng/latex-action@v4
         continue-on-error: true
+        env:
+          TEXMFCNF: ${{ github.workspace }}:
         with:
           root_file: main.tex
+          pre_compile: |
+            pdflatex -file-line-error -interaction=nonstopmode main.tex
+            biber main
           args: -pdf -file-line-error -interaction=nonstopmode
+          post_compile: |
+            pdflatex -file-line-error -interaction=nonstopmode main.tex
+            pdflatex -file-line-error -interaction=nonstopmode main.tex
 
       - name: Rename PDF (optional)
         run: mv main.pdf Thesis.pdf

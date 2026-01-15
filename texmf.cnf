@@ -1,0 +1,2 @@
+% Increase TeX capacity for large documents.
+param_size = 50000
