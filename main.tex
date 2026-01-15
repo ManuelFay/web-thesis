@@ -136,10 +136,12 @@
 
 \makeindex[columns=3, title=Alphabetical Index, intoc] % Make LaTeX produce the files required to compile the index
 
-\makeglossaries % Make LaTeX produce the files required to compile the glossary
-\input{glossary.tex} % Include the glossary definitions
 
-\makenomenclature % Make LaTeX produce the files required to compile the nomenclature
+
+% \makeglossaries % Make LaTeX produce the files required to compile the glossary
+% \input{glossary.tex} % Include the glossary definitions
+
+% \makenomenclature % Make LaTeX produce the files required to compile the nomenclature
 
 % Reset sidenote counter at chapters
 %\counterwithin*{sidenote}{chapter}
@@ -277,27 +279,27 @@
 \mainmatter % Denotes the start of the main document content, resets page numbering and uses arabic numbers
 \setchapterstyle{kao} % Choose the default chapter heading style
 
-\input{chapters/introduction.tex}
+\include{chapters/introduction.tex}
 
 \pagelayout{wide} % No margins
 \addpart{Document Retrieval}
 \pagelayout{margin} % Restore margins
 
-\input{chapters/colpali}
-\input{chapters/vidorev2}
-\input{chapters/modernvbert}
-\input{chapters/conteb}
+\include{chapters/colpali}
+\include{chapters/vidorev2}
+\include{chapters/modernvbert}
+\include{chapters/conteb}
 
 
 \pagelayout{wide} % No margins
 \addpart{Generative Models}
 \pagelayout{margin} % Restore margins
 
-\input{chapters/croissant}
-\input{chapters/learning_dynamics}
+\include{chapters/croissant}
+\include{chapters/learning_dynamics}
 
 \addpart{Conclusion: On the Future of Search}
-\input{chapters/conclusion}
+\include{chapters/conclusion}
 
 % \pagelayout{wide} % No margins
 % \addpart{Latex Guide}
@@ -319,26 +321,24 @@
 \pagelayout{wide} % No margins
 \addpart{Appendix}
 \pagelayout{margin} % Restore margins
-% \input{chapters/canaries}
-% \input{chapters/reranking_short}
-\input{chapters/colpali_appendix}
-\input{chapters/modernvbert_appendix}
-\input{chapters/conteb_appendix}
-\input{chapters/croissant_appendix}
-\input{chapters/learning_dynamics_appendix}
+\include{chapters/canaries}
+\include{chapters/reranking_short}
+\include{chapters/colpali_appendix}
+\include{chapters/modernvbert_appendix}
+\include{chapters/conteb_appendix}
+\include{chapters/croissant_appendix}
+\include{chapters/learning_dynamics_appendix}
 \chapter{Introduction Appendix}
 
 
 \begin{figure*}
     \centering
     \includegraphics[width = 0.95\textwidth]{images/misc/hbs_meme.jpeg}
-    \caption[Library of Babel joke]{The library of Babel can actually impressively be compressed inside these two books, as goes this famous internet joke. Of course, these two books are themeselves contained in the library of Babel.}
+    \caption[Library of Babel joke]{The library of Babel can actually impressively be compressed inside these two books, as goes this famous internet joke. Of course, these two books are themselves contained in the library of Babel.}
     
     % Latencies indicated in the figure are computed on the same machine \texttt{g2-standard-16} with a NVIDIA-L4 GPU, and averaged over 100 pages. Further details in \autoref{subsection:latency}.The computed score is the average of from all datasets in \textit{ViDoRe} for PDF Parser + Captioning and ColPali respectively. Further details in \autoref{section:results}.} 
     \label{fig:hbs_meme}
 \end{figure*}
-
-\input{chapters/appendix.tex}
 
 %----------------------------------------------------------------------------------------
 
@@ -405,8 +405,8 @@
 
 % The glossary needs to be compiled on the command line with 'makeglossaries main' from the template directory
 
-\setglossarystyle{listgroup} % Set the style of the glossary (see https://en.wikibooks.org/wiki/LaTeX/Glossary for a reference)
-\printglossary[title=Special Terms, toctitle=List of Terms] % Output the glossary, 'title' is the chapter heading for the glossary, toctitle is the table of contents heading
+% \setglossarystyle{listgroup} % Set the style of the glossary (see https://en.wikibooks.org/wiki/LaTeX/Glossary for a reference)
+% \printglossary[title=Special Terms, toctitle=List of Terms] % Output the glossary, 'title' is the chapter heading for the glossary, toctitle is the table of contents heading
 
 %----------------------------------------------------------------------------------------
 %	INDEX

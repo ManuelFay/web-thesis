@@ -4,10 +4,10 @@
 pdflatex -interaction=nonstopmode main
 
 # Compile nomenclature
-makeindex main.nlo -s nomencl.ist -o main.nls
+# makeindex main.nlo -s nomencl.ist -o main.nls
 
 # Compile index
-makeindex main
+# makeindex main
 
 # Compile bibliography
 biber main
@@ -16,7 +16,7 @@ biber main
 pdflatex main
 
 # Compile glossary
-makeglossaries main
+# makeglossaries main
 
 # Compile document
-pdflatex main
+# pdflatex main
