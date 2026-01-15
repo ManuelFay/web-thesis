@@ -12,13 +12,27 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Rebase on latest main
+        run: |
+          git fetch origin main
+          git rebase origin/main
+
+      - name: Install TeX Live
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y texlive-full
+
+      - name: Increase TeX parameter stack size
+        run: |
+          mkdir -p ~/.texmf/web2c
+          printf '\nparam_size=100000\n' >> ~/.texmf/web2c/texmf.cnf
+          mktexlsr
 
       - name: Compile LaTeX document
-        uses: xu-cheng/latex-action@v4
-        continue-on-error: true
-        with:
-          root_file: main.tex
-          args: -pdf -file-line-error -interaction=nonstopmode
+        run: ./compileall.sh
 
       - name: Rename PDF (optional)
         run: mv main.pdf Thesis.pdf
