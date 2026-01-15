@@ -15,11 +15,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Rebase on latest main
-        run: |
-          git fetch origin main
-          git rebase origin/main
-
       - name: Install TeX Live
         run: |
           sudo apt-get update
@@ -32,7 +27,7 @@ jobs:
           mktexlsr
 
       - name: Compile LaTeX document
-        run: ./compileall.sh
+        run: bash ./compileall.sh
 
       - name: Rename PDF (optional)
         run: mv main.pdf Thesis.pdf
