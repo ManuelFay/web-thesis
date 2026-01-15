@@ -1,0 +1,873 @@
+\setchapterpreamble[u]{\margintoc}
+\chapter{Trustworthiness Through Transparency: CroissantLLM}
+% \chapter{\textit{CroissantLLM}: A Truly Bilingual French-English Language Model}
+
+
+
+\begin{kaobox}[frametitle=Paper Abstract]
+
+We introduce CroissantLLM, a 1.3B language model pre-trained on a set of 3T English and French tokens, to bring to the research and industrial community a high-performance, fully open-sourced bilingual model that runs swiftly on consumer-grade local hardware.
+To that end, we pioneer the approach of training an intrinsically bilingual model with a 1:1 English-to-French pretraining data ratio, a custom tokenizer, and bilingual finetuning datasets. We release the training dataset, notably containing a French split with manually curated, high-quality, and varied data sources.
+To assess performance outside of English, we craft a novel benchmark, FrenchBench, consisting of an array of classification and generation tasks, covering various orthogonal aspects of model performance in the French Language. Additionally, rooted in transparency and to foster further Large Language Model research, we release codebases, and dozens of checkpoints across various model sizes, training data distributions, and training steps, as well as fine-tuned Chat models, and strong translation models. We evaluate our model through the FMTI framework %\sidecite{bommasani2023fmti} 
+and validate 81\,\% of the transparency criteria, far beyond the scores of even most open initiatives.
+This work enriches the NLP landscape, breaking away from previous English-centric work to strengthen our understanding of multilingualism in language models.
+
+\end{kaobox}
+
+\section{Introduction}
+
+% \pierre{do agree}
+% \patrick{Is our main motivation training an fully open-source model OR training a small-but-competitive LLM for french-english? This intro basically just touches on the first, but I think we should also mention the second point (similar to TinyLlama). I think this/following paragraph should touch three problems with current LLMs: (1) LLMs (even "open-sourced" ones) are not fully open (2) models are mostly english-centric, and even multilingual models give little attention to the other languages (3) models focus on "compute-optimality" rather than "inference-optimality"}
+
+% Transparency
+% Large Language Models (LLM)\sidenote{See \autoref{sec:terminology} for a definition.} have taken over the Natural Language Processing (NLP) landscape in the past years.
+Although a few proprietary models \sidecite{thakur_beir_2021, muennighoff_mteb_2022} are still considered to run ahead of the pack \sidecite{openai2023gpt4}, open weights models such as Llama \sidecite{touvron2023llama, touvron2023llama2}, Qwen \sidecite{bai2023qwen} or Mistral \sidecite{jiang2023mistral, jiang2024mixtral} are rapidly bridging the performance gap. However, widespread industrial and research adoption of such technology remains challenging for several reasons, including the lack of transparency in the data collection and training processes, the scarcity of existing resources outside of English, and the large-scale and costly nature of existing high-performing models.
+
+
+\textbf{Lack of transparency.}
+State-of-the-art models, both proprietary and open-weights are often designed and trained by heavily investor-backed companies, that aim to retain a moat by keeping their training data mix and strategy secret, hindering the rest of the field's ability to fully study and understand these models. 
+% As such, very little is known about the data sources and training choices used for the open Llama, Qwen \sidecite{bai2023qwen} and Mistral \sidecite{jiang2023mistral, jiang2024mixtral} models, and even less so for the proprietary ChatGPT models from OpenAI, Claude from Anthropic, etc. 
+This lack of transparency, ranging from training set composition to lack of evaluation or unclear usage policies, has been characterized by previous works, such as those by \sidecite{bommasani2023fmti} and \sidecite{casper2024blackbox}, pushing for full transparency as a key component for safe model development and use. 
+% the idea is here is open --> seen -->   verified
+The dangers of closed, non-auditable datasets have been exemplified by recent findings showcasing the potential dangers of dataset contamination, whether intentional \sidecite{hubinger2024sleeper} or not.\sidenote{\url{https://purl.stanford.edu/kh752sm9123}} Furthermore, legal questions arise surrounding data ownership in LLM training corpora \sidecite{nytimes, samuelson2023generative} and recent developments in the political landscape, regarding AI (EU AI Act, US senate hearings)\sidenote{\url{https://www.commerce.senate.gov/2023/9/the-need-for-transparency-in-artificial-intelligence}} have further emphasized the importance of transparent approaches, both from a legal perspective and to build user trust. 
+% Furthermore, from a scientific perspective, the lack of any sort of reproducibility hinders progress in studying the mechanisms at work behind LLMs and 
+% \pierre{you can talk about reproducibility and replicability} \manu{I don't get why, nothing is replicable at these scales?}
+% mention sleeper agents paper, need to know what's in yur data for security reasons, csam images in public dataset  etc ...
+
+% English Centric
+\textbf{Bias towards English.}
+Although the exact training mix of most well-performing LLMs is not publicly available information, most large models are trained on very English-centric corpora \cite{touvron2023llama}.
+This is the consequence of the important amount of English resources compared to other languages, both in terms of data availability and benchmarks.
+As could be expected, all publicly available LLMs display a large performance disparity between English and non-English languages when evaluated on downstream tasks \sidecite{bandarkar2023belebele}.
+Moreover, cultural knowledge and biases are mechanically integrated through the training data, leading to models with greater knowledge of American events or biases \sidecite{bender2021dangers, santurkar2023opinions}. This puts non-English users at a disadvantage when it comes to language model usage and adoption.
+While the non-English NLP community has produced multilingual datasets \sidecite{cerebras2023slimpajama, laurençon2023bigscience} and models \sidecite{scao2022bloom,mGPT} in the last few years, the available resources still largely lag behind English ones, hindering industrial adoption in non-English settings.
+
+
+% Talk about compute vs inference optimal models
+\textbf{Challenging to use at scale.}
+Although benefits of scaling models to enormous sizes have been amply demonstrated in terms of performance \sidecite{hoffmann2022training, wei2022emergent, chowdhery2022palm}, scale comes at a large cost in terms of hardware requirements and inference speed. Download statistics on HuggingFace show the smallest Llama model \cite{touvron2023llama} to be the most adopted by the community, demonstrating the interest in small but capable models. 
+LLM scaling laws demonstrate the diminishing returns of training a model of a given size past a certain amount of tokens. By continuing pre-training way past the compute-optimal threshold, performance has been shown not to saturate, enabling the training of ``inference-optimal'' models of high interest to the industrial and research communities \sidecite{sardana2023chinchillaoptimal}. It is still not fully understood how model performance continues to improve at these later stages of training.
+
+
+
+% have a figure 1 with chat examples
+
+\subsection{Contributions}
+
+\begin{figure}
+    % First figure
+    \centering
+    \includegraphics[width=\textwidth]{images/croissant_images/lapin.png}
+    \caption{Conversation example with CroissantLLMChat}
+    \label{fig:example}
+\end{figure}
+
+
+
+
+In this work, we attempt to bridge the aforementioned limitations and gaps.
+Our main contributions can be summarized as follows.
+
+
+\textbf{Contribution 1: Introduction of a highly-curated, diverse corpus in French.}
+We collect and openly release a 303B token corpus spanning internet data, but also literary work, speech transcripts, legal and administrative documents, scientific articles, business-related documents, etc.
+The corpus is distributed under permissive licenses, allowing commercial use with no restriction, and is heavily filtered, curated, and deduplicated. To our knowledge, it is the largest multi-source French language corpus released to date of sufficient quality for language modeling purposes\sidenote{By this, we imply of sufficient quality to train a language model (little OCR errors, high-quality text) and not exclusively composed of Internet data.}.
+% FY: also https://huggingface.co/datasets/PleIAs/French-PD-Newspapers  -> yeah but  not usable for lm, OCR is shit, this corpus is worthless
+
+\textbf{Contribution 2: Training CroissantLLM, a truly bilingual language model.} Nowadays, most models display some multilingual capabilities.
+For example, Bloom has been trained to be massively multilingual \sidecite{scao2022bloom},
+Llama contains a minor proportion of non-English data in its training set \cite{touvron2023llama}
+and Qwen included a significative portion of Chinese data \cite{bai2023qwen}.\sidenote{Qwen-VL \cite{bai2023qwenvl} reports 77.3\,\% \& 22.7\,\% Chinese,  but no information is given for the Qwen base model.}
+However, to our knowledge, outside of Chinese with a different alphabet \sidecite{zeng2022glm}, no work has studied or attempted to train a multilingual model of significant scale in which English is not the dominant training language.
+
+In this work, we train a model on a 1:1 ratio of English to French with a tokenizer optimized for bilingualism.
+Our end goal is to have a model less skewed towards English performance or cultural biases. 
+% \caio{It was written "not skewed", but I think this is a too strong statement that could be attacked, I modified with "less skewed".}
+We motivate this ratio by conducting careful experimentation on smaller model scales to uncover the trade-offs behind language distribution ratios.
+We opt for a strategy enabling a ``best of both worlds'' performance in these two languages, as empirically validated by scaling law experiments. 
+Experimentally, we show the importance of integrating data from another cultural source in the acquisition of cultural knowledge, underlining the importance of the effort. % \manu{update this sentence depending on angle}
+
+% \manu{we show the impact of french data corpora on model knowledge --> importance of data in combatting cultural hegemony}
+
+\textbf{Contribution 3: FrenchBench: A novel LLM benchmark for the French Language.} To evaluate models in French, we introduce a benchmark encompassing various tasks to assess factual knowledge, generative capabilities, language understanding, etc. This benchmark is constructed both from openly available datasets, as well as newly released manually annotated data. We evaluate and report results for our models as well as other models with French-speaking capabilities.\sidenote{Code for evaluation is available at \url{https://github.com/EleutherAI/lm-evaluation-harness}}\footnote{Another complementary initiative has been led for French model evaluation and released concurrently in \cite{bawden:hal-04435371}}
+
+
+\textbf{Contribution 4: Releasing high-performing, inference-optimal models for the industrial community, together with a wide range of resources for the research community.}
+The models we train are all released under open licenses. Our largest model is trained on a 2300:1 token to parameter ratio (115 times longer than a Chinchilla Optimal 1.3B model) leading to very strong performance in its size category.
+We show that model performance on downstream tasks continues to dramatically improve with lengthened pre-training runs, although model perplexity does not significantly improve.
+We release all checkpoints for all model sizes, as well as the exact training data seen at every step for research purposes.\sidenote{Training data indexing order will be released in a second stage.} These models are extremely efficient to run, leading to low-latency, energy-efficient on-edge inference, even on low-resource devices such as phones or personal computers.
+These releases\sidenote{Code for dataset collection and filtering is available at \url{https://github.com/ManuelFay/llm-data-hub}. Code for model training is hosted at \url{https://github.com/CoderPat/croissant-llm-training}. Datasets and model checkpoints are available at \url{https://huggingface.co/CroissantLLM}.} are motivated by a commitment to transparency to allow research and reassuring users for industrial deployment: our models comply with 81\,\% of criteria listed by the Foundation Model Transparency Index \sidecite{bommasani2023fmti} (see Section~\ref{sec:transparency}). 
+
+
+
+The CroissantLLM initiative aims to adress the aforementionned limitations of current models through the release of an inference-optimized, small but capable model that performs well outside of English settings, and that is designed to be as open and transparent as possible. Beyond facilitating industrial LLM adoption and unlocking new generative model use cases, this project is also a proven platform for researching LLMs and kickstarting future pretraining efforts 
+\cite{martins2024eurollmmultilinguallanguagemodels, meeus2024copyrighttrapslargelanguage, shilov2024mosaicmemoryfuzzyduplication, meeus2024sokmembershipinferenceattacks}.
+
+% This opens up new perspectives, on the relevance of validation perplexity as a proxy measure for "good" models, and on the benefits of long pretraining runs. 
+% Our resulting model displays strong performance for its size, outperforming larger models trained on less tokens while being less memory intensive and faster, showcasing the industrial interest in training small yet effective models.
+
+% \FloatBarrier doesn't work
+
+% \clearpage
+\section{Data}
+The dominance of the English language in the training data of most current models is undeniable. While multilingual models like Llama leverage some non-English data \cite{touvron2023llama}, it corresponds to only a minor part of the corpus, leading to a significant drop in performance across non-English data, with noticeable ``American'' bias \sidecite{santurkar2023opinions, 10.1145/3597307}.
+% (Caio) the sentence below is incorect, both French and English are indo-european languages
+%This work aims to offset this trend by using a more balanced bilingual corpus comprising English and French, a rich language from a distinct language family. \caio{What do you mean? Both English and French are indo-european languages, it is the same family. French has a "richer" morphology than english (but you can't just say "rich language"), maybe focus on this point instead, but we need to find a citation to justify this claim.}
+This work aims to offset this trend by using a more balanced bilingual corpus comprising English and French, as well as additional code data.
+Although both languages belong to the Indo-European language family, they exhibit different morpho-syntactic structures\footnote{For example, pronominal objects are placed before (resp.\ after) the verb in French (resp.\ English), both languages have different noun phrase constructions (``la commission européenne'' vs.\ ``the European commission''), etc.} and French has a richer morphology.\footnote{For example, English has 5 verb forms whereas French has 48, French has explicit inflections for grammatical genders, etc.
+However, note that only English adjectives have morphological constructions for expressing comparison (\emph{e.g.}\ easy, easier, easiest). We refer to WALS for more details, \emph{e.g.}\ \url{https://wals.info/feature/21B##2/26.7/152.4}
+} We study whether this corpus helps in reducing biases, enabling more varied knowledge sets, and unlocking non-English performance.
+
+A variety of sources are integrated into our corpus, including carefully filtered internet data and high-quality data from a range of sources, all devoid of restrictive licenses ensuring complete openness of the data and the trained model. Data statistics are available in Table~\ref{tab:tab_tot}. As further detailed in \ref{sec:final_data}, our data corpus contains different amounts of unique English, French, and Code tokens. We obtain our balanced training corpus by upsampling French, Code, and English data with different sampling ratios, such that no performance loss is to be expected \sidecite{muennighoff2023scaling}.
+
+
+\begin{table*}
+    % \footnotesize
+    \centering
+    \begin{tabular}{lllllll}
+    \toprule
+     & Size (GB) & Docs. (M) & Tokens (B) & Token/Doc & Sampling Ratio & \# tokens (B) \\
+    \midrule
+        French & 1258.70 & 376.27 & 303.51 & 806.63 & 4.09 & 1240.08 \\
+        English & 2351.13 & 591.23 & 655.64 & 1108.94 & 1.89 & 1240.09 \\
+        Code & 366.87 & 81.90 & 141.43 & 1726.76 & 2.04 & 288.92 \\
+        Parallel & 113.91 & 408.03 & 35.78 & 87.68 & 6.13 & 219.26 \\
+        \midrule
+        \textbf{Total} & 4090.61 & 1457.43 & 1136.35 & 779.70 & 14.15 & 2988.35 \\
+    \bottomrule
+    \vspace{0.2mm}
+    \end{tabular}
+    \caption{Final Data mix for CroissantLLM training}
+    \label{tab:tab_tot}
+\end{table*}
+
+
+The scrapping and processing code are available in our code base.\sidenote{\url{https://github.com/ManuelFay/llm-data-hub}} The license information of all datasets used is given, all allowing for permissive commercial use.
+
+\subsection{French Data}
+
+
+Table~\ref{tab:tab_fr} lists the source and some information regarding the French corpus. Details about the data sources are expanded further below.
+
+
+\textbf{Web Data.} We collect internet data from various web scraps (Oscar \sidecite{abadji-etal-2022-towards}, mC4 \sidecite{xue2021mt5}), leveraging the CulturaX corpus \sidecite{nguyen2023culturax} for heuristic and perplexity filtering, as well as exact and fuzzy deduplication. In total, this represents over 363 million webpages and more than 292 billion tokens, that we split using our custom tokenizer fitted on equal amounts of French and English data.\footnote{The mC4 corpus \url{https://huggingface.co/datasets/allenai/c4} is released under the ODC-BY licence \url{https://opendatacommons.org/licenses/by/1-0/} whereas Oscar \cite{abadji-etal-2022-towards} does not claim data ownership, provides an opt-out strategy for data inclusion, and filtering metadata is released under the Creative Commons CC0 license.\url{https://creativecommons.org/publicdomain/zero/1.0/}}
+
+We ensure data is of good quality and correctly tagged in French through sampled manual inspection and confirm French-speaking countries are well represented within the dataset. Notably, we include several news sources scrapped from Belgium, Switzerland, Canada, and Lebanon, as well as multiple African countries (Senegal, Morocco, Algeria, Cameroon, etc.) \sidenote{Contrary to certain languages such as Arabic or Portuguese in which the language differs greatly depending on the country, the written French language in these countries are largely similar with only a minor share of regionally introduced syntax and expressions}
+% desvrive the toxicuty filtering
+
+\textbf{Legal and Administrative Data.}
+We introduce 5.3B tokens of data from the French government's open data initiative, ranging from legal tasks to parliamentary discussions and financial transcripts (\emph{e.g.}\ legal and administrative jargon). These texts originate from 13 different datasets (the OpenData corpus) and were collected from the French government's open data platform.\sidenote{Data is released at \url{https://echanges.dila.gouv.fr/OPENDATA/} with the ETALAB open license \url{https://www.etalab.gouv.fr/wp-content/uploads/2017/04/ETALAB-Licence-Ouverte-v2.0.pdf}}
+To ensure other French-speaking countries are represented, we add 68M tokens of data from Swiss legislation retrieved from government sources.
+We perform steps to process, filter, and run exact deduplication on these documents.
+
+\textbf{Cultural Data.} We introduce cultural data from various sources. Notably, we retrieve all Project Gutenberg \sidecite{projectgutenberg} books in the French language as of October 2023, corresponding to books released in the public domain (302 million tokens). We also download and aggressively filter manuscripts and documents from the French National Library (Bibliothèque Nationale de France), and filter for documents that belong to the public domain, have undergone an OCR process, and are of high quality.\sidenote{Metadata is licensed under Open Etalab license \url{https://gallica.bnf.fr/edit/und/conditions-dutilisation-des-contenus-de-gallica}} To filter out low-quality OCR documents, we implement custom heuristics which we release within our code base.
+We run all documents through perplexity filters using KenLM 5-grams\sidenote{\url{https://github.com/kpu/kenlm}} fitted on the French Wikipedia split, and discard documents with perplexity values that are too high (noisy) or too low (repetitive patterns).
+Thresholds are set through a manual verification process.
+We deliberately choose to be aggressive in our filtering to ensure only high-quality data is kept and discard the largest portion of the original corpus, keeping about 27M tokens. We choose not to keep any data from the newspaper archives, as the OCR transcription is often too noisy. Additionally, we introduce famous public domain French poems custom scrapped from a French poetry website,\sidenote{\url{https://www.poesie-francaise.fr/}} and run a set of podcasts through a high-quality speech-to-text model to obtain a textual transcription. This process is hard to scale and data splits from these sources are limited in quantity.
+Data from the OpenSubtitles\sidenote{\url{https://opus.nlpl.eu/OpenSubtitles2016.php}} initiative is integrated, corresponding to 41.8 million tokens originating from movie subtitles.\sidenote{\url{https://www.opensubtitles.org}} Finally, we add the French data from Wikisource collected as part of the BigScience initiative \sidecite{scao2022bloom} and obtain 2.7 billion tokens from the process.\sidenote{Licensed under CC BY-SA 4.0, \url{https://en.wikisource.org/wiki/Wikisource:Copyright_policy}}
+
+
+\textbf{Encyclopedia Data.} To introduce high-quality factual data to the training corpus, we integrate the French Wikipedia split from November 2023.\sidenote{\url{https://huggingface.co/datasets/wikimedia/wikipedia} with a CC-By-SA 3.0 license} This corresponds to the latest knowledge cutoff in the training data. In total, more than 2.5 million articles are used, spanning more than 2 billion tokens.
+
+\textbf{Industrial Data.} We scrap high-quality and publicly available data from industrial PDFs via a manually crafted list of websites, from large French and French Canadian (Quebec) companies to government agencies. This business-focused data boosts performance on a series of downstream applications related to industrial NLP. We collect over 36000 PDF multi-page documents and filter them through carefully crafted heuristics, followed by aggressive perplexity filtering.\sidenote{Data is public internet data that we release under MIT license with an opt-out scheme \url{https://huggingface.co/datasets/manu/illuin_layout_dataset_text_only}}.
+In total, we obtain over 290000 documents and 191 million tokens. 
+
+\subsection{English Data}
+
+Our English data is primarily drawn from the SlimPajama corpus \sidecite{cerebras2023slimpajama}, excluding copyrighted documents.
+Splits per data source are detailed in Table~\ref{tab:tab_en}. 
+
+\textbf{Internet Data.} Similarly to the French dataset, we rely on carefully filtered content from an assortment of internet sources, including miscellaneous web pages and blogs. The filtering process includes heuristics and perplexity filtering, as well as large-scale deduplication \sidecite{cerebras2023slimpajama}. The SlimPajama corpus includes internet data from the CommonCrawl\sidenote{Common Crawl license \url{https://commoncrawl.org/terms-of-use}} and C4\sidenote{ODC-BY license} web scraps, as well as data sourced from Github textual content\sidenote{Only content under MIT, BSD, and Apache licenses are kept} and the StackExchange forums.\sidenote{CC-By-SA 4.0 license \url{https://archive.org/details/stackexchange}}
+% desvrive the toxicuty filtering
+
+\textbf{Miscellaneous.} Other non-internet-based data sources are included in the SlimPajama dataset, such as scientific articles from Arxiv\sidenote{\url{https://arxiv.org/}, with author opt-out options} and English documents from Wikipedia.\sidenote{CC-By-SA 3.0 license} The SlimPajama dataset is also comprised of the ``Books'' subcorpus, obtained by downloading all book documents from Bibliotik.\sidenote{\url{https://huggingface.co/datasets/the_pile_books3}}
+Some of the documents within this last corpora have been flagged by their owner as proprietary data. We filter out all documents from this subcorpus, and replace them with data from the open-source Project Gutenberg \sidecite{projectgutenberg} English books under public domains.\sidenote{ From \url{https://huggingface.co/datasets/pg19} with an Apache 2.0 license}
+
+\textbf{Gutenberg Canaries.} To assess model memorization to inform about the risks of including private or sensitive data within the training set, we stress test the model by including ``canaries'' \sidecite{carlini2019secretsharer}. These correspond to samples that have been intentionally modified and/or repeated and included within the model training set, and that will enable a posteriori evaluation of the model capacity to memorize data in a ``worse than worst-case'' situation.\sidenote{This work is led in parallel to the CroissantLLM project and findings will be independently published.} In total the canaries represent 555 million tokens, representing less than 0.04\,\% of the total tokens seen during training.
+
+% Mention the canaries briefly
+
+
+
+\subsection{Code Data}
+
+In line with most recent models \cite{chowdhery2022palm, scao2022bloom, touvron2023llama}, we integrate code data into our training corpus. Notably, previous work shows that code data benefits natural language tasks and can be particularly useful in data-constrained settings \sidecite{muennighoff2023scaling}. Therefore, we include 140B tokens of code data in several common programming languages.
+Splits and number of tokens are detailed in Table~\ref{tab:tab_code}.
+
+\textbf{The Stack \& StarCoder.} We rely on the efforts of the StarCoder project \sidecite{li2023starcoder}, and use their high-quality filtered code data from The Stack corpus \sidecite{kocetkov2022stack}.\sidenote{Data are drawn from various sources and falls under 193 different permissive licenses. We use the version $1.2$ of the corpus, which has been filtered with respect to data owners opt-out option information.}
+We keep only high-resource programming languages (Java, Javascript, Python, C, C++, SQL) and Jupyter notebooks, as well as a few samples of formatted data (JSON, Tex) and scripting languages (shell scripts, Dockerfiles).
+
+
+\textbf{Extra Python code.}
+We extend the corpus with several other sources of Python code due to the popularity of the language in the community.
+Firstly, we add Pypi packages from recent code dumps, that are filtered to keep only Python and Jupyter files.\sidenote{\url{https://huggingface.co/datasets/vikp/pypi_clean}}
+Secondly, in order to promote high-quality problem-solving-centered code, we integrate 1.2B tokens of Python3 data from competitive coding contests \sidecite{doi:10.1126/science.abq1158} under CC-By-4.0 license.
+Lastly, following the success of learning from textbooks \sidecite{li2023textbooks}, we add commented Python code constructed by combining code and text cells from Jupyter Notebooks through the CodeParrot initiative.\sidenote{\url{https://huggingface.co/datasets/codeparrot/github-jupyter-code-to-text} Apache 2.0 license }
+
+
+\subsection{Parallel Data}
+%\pierre{ici il faudra cite le papier de Palm qui montre que incorporer des données parallel aide el trainin \url{https://arxiv.org/pdf/2305.10403.pdf,}, \url{https://aclanthology.org/2023.acl-long.524.pdf} }
+Following previous work \sidecite{anil2023palm},
+we incorporate vast quantities of parallel data, in our case high-quality English-French translation pairs, in order to improve the multilingual capabilities of the model \sidecite{briakou-etal-2023-searching}.
+
+\textbf{Opus.}
+We extract subsets of sentence pairs spanning multiple domains from the OPUS corpus \sidecite{opuscorpus}.\sidenote{Free license \url{https://opus.nlpl.eu/}}
+Statistics are described in Table~\ref{fig:opus}.
+In total, we include 400 million parallel sentences and about 36 billion tokens. The data is filtered through a rigorous cleaning pipeline:
+(1)~BiFixer \sidecite{ramirez-sanchez-etal-2020-bifixer}\sidenote{\url{https://github.com/bitextor/bifixer}} is first used to remove duplicate data through fuzzy matching techniques;
+(2)~BiCleaner\sidenote{\url{https://github.com/bitextor/bicleaner}} is then used to filter data using heuristic and perplexity filters;
+(3)~finally, the state-of-the-art NMT quality estimator CometKiwi \sidecite{rei-etal-2022-cometkiwi} is used to keep only top quality translation pairs. 
+ 
+
+\textbf{Theses.} To incorporate versatile academic and scientific language, we augment our dataset with French theses abstracts along with their author-generated English translations. This corresponds to 95000 documents and more than 80 million high-quality tokens.\sidenote{Data licensed under Etalab open license \url{https://www.etalab.gouv.fr/wp-content/uploads/2017/04/ETALAB-Licence-Ouverte-v2.0.pdf}}
+
+\textbf{Song Lyrics.}
+Our dataset integrates song lyrics in both French and English, scrapped from a specialized community-driven lyrics translation website.\sidenote{\url{https://www.lacoccinelle.net}, with opt-out options for data owners and community-contributed translations under free-use license.}
+As such, our model is trained with radically different linguistic styles (\emph{e.g.}\ colloquialism), and the wide range of topics can help the model to capture cultural nuances. 
+Lyrics have been translated by hand by the website community. With a total of 70k songs, we have built up a corpus of 53M tokens covering different periods (80s, 90s, 20s, etc.) and musical genres (rap, rock, jazz, etc.) To preserve colloquial expressions and cultural subtleties, we have not filtered song lyrics for explicit content. We validate the original language metadata of the songs through Google's language-detection algorithm. 
+
+% \pierre{sur les data il font des trucs come \url{https://arxiv.org/pdf/2303.03915.pdf} fig 1 ca peut être bien}
+
+
+%\clearpage
+\section{Training}
+
+Our main goal was to train a high-performing, yet resource-friendly bilingual model while optimizing performances across both languages. To focus on the specific challenges of the bilingual paradigm, we rely on previous work to motivate many of our design and hyperparameter choices \sidecite{touvron2023llama2}.
+
+\subsection{Model Architecture}
+% Patrick
+We use the Llama architecture \cite{touvron2023llama}, a decoder-based transformer, trained with rotary position encodings \sidecite{su2023roformer} and a context length of 2048. 
+We construct 4 different model sizes by jointly scaling the number of attention heads, hidden size, and hidden layers. Table~\ref{tab:model_scaling} summarizes the sizes of each model in the family.
+
+\begin{table}
+    \centering
+        \begin{tabular}{llllll}
+        \toprule
+        Model & Params (M) & Layers & Hidden size & Inter. size & KV heads \\
+        \midrule
+        XXS & 100.7 & 6 & 1024 & 4096 & 8 \\
+        XS & 202.5 & 12 & 1024 & 4128 & 8 \\
+        S & 341.5 & 12 & 1536 & 4128 & 12 \\
+        \midrule
+        Base & 1214.3 & 24 & 2048 & 5504 & 16 \\
+        \bottomrule
+        \vspace{0.2mm}
+        \end{tabular}
+
+    \caption{Model information for scaling laws. Parameter count excludes embedding and output parameters.}
+    \label{tab:model_scaling}
+\end{table}
+
+
+
+\subsection{Tokenizer}
+
+Most LLM tokenizers are fitted on English-centric corpora with an information-theoretic optimization objective, for example, Byte-Pair encoding \sidecite{sennrich2016neural} or Unigram \sidecite{kudo2018subword}, leading to good fertility\sidenote{See \autoref{sec:terminology} for a definition.} values (low token per word ratio) on English text, but high fertility in other languages. These phenomena make processing in other languages slower and more costly \sidecite{rust2021good}. Furthermore, subword splits in non-English languages mechanically carry less semantical meaning, potentially being a factor in the degraded performance of models on non-English languages \cite{rust2021good}.
+
+\textbf{Tokenizer training.} We fit our CroissantLLM tokenizer on a corpus of 100B high-quality tokens, with splits of English, French, and code data. We use SentencePiece\sidenote{\url{https://github.com/google/sentencepiece}} to train a Byte-Pair Encoding tokenizer with a vocabulary size of 32000 tokens,  100 special placeholder tokens, whitespace separation, and byte fallback, inspired by \cite{touvron2023llama, jiang2023mistral}. The data corpus used to fit the tokenizer is made available,\sidenote{\url{https://huggingface.co/datasets/manu/tok-corpus-shuffled}} and notably contains large amounts of French data to skew the vocabulary construction process towards optimizing for French as well.
+
+\textbf{Improved fertility rates.} The focus on English, French, and Code enables the CroissantLLM tokenizer to display smaller fertility rates on French texts than the Mistral and Llama models with similar vocabulary sizes, all the while also displaying slightly smaller rates than both in English and Code (Figure \ref{fig:tok_fertility}). This is due to the multilingual support of both Llama and Mistral tokenizers which need to allocate some vocabulary tokens to frequent character patterns from other languages.
+Roughly, the Llama tokenizer is 17\,\% less token efficient at encoding French internet data, and up to 40\,\% less efficient on clean encyclopedia French texts, implying that the 303B unique French tokens in our data training set correspond to more than 360B tokens with the Llama tokenizer. This enables us to pack more data in fewer tokens, leading to improvements in training and inference efficiency.
+
+\begin{figure}
+    % First figure
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/croissant_images/fertility.pdf}
+    \caption{Fertility on unseen test sets using various tokenizers. Lower is better.}
+    \label{fig:tok_fertility}
+\end{figure}
+
+
+\subsection{Selecting an optimal language ratio}
+
+A crucial question when training a bilingual model is how to effectively \textit{weight} data from the two languages to achieve a good trade-off between performance in both. While, intuitively, training on an equal mixture of English and French data may seem to be the obvious solution, differences in data quality available for each language coupled with transfer learning dynamics between both languages could imply that a balanced mix might be sub-optimal. However, training multiple models with different data mixes for comparison is prohibitively expensive.
+
+To offset this computational cost, we leverage recent findings on scaling laws \sidecite{scaling-laws-lm} that show that we can predict the performance of our model by training smaller models on the same dataset. In particular, \sidecite{pmlr-v202-fernandes23a} found that, for \textit{multilingual} models, by training smaller models with varying weights for each language in the data mix, one can fit a \textit{multilingual, joint} scaling law that can predict the language performance trade-off of larger models, even for novel language weightings not encountered during the fitting of the scaling law. 
+
+As such, we fit a joint scaling law as described by \cite{pmlr-v202-fernandes23a} for each language, by training 3 smaller model sizes on 3 different data mixes with varied ratios of English and French data (keeping the amount of Code data fixed). The corpus for these scaling law experiments is a subsampled variant of the larger corpus and is detailed in Appendix \ref{sec:scaling_data}. We define 3 data mixes by varying the language sampling ratio:
+(1) \textbf{equal} containing 40\,\% English data, 40\,\% French data and 20\,\% Code data;
+(2) \textbf{frplus} containing 20\,\% English data, 60\,\% French data and 20\% Code data;
+and (3)  \textbf{enplus} containing 60\,\% English data, 20\,\% French data and 20\,\% Code data. We then trained a 1.3B model on these subsets of the data for one of the data mixes to validate their predictive power.
+
+
+% \patrick{should I put the scaling law form here? The GPT-4 tech report didn't even bother...}
+
+\begin{figure*}
+    % First figure
+    \centering
+    \includegraphics[width=0.95\textwidth]{images/croissant_images/scaling_laws_croissant_wiki.pdf}
+    \caption{Evolution of test cross-entropy loss with model size in English (left) and French (right), for the \textit{wiki} domain, as well as the fitted joint scaling laws,}
+    \label{fig:scaling_laws_fit}
+\end{figure*}
+
+\begin{figure*}
+    \centering
+    \includegraphics[width=0.95\textwidth]{images/croissant_images/scaling_laws_capacity_wiki.pdf}
+    \caption{\textit{Effective capacity ratio} (as predicted by our fitted joint scaling law) for English and French as we change the weight of each language.}
+    \label{fig:scaling-laws-capacity}
+\end{figure*}
+
+\autoref{fig:scaling_laws_fit} shows the performance predicted by jointly-fitted scaling laws as we scale the model and vary the language weightings on the Wiki data validation split.
+%composed of wiki data, as well as the empirical performance obtained from the trained models.
+First, we see that the fitted scaling law is able to predict the performance of the larger model almost perfectly. Secondly, changing the weight of each language in training has a non-symmetrical impact on language performance: by increasing the (relative) weight of French from 50\,\% to 75\,\%, we get a marginal performance increase in French, while performance in English drops significantly. This fact is made clear by plotting the \textit{effective capacity ratio}\sidenote{The relative monolingual model size required to match the performance of the multilingual model on a language. See \ref{sec:terminology} for more details} of each language as we change the language weight (\autoref{fig:scaling-laws-capacity}): the ``gains'' in parameters from increasing weight of French data are minimal past the 50\,\% mark.
+%  (although for English, there would be more benefit in increasing the weight of its data) \patrick{do we want this last statement?}
+
+
+% Integrate benchmark results on the frplus /enplus splits ? --> do this in the appendix ?
+
+These findings showcase that \textbf{multilinguality comes at a price}, and training a bilingual model implies accepting a performance loss on a target language compared to an equivalent model trained on a monolingual corpus. 
+% In fact, the TinyLlama project \sidecite{zhang2024tinyllama} holds many similarities with our work (model size, tokens seen during training), with a major difference being the monolingual english training corpus and serves as an interesting baseline.
+
+We find equal ratios of English and French data lead to minimized performance hits across both languages (Figure \ref{fig:scaling_laws_fit}) and opt to train our base model in this data configuration.
+
+% \patrick{further discussion: for example we can mention, unless we reeeally cared about french performance, there would be a big cost in increasing its weight on english performance.}
+
+
+\subsection{Final data distribution}
+\label{sec:final_data}
+% Talk Mueninghoff  fingpt
+Our final dataset is composed of 1.1T unique tokens that originate from sources of various languages, qualities, and quantities. To craft a training set with a language and data distribution that suits our objectives, we upsample some of the sources, notably to balance out French and English data and increase the share of parallel data in our training run. Following work by \sidecite{muennighoff2023scaling} and \sidecite{luukkonen-etal-2023-fingpt} on data-constrained language modeling scaling laws, we upsample French text by a factor of two, and parallel data by a factor of 3. For a 3T token training run, this enables the model to see French data at most 4 times, and English and code data twice, which should have negligible impacts on the performance \sidecite{muennighoff2022crosslingual}. The final data distribution is shown in Table~\ref{tab:tab_tot}.
+
+% FMTI info needed
+All data is provided from the above-listed sources and no synthetic or augmented data is used. Data licenses and copyright information are given for every split to the best of our ability. The data collection and filtering process to construct our final mix from the above-listed sources is entirely done by the authors of this paper, who are employed by the universities or private companies described through their affiliations, under their countries' data protection laws, and compensated at market rates or following the academic salary grid of their institution.
+
+
+
+\subsection{Training framework}
+
+We train our models on a modified version of Megatron-Deepspeed,\sidenote{https://github.com/deep-spin/Megatron-DeepSpeed} a training framework built on top of PyTorch. Training is done on a dedicated Nvidia A100 SXM4 80 Gb supercomputer partition 
+%of the Jean Zay supercomputer owned by the French government, 
+with 30 octo-GPU nodes. % Compute is obtained through a Jean Zay grant (2023-AD011014668R1). 
+We rely on the HuggingFace Transformers and Datasets library for model and data manipulation.
+
+To maximize efficiency, we set the micro-batch size per device to 8 sequences of length 2048, and use 4 gradient accumulation steps, resulting in a total batch size of $8 \times 4 \times 30 \times 8  = 7680$ samples, or $7680*2048 = 15,728,640$ tokens. We achieve a mean efficiency of around 120 TFLOP\sidenote{160 TFLOP per second for our scaling law experiments with one GPU node only} per second with activation checkpointing, leading to a total compute estimate of $4.30e22$ FLOPS. Standard Cross-Entropy losses are used on a Causal Language Modeling objective.
+
+
+% deepspeed, efficiency, GPU usage
+\subsection{Training losses}
+
+Training lasts 17 days for a total of 99648 GPU hours, and we chose not to manually intervene, letting the model recover on its own after occasional loss spikes. \sidenote{Previous literature rarely mentions handling of such issues. Some models have reloaded training by skipping batches \cite{zhang2022opt, anil2023palm}, others have seemed to ignore it if loss recovered \cite{touvron2023llama}. In our case, we used gradient clipping, weight decay and tuned optimizer values \cite{zhang2022opt, touvron2023llama2}, to minimize the occurrences of such loss spikes…  During training, as spikes were few and far between, and loss seemed to recover quite rapidly every time and without visible consequences, we opted to let the model train with no intervention. We highlight that since our checkpoints and dataloaders are openly available, this enables future experimentations around these loss spikes.}
+We train with a max learning rate of $3e-4$, 1000 warmup steps, and a cosine learning rate with a minimum value of $1e-5$. Curves suggest the model still has not reached a performance plateau after 3T tokens (Figure \ref{fig:training_loss}). Checkpoints are stored every 5k steps and released with the rest of the project artifacts.
+
+
+% include validation curve
+\begin{figure}
+    % First figure
+    \centering
+    \includegraphics[width=0.47\textwidth]{images/croissant_images/training_loss.pdf}
+    \includegraphics[width=0.47\textwidth]{images/croissant_images/croissant_wikitext_loss.pdf}
+    \caption{(Left) Training loss with respect to the number of seen tokens. (Right) Validation perplexity (Averaged Log Likelihood) on Wikitext (English), computed with a rolling stride }
+    \label{fig:training_loss}
+\end{figure}
+
+
+\subsection{Environmental impact}
+% https://arxiv.org/pdf/2211.02001.pdf - reference bloom eco impcat
+% The model was exclusively trained on Jean Zay, a French government-owned supercomputer,
+The model was exclusively trained on a supercomputer operating on low-carbon nuclear electricity. Between experimental runs, scaling laws, and the final training, 123k A100 hours were used. The Thermal Design Power of the NVIDIA A100 SXM4 80Gb used is 400W corresponding to a total power consumption of 49.2 MWH and considering a grid carbon intensity of 57 gCO2eq/kWh, we estimate a carbon footprint of 2.80 tons of CO2 \sidecite{luccioni2022estimating} emitted during training.\sidenote{Factoring in an intentionally large data center Power Usage Effectiveness of 1.2 \cite{luccioni2022estimating}, we estimate an emission of 3.36 tons of CO2.}
+
+
+Interestingly, the model we trained is not ``compute-optimal'' according to Chinchilla laws \sidecite{hoffmann2022training}, meaning that less computing could have been used to train a larger model with the same performance. However, our model aims to be used for inference purposes at industrial scales. Our training paradigm is thus to absorb the downstream inference costs, by training a smaller model on a lot more tokens to obtain an inference-optimized model equivalent in performance to a bigger compute-optimal model \sidecite{sardana2023chinchillaoptimal}. Each inference of the final model is thus vastly more energy-efficient than a Chinchilla optimal model of equivalent performance ($>$ 3B parameters), and can even run on CPU or mobile devices. Relying on estimates of \sidecite{kaplan2020scaling}, at inference, CroissantLLM represents roughly 2.6 GFLOPS per token.
+
+% Detailed calculations, graph with the inference costs
+We hope to extend base model evaluation past English benchmarking alone and assess model capabilities in French, aiming for broad coverage across orthogonal capabilities to observe the effect of truly bilingual pre-training. Our evaluation efforts are rooted in transparency, and all results reported in the main technical report are reproducible through code that is open-sourced and public data.We hope to extend base model evaluation past English benchmarking alone and assess model capabilities in French, aiming for broad coverage across orthogonal capabilities to observe the effect of truly bilingual pre-training. Our evaluation efforts are rooted in transparency, and all results reported in the main technical report are reproducible through code that is open-sourced and public data.We hope to extend base model evaluation past English benchmarking alone and assess model capabilities in French, aiming for broad coverage across orthogonal capabilities to observe the effect of truly bilingual pre-training. Our evaluation efforts are rooted in transparency, and all results reported in the main technical report are reproducible through code that is open-sourced and public data.
+
+
+\section{Evaluation Benchmarks}
+
+% LLM base model evaluation often consists of assessing model performance on a series of standardized English language benchmarks, such as HellaSwag, ArcQ, BoolQ, MMLU, etc. Instruction or Chat Fine-tuned model variants have been shown to perform slightly better on these benchmarks than their base counterparts, and can also be evaluated on their capacity to follow instructions (MT-Bench, LMSys Eval arena).
+
+We hope to extend base model evaluation past English benchmarking alone and assess model capabilities in French, aiming for broad coverage across orthogonal capabilities to observe the effect of truly bilingual pre-training. Our evaluation efforts are rooted in transparency, and all results reported in the main technical report are reproducible through code that is open-sourced and public data.\sidenote{All benchmarks are made available and links will be provided in the non-anonymous version of this work.}
+% \sidenote{Evaluation is ran through the LM Evaluation harness \sidecite{eval-harness}. Datasets used are grouped in the following collection: \url{https://huggingface.co/collections/manu/frenchbench-evaluation-datasets-65bbcbf3987c4be8a5e9a2ef}}
+
+\subsection{English}
+
+In English, we evaluate on standard LLM evaluation benchmarks.
+
+% \textbf{MMLU} Massive Multitask Language Understanding (MMLU) is a benchmark tailored to assess models' knowledge acquired during pretraining by exclusively evaluating them in zero-shot and few-shot settings, closely resembling human evaluation. The benchmark encompasses 57 subjects spanning STEM, humanities, social sciences, and more, with varying difficulty levels from elementary to advanced professional. It challenges models on both world knowledge and problem-solving across a diverse range of subjects, making it well-suited for identifying a model's blind spots.
+
+\textbf{HellaSwag.} HellaSwag \sidecite{zellers2019hellaswag} is a dataset specifically crafted to challenge common-sense reasoning abilities of models by requiring them to predict the endings of sentences in a way that relies on information not present in the preceding context. It focuses on capturing a nuanced and context-dependent understanding of language.
+
+\textbf{PiQA.} PIQA is a dataset for common-sense reasoning and was created to investigate the physical knowledge of existing NLP models \sidecite{bisk2019piqa}.
+
+\textbf{SciQ.} The SciQ dataset contains 13,679 crowdsourced science exam questions about Physics, Chemistry, and Biology, among others. The questions are in multiple-choice format with 4 answer options each \sidecite{welbl2017crowdsourcing}.
+
+\textbf{Arc-C.}  The AI2 reasoning challenge dataset \sidecite{clark2018think} consists of 7,787 authentic grade-school level, multiple-choice science questions, designed to stimulate research in advanced question-answering. The dataset is divided into a Challenge Set and an Easy Set, with the Challenge Set comprising questions that were answered incorrectly by both a retrieval-based algorithm and a word co-occurrence algorithm. Additionally, the dataset includes a corpus of over 14 million science sentences relevant to the task and provides three neural baseline models.
+
+\textbf{MT-Bench.} MT-Bench \sidecite{zheng2023judging} contains a set of prompts designed to evaluate models on their multi-turn conversation and instruction-following abilities, covering various core model abilities; writing, roleplay, extraction, reasoning, math, coding, knowledge I (STEM), and knowledge II (humanities/social science). MT-Bench performance has been shown to best correlate with human-rated appreciation of a model through the LM-Sys model arena. 
+
+
+\subsection{French}
+We aim to evaluate models on their capabilities in French, along several axes including vocabulary, grammar, reading comprehension, factual knowledge, biases, and generative capacities, etc.
+To this end, we introduce \textit{FrenchBench}, a novel LLM evaluation benchmark for the French language, testing a large array of model skills in various settings.
+
+FrenchBench comprises several tasks, some included from previous benchmark datasets, others newly released with this work. 
+
+\subsubsection{FrenchBench Gen}
+FrenchBench assesses the generative capabilities of LLMs in a few-shot setting. Tasks include title generation, summarization, question generation, and question answering. We detail the tasks and the evaluation metrics used below.
+
+\textbf{FQuaD.} FQuaD \sidecite{dhoffschmidt2020fquad} is a French Question Answering dataset, containing manually annotated sets of Wikipedia passages, questions, and extractive answer spans in the Squad format. This high-quality dataset is one of the rare human-annotated French datasets and we rely on its public evaluation split for 4 of the FrenchBench tasks. 
+
+\textit{FQuADGenQ} is a question generation task in which passages and answers are given to the model in a few-shot manner, and we compute the ROUGE1 score \sidecite{lin-2004-rouge} with the gold questions. 
+
+% \textit{FQuaD Bool} is a binary classification task in which the model must determine whether a question is answerable given the passage information. 
+
+\textit{FquadGenAns} is the classic question-answering task, but models generate the answer span themselves, and the ROUGE1 score is computed with the gold extractive answer span. 
+
+\textit{MultiFQuAD} \sidenote{Previously unreleased dataset, evaluation set is released under CC-By-NC SA 4.0 license with this work} is a FQuAD variant, with a publicly released evaluation set, in which answers can consist of multiple disjoint spans. We evaluate performance on the concatenation of these gold extractive spans using the ROUGE1 score.
+
+
+\textbf{French Trivia.} The French Trivia dataset is built from online trivia questions pertaining to French culture. Answers are short and meant to assess latent model knowledge and the impact of pre-training data and cultural references. Intentionally, questions are formulated in English for comparison with monolingual English models.\sidenote{This is a previously unreleased dataset, released under MIT license with this work.}
+
+\subsubsection{FrenchBench Multiple Choice}
+
+We also assess reasoning, factual knowledge, linguistic capabilities, and model biases through a series of few-shot classification tasks, on which models are given multiple completions (multiple choice), and the answer with the highest likelihood is selected. We experimented with multiple question templates. In the MMLU format, the multiple potential answers are given after the question prefixed by a letter (A, B, C, D) and the model must guess the correct answer by predicting the correct answer's letter. In HellaSwag formatting, the model must complete the sentence and the model chooses the most likely continuation sequence, without prior knowledge of all other options. We find HellaSwag formatting is less abstract, and enables smaller size models to perform better.
+
+% \textbf{French XNLI} XNLI is an evaluation corpus for language transfer and cross-lingual sentence classification in 15 languages, including french. We adapt the evaluation dataset to decoder models by prepending a simple task prompt, and formatting the data in HellaSwag formatting to maximize model performance.
+
+% \textbf{French BoolQA} is a dataset aiming to replicate BoolQ in French. It is obtained through a mix of translation from english and custom generation using GPT4. All samples in the evaluation set are then manually verified and corrected, to obtain a 300 binary question dataset in french.
+
+% \textbf{French Topic-Based NLI} French Topic-Based Natural Language Inference (NLI) introduces a novel dataset featuring reviews and their polarity categorized by specific subjects such as price, location, and more. This dataset is designed to evaluate models' ability to understand the nuanced relationships between language and sentiment within the context of various topics.
+
+\textbf{French Language Test.} The French Language Test is a dataset crafted to assess the grammar and vocabulary capabilities of models through language tests. It provides a structured evaluation of a model's linguistic proficiency, aiming to measure its competency in understanding and generating coherent and grammatically accurate sentences in the French language. It is composed of a \textit{fr-grammar} and \textit{fr-vocabulary} multiple choice test.
+
+\textbf{French Hellaswag and Arc-C.} These datasets correspond to machine translations made by GPT3.5 of HellaSwag and Arc-C to French.\sidenote{\url{https://github.com/laiviet/lm-evaluation-harness/tree/main/datasets}} Manual verification of the translation quality indicates the translations to be far from perfect but sufficient for these datasets to act as a correct performance proxy.
+
+\textbf{OrangeSum.} OrangeSum\sidenote{\url{https://huggingface.co/datasets/orange_sum}} \sidecite{eddine2020barthez} is a summarization dataset constructed from online News articles. Two standard French summarization tasks span from this dataset; \textit{OSum(T)} in which the model is tasked with generating the title from the article body, and \textit{OSum(A)} in which the model must generate the first paragraph of the article aimed to be an abstract of the article. We select the abstract generation task, and measure performance with the ROUGE1 score.
+% Two standard French summarization tasks span from this dataset; \textit{OSum(T)} in which the model is tasked with generating the title from the article body, and \textit{OSum(A)} in which the model must generate the first paragraph of the article aimed to be an abstract of the article. Both tasks are measured through the ROUGE1 score.
+
+
+\subsection{Other Tasks}
+
+\textbf{MT-Bench French.} Mt-Bench French\sidenote{\url{https://huggingface.co/datasets/bofenghuang/mt-bench-french}} is a translated and adapted version of MT-Bench in French with all questions having undergone rigorous human review and adaption to guarantee authentic wording, and coherence, and to account for cultural discrepancies.
+
+\textbf{Translation.} Translation capabilities are evaluated through the test set of the 2014 WMT French-English and English-French tasks \sidecite{alves2023steering}. We measure performance using BLEU score \sidecite{papineni2002bleu, post-2018-call}, and COMET \sidecite{rei-etal-2022-comet}. We also report FLORES \sidecite{nllbteam2022language} and TICO \sidecite{anastasopoulos2020tico19} scores.
+
+
+\textbf{Belebele.} Belebele is a challenging reading comprehension dataset, with multiple choices, released across 122 languages in parallel format \sidecite{bandarkar2023belebele}. We leverage the English and French splits.
+
+
+
+% \textbf{French Language Test 2}
+% linagora ?
+
+
+%\clearpage
+\section{Benchmark results}
+
+\textbf{Baseline models.} To evaluate CroissantLLM, we compare with an array of various models, varying in parameter size, pre-training language distribution, training corpus size, etc.
+
+For ``monolingual'' English models, we evaluate Pythia-1.4B \sidecite{biderman2023pythia} trained on 300B tokens, OPT-1.3B \sidecite{zhang2022opt} trained on 180B tokens, and TinyLlama(1.1B) \sidecite{zhang2024tinyllama}. TinyLlama is a very strong English baseline, as it holds many similarities to CroissantLLM. It is a 1.1B model trained on 3 trillion tokens with the same English corpus as the Croissant base. Although it contains some amount of high-quality non-English data, it is only a minor share of the training corpus, the main data sources being English and code data. As such, it trains on much more English tokens than CroissantLLM. All models are trained way past Chinchilla optimality ($\sim$26B tokens for a 1.3B model).
+
+For monolingual French models, we use GPT-fr \sidecite{simoulin:hal-03265900}, a 1B model trained on 16.3B tokens, as well as the PagnolXL(1.5B) model  \sidecite{launay2021pagnol}, both in their author submitted HuggingFace implementations.
+
+We also compare CroissantLLM with multilingual models, notably Llama2(7B) \cite{touvron2023llama2} trained on 2T tokens, Mistral7B \cite{jiang2023mistral}, and Bloom \cite{scao2022bloom} models (from 1.1B to 3B), trained on 350B tokens each. We note that although the largest Bloom model is undertrained according to Chinchilla optimality \cite{hoffmann2022training}, smaller models are trained on the same number of tokens, making them largely more inference optimal and thus strong contenders. Finally, in the same size category, we evaluate mGPT \sidecite{mGPT} a 1.3B model trained on 440B tokens.
+
+Finally, to assess the impact of including instruction-like data within the pretraining dataset of models (as done in Bloom), we continue CroissantBase pretraining with a short cooldown phase on an instruction dataset without any formatting, and call the resulting model \textbf{CroissantCool}. 
+
+
+\subsection{Base model}
+% what results do we want to report and how:
+
+% barplots
+% tables
+% aggregated results for french bench
+% lineplots of croissant over training 
+
+CroissantLLM obtains strong performances in its model size category, achieving on-par performance with the best monolingual English models on English benchmarks and largely outperforming existing mono and multilingual models on French benchmarks.
+
+
+\textbf{English.}
+On English benchmarks  (Table~\ref{tab:eng_res}), CroissantLLM displays performances almost equivalent to those of TinyLlama, which has trained on much more English data. We see training on such a large quantity of English tokens enables our model to edge out similarly sized monolingual models trained on fewer tokens (OPT, Pythia), and larger multiingual models (Bloom 3B) demonstrating the interest of pursuing training past Chinchilla optimality, especially when splitting model capacity across languages.
+
+% talk bloom 3b
+
+
+    \begin{table*}
+        \centering
+
+
+            \begin{tabular}{lrrrrrr}
+            \toprule
+            Task & Arc-e & Belebele (eng) & Hellaswag & PiQA & SciQ & Avg \\
+            \midrule
+            GPT-fr(1B)& 0.27 & 0.28 & 0.29 & 0.54 & 0.68 & 0.41 \\
+            Pagnol-XL(1.5B) & 0.34 & 0.25 & 0.31 & 0.56 & 0.76 & 0.44 \\
+            mGPT(1.3B) & 0.48 & 0.23 & 0.35 & 0.66 & 0.62 & 0.47 \\
+            
+            Bloom(1.1B) & 0.55 & 0.24 & 0.36 & 0.68 & 0.89 & 0.54 \\
+            OPT(1.3B) & 0.61 & 0.23 & 0.42 & 0.72 & 0.92 & 0.58 \\
+            Pythia(1.4b)& 0.63 & 0.25 & 0.42 & 0.71 & 0.92 & 0.59 \\
+            Bloom(3B)  & 0.64 & 0.24 & 0.42 & 0.71 & 0.93 & 0.59 \\
+            \textbf{CroissantLLM}(1.3B) & 0.62 & 0.28 & 0.42 & 0.72 & 0.92 & 0.59 \\
+            % croissantCool & 0.62 & 0.26 & 0.43 & 0.73 & 0.91 & 0.59 \\
+            \textbf{CroissantCool}(1.3B) & 0.62 & 0.26 & 0.43 & 0.73 & 0.92 & 0.59 \\
+            % croissantChat & 0.62 & 0.29 & 0.43 & 0.72 & 0.92 & 0.60 \\
+            TinyLlama(1.1B) & 0.65 & 0.26 & 0.45 & 0.73 & 0.94 & 0.61 \\
+            \midrule
+            Llama2(7B) & 0.79 & 0.46 & 0.56 & 0.79 & 0.97 & 0.72 \\
+            Mistral(7B) & 0.83 & 0.85 & 0.60 & 0.82 & 0.98 & 0.81 \\
+            \bottomrule
+            \end{tabular}
+    
+
+    \caption{English Benchmarks (5-shot results)}
+    \label{tab:eng_res}
+\end{table*}
+
+
+
+
+\textbf{French.}
+On French classification benchmarks, CroissantLLM largely outperforms models of similar sizes trained on mostly monolingual English or French data, and multilingual models (Table~\ref{tab:fr_res}). Performance is on par with the Bloom(3B) model, which is about 3 times as large. An interesting phenomenon can be noticed, especially on generative benchmarks assessed in few-shot settings: ``base'' models trained with instruction-like data perform a lot better. This is noticeable with the Bloom(3B) model which outperforms the otherwise vastly superior Llama2(7B) model on several tasks, or through the performance gains of CroissantCool with respect to CroissantBase.
+
+
+% what's the story here
+
+
+
+\begin{table*}
+    \centering
+        \begin{tabular}{lrrrrrr}
+        \toprule
+        Task & Hellaswag(fr) & Arc-c(fr) & fr-vocab & fr-grammar & Belebele(fr) & Avg \\
+        \midrule
+        OPT(1.3B) & 0.28 & 0.19 & 0.50 & 0.61 & 0.28 & 0.37 \\
+        Pythia(1.4B) & 0.30 & 0.20 & 0.61 & 0.76 & 0.23 & 0.42 \\
+        TinyLlama(1.1B) & 0.33 & 0.23 & 0.64 & 0.67 & 0.25 & 0.42 \\
+        mGPT(1.3B) & 0.27 & 0.20 & 0.71 & 0.73 & 0.23 & 0.43 \\
+        GPT-fr(1B) & 0.30 & 0.19 & 0.70 & 0.79 & 0.24 & 0.44 \\
+        Bloom(1.1B) & 0.34 & 0.22 & 0.76 & 0.79 & 0.24 & 0.47 \\
+        Pagnol-XL(1.5B) & 0.33 & 0.21 & 0.77 & 0.82 & 0.27 & 0.48 \\
+        \textbf{CroissantCool}(1.3B)& 0.40 & 0.26 & 0.77 & 0.78 & 0.23 & 0.49 \\
+        \textbf{CroissantLLM}(1.3B) & 0.40 & 0.26 & 0.75 & 0.80 & 0.27 & 0.50 \\
+        Bloom(3B) & 0.40 & 0.27 & 0.78 & 0.81 & 0.23 & 0.50 \\
+        % \textbf{CroissantCool} & 0.42 & 0.28 & 0.79 & 0.79 & 0.28 & 0.51 \\
+        \midrule
+        Llama2(7B) & 0.44 & 0.38 & 0.76 & 0.77 & 0.43 & 0.56 \\
+        Mistral(7B) & 0.49 & 0.47 & 0.78 & 0.78 & 0.78 & 0.66 \\
+        \bottomrule
+        \vspace{0.2mm}
+        \end{tabular}
+    \caption{FrenchBench MC (5-shot results)}
+    \label{tab:fr_res}
+\end{table*}
+
+
+\begin{table*}
+    \centering
+    \begin{tabular}{lrrrrrr}
+        \toprule
+        Task & FGenQ & FGenAns & MultiFQuAD & OSum(A) & FTrivia & Avg \\
+        \midrule
+        Pagnol-XL(1.5B) & 0.06 & 0.04 & 0.03 & 0.03 & - & $^*$0.04  \\
+        GPT-fr(1B) & 0.04 & 0.02 & 0.05 & 0.11 & - & $^*$0.06\\
+        mGPT(1.3B) & 0.01 & 0.00 & 0.02 & 0.03 & 0.33 &  0.08 \\
+        OPT(1.3B) & 0.09 & 0.18 & 0.21 & 0.17 & 0.39 & 0.21 \\
+        Bloom(1.1B) & 0.17 & 0.28 & 0.26 & 0.10 & 0.31 & 0.23 \\
+        Pythia(1.4B) & 0.15 & 0.34 & 0.27 & 0.21 & 0.44 & 0.28 \\
+        \textbf{CroissantLLM}(1.3B) & 0.19 & 0.40 & 0.33 & 0.10 & 0.52 & 0.31 \\
+        % croissantCool & 0.17 & 0.39 & 0.36 & 0.22 & 0.53 & 0.33 \\
+        Bloom(3B) & 0.21 & 0.47 & 0.37 & 0.18 & 0.47 & 0.34 \\
+        % croissantChat & 0.19 & 0.43 & 0.38 & 0.18 & 0.53 & 0.34 \\
+        TinyLlama(1.1B) & 0.18 & 0.46 & 0.41 & 0.23 & 0.45 & 0.35 \\
+        \textbf{CroissantCool}(1.3B)& 0.20 & 0.45 & 0.36 & 0.27 & 0.53 & 0.36 \\
+        % croissant+SFT+newtok & 0.19 & 0.44 & 0.38 & 0.28 & 0.52 & 0.36 \\
+        % tinyllamaChat & 0.17 & 0.48 & 0.45 & 0.24 & 0.50 & 0.37 \\
+        \midrule
+        Llama2(7B) & 0.25 & 0.68 & 0.60 & 0.30 & 0.70 & 0.50 \\
+        Mistral(7B) & 0.33 & 0.78 & 0.64 & 0.31 & 0.74 & 0.56 \\
+        \bottomrule
+        \vspace{0.2mm}
+        \end{tabular}
+        
+    \caption{FrenchBench Gen (5-shot ROUGE1 results). Bloom models seem to have strong performance on QA tasks (Fquad), likely due to the inclusion of Question Answering datasets in its pretraining corpus \cite{laurençon2023bigscience}. Pagnol-XL and GPT-fr are trained exclusively on French text and as such cannot be fairly evaluated on the French Trivia test.}
+    \label{tab:fr_resgen}
+\end{table*}
+
+
+\textbf{Improvements throughout training.}
+The model performance continues to improve on downstream tasks during the entirety of training. We report WMT14 translation performance in Figure \ref{fig:training_evol}, and observe similar trends across all tasks. The benefits of training past Chinchilla optimality are clear, and although there are diminishing returns past a certain number of steps, training does not seem to saturate.  In low training step settings, performance appears to emerge suddenly, reflecting emergent performance experiments in the literature most often obtained through model scaling \sidecite{wei2022emergent}.
+
+\begin{figure}
+    % First figure
+    \centering
+    \includegraphics[width=\textwidth]{images/croissant_images/croissant_wmt_parallel_step.pdf}
+    \caption{Performance evolution on the WMT Translation task (5-shot)}
+    \label{fig:training_evol}
+\end{figure}
+
+
+\textbf{French Trivia.} One main question this work attempts to tackle is whether training on bilingual data goes beyond augmenting the language understanding and writing capabilities of a model in another language, but also equips the models with novel knowledge and different cultural biases. We evaluate French cultural knowledge on a Trivia task, consisting of questions about France-related topics, asked in English (Table~\ref{tab:fr_resgen}), and score results obtained in 5-shot settings with ROUGE-1.\sidenote{As heuristic-based metrics are often insufficient to capture the diversity of possible answers \cite{Faysse_2023}, we also score predictions using GPT4 as a judge, and confirm the ROUGE1 metric is well suited for this task given the closed and short nature of the answers.} CroissantLLM is the best performing model evaluated under the 7B size, outperforming English-centric models by significant margins. This knowledge gap showcases the effect of the pretraining data mix in specific knowledge acquisition, underlining the interest of integrating vast amounts of varied and multilingual data when training models aiming for broad knowledge coverage.
+
+
+\textbf{Overall.} The 1.3B CroissantLLM displays top-of-its-class performance across both languages and all benchmarks, even edging out larger models such as Bloom(3B) on most tasks. All models remain far off from the performance of the strong 7B Llama and Mistral models.
+
+\subsection{Finetuning}
+Beyond base model performance, we evaluate CroissantLLM downstream performance once finetuned on generalist chat and instruction data, or on specific target tasks (translation, summarization).
+
+\subsubsection{Chat Model}
+It has been shown that supervised fine-tuning on instruction or chat datasets enables leveraging model capabilities to their fullest \sidecite{wei2022finetuned}. 
+
+\textbf{Training.}
+We finetune the base model on public Chat datasets Ultrachat \sidecite{ding2023enhancing} and Wildchat \sidecite{zhao2024inthewildchat} containing ChatGPT interactions in English and French. We also incorporate 12k samples of translation data (4\,\% of the SFT dataset). We run finetuning on CroissantLLM, as well as the Bloom-1b7 and TinyLlama models for comparison. The obtained models are further suffixed with ``Chat''.
+
+\textbf{MT-Bench.}
+% new conclusions
+We evaluate models on the MT-Bench benchmarks, both in English and French. Although a large difference in performance can be noted between the Bloom model and Croissant in favor of the latter, performance differences with TinyLlama are not as significant, neither in English nor in French. CroissantLLMChat performs strongly in open-ended writing categories (writing, roleplay, humanities) but struggles with reasoning and extractive tasks. Turn 2 performance (reformulation under constraints) is largely lower than Turn 1 performance as can be seen in Figures \ref{fig:mt_bench_fr_t1} and \ref{fig:mt_bench_en2}.  Our CroissantLLMChat model also vastly outperforms the BloomZ 3B model trained by CMArkea on a large chat finetuning corpus \sidecite{DeBloomzChat}.
+
+
+This hints at the fact that quasi-monolingual models with only a minor share of another language in their pretraining corpus can be adapted to a reasonable extent, through subsequent finetuning or continued pretraining, although large pre-training corpora are necessary to incorporate sufficient knowledge and reasoning abilities within the base models. We notice large correlations between generation temperature and performance and find CroissantLLMChat works a lot better with higher temperatures ($\geq 0.4$). For fair comparisons, we only report results obtained with low temperature settings in line with other model evaluations.
+
+
+\begin{figure*}
+    % First figure
+    \centering
+    \includegraphics[width=\linewidth]{images/croissant_images/results_both_turns.png}
+    \caption{MT Bench Results (Both Turns)}
+    \label{fig:mt_bench_fr}
+\end{figure*}
+
+
+
+
+\textbf{Translation.} We run translation evaluations on the Chat models\sidenote{TinyLLaMAChat corresponds to the TinyLlama model finetuned with the same SFT set as CroissantLLMChat.} and report results in Table~\ref{tab:translate}. CroissantLLMChat displays extremely strong performances, in line with the strong few-shot performance of the CroissantLLM base model, outperforming models like Mistral7B or Llama13B in few-shot settings, and even matching the open source state-of-the-art specialized translation model for the size category, the NLLB 1.3B \sidecite{nllbteam2022language}, trained on vastly superior amounts of parallel data.
+
+\setlength{\tabcolsep}{2pt}
+\renewcommand{\arraystretch}{0.75}
+\begin{table*}
+\centering
+\begin{tabular}{lllllllllllllll}
+\toprule
+ & \multicolumn{5}{c}{\normalfont \bfseries WMT 14 }
+ & & \multicolumn{2}{c}{\normalfont \bfseries TICO }
+ & & \multicolumn{5}{c}{\normalfont \bfseries FLORES } \\
+ %
+ & \multicolumn{2}{c}{ en$\rightarrow$fr }
+ & & \multicolumn{2}{c}{ fr$\rightarrow$en }
+ & & \multicolumn{2}{c}{ en$\rightarrow$fr } 
+ & &\multicolumn{2}{c}{ en$\rightarrow$fr }
+ & & \multicolumn{2}{c}{ fr$\rightarrow$en }\\
+ %
+ & {\footnotesize \comet} & {\footnotesize \textsc{Bleu}} 
+ & & {\footnotesize \comet} & {\footnotesize \textsc{Bleu}} 
+ & & {\footnotesize \comet} & {\footnotesize \textsc{Bleu}}
+ & & {\footnotesize \comet} & {\footnotesize \textsc{Bleu}}
+ & & {\footnotesize \comet} & {\footnotesize \textsc{Bleu}}\\
+\midrule
+\multicolumn{4}{l}{\small \textit{\textbf{NMT models}}} \vspace{1.5mm}  \\
+%
+{\small NLLB 1.3B} & 86.82 & 41.59 & & 84.55 & 36.47 & & 81.15 & 40.22 & & 87.10 & 47.49 & & 87.21 & 40.47 \\
+{\scriptsize \normalfont \itshape 0-shot} \vspace{1.mm} \\
+\multicolumn{4}{l}{\small \textit{\textbf{Pre-trained models}}} \vspace{1.5mm}  \\
+{\small LLaMA-2 7B} & 84.37 & 32.98 & & 86.66 & 38.57 & & 78.05 & 33.75 & & 85.03 & 38.59 & & 88.75 & 41.83 \\
+{\scriptsize \normalfont \itshape 5-shot} \vspace{1.mm} \\
+%
+{\small LLaMA-2 13B} & 85.94 & 36.76 & & 87.02 & 39.93 & & 80.04 & 38.21 & & 86.67 & 43.49 & & 89.03 & 42.71\\
+{\scriptsize \normalfont \itshape 5-shot} \vspace{1.mm} \\
+%
+{\small Mistral-7B-v0.1} & 84.99 & 34.82 & & 87.01 & 39.55 & & 79.34 & 37.82 & & 86.07 & 41.31 & & 88.36 & 42.56\\
+{\scriptsize \normalfont \itshape 5-shot} \vspace{1.mm} \\\cdashlinelr{1-15}
+%
+{\small TinyLLaMA} & 73.03 & 18.13 & & 82.99 & 29.85 & & 69.20 & 20.55 & & 74.40 & 21.17 & & 85.86 & 33.10\\
+{\scriptsize \normalfont \itshape 5-shot} \vspace{1.mm} \\
+%
+{\small CroissantLLM} & 85.11 & 38.09 & & 85.70 & 36.30 & & 78.74 & 38.49 & & 86.85 & 46.58 & & 88.58 & 42.83\\
+{\scriptsize \normalfont \itshape 5-shot} \vspace{1.mm} \\\midrule
+\multicolumn{4}{l}{\small \textit{\textbf{SFT models}}} \vspace{1.5mm}  \\
+{\small TowerInstruct-7B-v0.1} & 88.07 & 46.19 & & 88.14 & 46.75 & & 81.53 & 41.27 & & 88.38 & 48.57 & & 89.56 & 46.34\\
+{\scriptsize \normalfont \itshape 0-shot} \vspace{1.mm} \\\cdashlinelr{1-15}
+{\small TinyLLaMAChat}  & -- & -- & & -- & -- & & 73.04 & 23.61 & & 78.08 & 27.24 & & 86.26 & 32.80 \\
+{\scriptsize \normalfont \itshape 0-shot} \vspace{1.mm} \\
+{\small CroissantLLMChat} & -- & -- & & -- & -- & & 80.27 & 36.99 & & 86.82 & 44.79 & & 88.38 & 41.54 \\
+{\scriptsize \normalfont \itshape 0-shot} \\
+{\small CroissantLLMChat} & -- & -- & & -- & -- & & 80.72 & 38.34 & & 87.68 & 47.11 & & 88.71 & 42.90 \\
+{\scriptsize \normalfont \itshape 0-shot (Beam Search)} \\
+\bottomrule
+\vspace{0.2mm}
+\end{tabular}
+\caption{Performance in machine translation, according to COMET-22 and BLEU, across three different benchmarks: WMT14, TICO and FLORES. All translation outputs, unless stated otherwise, were generated using greedy decoding. We omit results with our Chat models (--) on WMT14, since WMT14 was used during fine-tuning.}
+\label{tab:translate}
+\end{table*}
+
+
+
+\subsubsection{Dialog Summarization finetuning}
+
+To assess performance on specific downstream applications, we finetune base models on a custom dialog summarization dataset.\sidenote{Proprietary dataset belonging to Illuin Technology, corresponds to organic customer interactions with a counselor.} Models are finetuned for three epochs on 6000 samples and results are computed through ROUGE and GPT-4 judgment metrics (Table~\ref{tab:sum-finetuned-1}).
+
+% \renewcommand{\arraystretch}{1.00}
+% \begin{table}[h]
+%     \centering
+%     \begin{tabular}{l c c c c c}
+%     \hline
+%     Models & ROUGE1 & Coherence & Consistence & Fluidity & Relevance \\
+%     \hline
+%     % Croissant V0 base & \underline{0.551} & 4.435 & 3.855 & 4.65 & 4.12 \\
+%     % Croissant 100k & 0.547 & 4.49 & 3.90 & 4.70 & \underline{4.135} \\
+%     CroissantLLM(1.3B) & 0.550 & 4.56 & 3.93 & 4.73 & 4.09 \\
+%     Bloom(1.7B) & 0.550 & 4.52 & 3.96 & \textbf{4.76} & 4.08 \\
+%     Mistral(7B) & \textbf{0.588} & \textbf{4.60} & \textbf{4.73} & 4.72 & \textbf{4.59} \\
+%     \bottomrule
+%     \vspace{0.2mm}
+%     \end{tabular}
+%     \caption{Dialog Summarization Results. Except for ROUGE1, scores are measured by GPT-4, out of a maximum of 5.}
+%     \label{tab:sum-finetuned-1}
+% \end{table}
+
+\renewcommand{\arraystretch}{1.0}
+\setlength{\tabcolsep}{4pt} % tighter column padding (default is ~6pt)
+
+\begin{table}[h]
+    \centering
+    \small % optional: slightly smaller text
+    \begin{tabular}{@{}l*{5}{c}@{}} % trim outer left/right padding
+    \toprule
+    Model & ROUGE-1 & Coherence & Consistency & Fluidity & Relevance \\
+    \midrule
+    CroissantLLM (1.3B) & 0.550 & 4.56 & 3.93 & 4.73 & 4.09 \\
+    Bloom (1.7B)        & 0.550 & 4.52 & 3.96 & \textbf{4.76} & 4.08 \\
+    Mistral (7B)        & \textbf{0.588} & \textbf{4.60} & \textbf{4.73} & 4.72 & \textbf{4.59} \\
+    \bottomrule
+    \end{tabular}
+    \caption{Dialog summarization results. Except ROUGE-1, scores are measured by GPT-4, out of 5.}
+    \label{tab:sum-finetuned-1}
+\end{table}
+
+
+
+CroissantLLM and Bloom(1.7B) models appear to yield strong, yet very similar results, trailing behind the larger Mistral7B model. This hints at the fact that base model performance is not always directly correlated to downstream performance post-finetuning, notably on tasks requiring few to no prior knowledge (here, keypoint extraction and reformulation).
+
+
+\subsection{Optimized Inference}
+% Talk disk space, vram space, speed
+% Talk quantization sizes (<1Gb)
+Our largest model, CroissantLLM, with 1.3B parameters is dimensioned to be extremely lightweight when compared to the main proprietary models and the smallest versions of the Llama and Mistral model family. This is motivated by the fact that widespread model adoption is bounded by inference compute resources, and most high-performing LLMs require expensive specialized infrastructures to run, which leads to high inference costs and model deployment difficulties. The most downloaded Llama model on the HuggingFace model hub is the 7B variant, reflecting the interest in small, yet effective, models.
+
+At a 1.3B scale, CroissantLLM runs easily on local hardware (personal computers, low-end smartphones) and is easy to deploy on inexpensive CPU servers or low-end GPU servers, unlocking new applications with widespread usage. On higher-end GPUs (Table~\ref{tab:inf_french_res}), CroissantLLM is both faster (latency) and less memory intensive enabling it to fit bigger batch sizes (throughput). Performance benchmarks are given in Table~\ref{tab:inf_french_res}.  
+
+\begin{table}
+    \centering
+    \begin{tabular}{lccccc}
+        \toprule
+        Model & Parameters (B) & Tokens Per Second & Words Per Second \\
+        \midrule
+        \textbf{French} &  & & \\
+        \hline
+        Llama 2 & 13 & 38.56  & 22.18 \\
+        Llama 2& 7 & 64.05 & 37.12 \\
+        CroissantLLM & 1.3 & 145.40  & \textbf{101.12} \\
+        TinyLlama & 1.1 & \textbf{152.60}  & 90.08 \\
+        \toprule
+        \textbf{English} &  & & \\
+        \hline
+        Llama2 & 13 & 38.17 &  28.16 \\
+        Llama2 & 7 & 62.60 &  46.49 \\
+        CroissantLLM & 1.3 & 139.64  & 111.41 \\
+        TinyLlama & 1.1 & \textbf{150.16} &  \textbf{112.36} \\
+        \bottomrule
+        \vspace{0.2mm}
+    \end{tabular}
+    \caption{Inference Results in French and English on an A100 GPU with 40GB VRAM (average results over 100 tokens generations with 100 tokens input based on 100 Wikipedia text samples, vLLM backend and batch size 1)}
+    \label{tab:inf_french_res}
+\end{table}
+
+The decoder nature of CroissantLLM enables to benefit from the rich inference optimization ecosystem that has boomed recently. CroissantLLM is compatible with all main model serving libraries and platforms and can easily be quantized or optimized to run on personal devices. We performed 4bit quantization in the GGUF\sidenote{\url{https://github.com/ggerganov/ggml/blob/master/docs/gguf.md}} format and were able to run the model on lower-end smartphones at a speed of more than 5 tokens per second.
+
+\subsection{Model limitations}
+
+Evaluation results indicate the model is strong in its size category, and offers decent performances on writing-based tasks and internal knowledge, and very strong performance on translation tasks. The small size of the CroissantLLM model however hinders its capacity to perform more complex reasoning-based tasks, at least in a zero or few-shot manner in its generalist base or chat-model versions. This is aligned with other models of size and underlines the importance of scale for more abstract tasks \sidecite{wei2022emergent}.
+
+\textbf{Knowledge Cutoff.} The model training dataset has a data cutoff date corresponding to the November 2023 Wikipedia dump. This is the de facto knowledge cutoff date for our base model, although a lot of information dates back further.\sidenote{Prompted with "Who is the current French prime minister ?", it responds: "The current French prime minister is Jean Castex." which is outdated by more than 18 months at the time of the writing.
+} Updated versions can be trained through continued pre-training or subsequent fine-tuning.
+
+
+\textbf{Hallucinations.} CroissantLLM can hallucinate \sidecite{Ji_2023,guerreiro2023hallucinations} and output factually incorrect data,\sidenote{As an example, prompted with "Which French club won the UEFA Champions League ?", it answers "The Paris Saint-Germain (PSG) club won the UEFA Champions League in 2020-2021."} especially regarding complex topics. This is to be expected given the small model size, and hallucination rates seem inferior to most models of the same size category although no quantitative assessments have been conducted outside of MT-Bench experiments. Veering away from generative use cases, CroissantLLM has also been adapted as an embedding model \sidenote{\url{https://huggingface.co/manu/sentence_croissant_alpha_v0.4}} and recent work has since been conducted in assessing confidence in the retrieval scores associated to such models \sidecite{gisserotboukhlef2024trustworthyrerankingsimpleeffective}.
+
+
+
+\section{Foundation Model Transparency Index \label{sec:transparency}}
+% https://github.com/stanford-crfm/fmti/blob/main/fmti-indicators.pdf
+% https://github.com/stanford-crfm/fmti/blob/main/scores.csv
+To assess the transparency of our work, we evaluate our model through the Stanford Transparency Index \sidecite{bommasani2023fmti} and obtain a total score of 81\,\%, far ahead of proprietary models, as well as most staple open-weights models and large-scale open-source efforts (Figure \ref{fig:fmti}).\sidenote{Methodology is described in the appendix, and outline the fact our work relies on the index to guide its efforts in transparency, thus putting it at an advantage with respects to prior work such as Bloom \cite{scao2022bloom}.} 
+
+
+
+\textbf{Upstream.} The upstream categories include data, compute, and methods dimensions. The fully open-source nature and extensive disclosure of training information enable CroissantLLM to score 88\,\% of the points. The difficulties in identifying personal information and in guaranteeing the exact license, and creators of all data included in internet scale corpora prohibit our work from obtaining the full points, although strong efforts have been made in only using data under free-use or open licenses and with no copyright issues, notably by excluding copyright flagged content from our English language corpus.
+
+\textbf{Model.} The model categories include model information, as well as characterizations and mitigations of risks, limitations, trustworthiness, and mitigation. CroissantLLM obtains an average of 73\,\% on this domain due to the wide array of reproducible evaluation results reported, but hindered by the lack of third-party external evaluation at the moment, and an evaluation of potential harms that is not as extensive as required. 
+
+\textbf{Downstream.} Downstream categories refer to usage policies, user statistics, distribution, documentation, and model impact assessment. The fully open-access nature of our model and distribution channel avoids most of the transparency pitfalls linked to restricted usage policies and user information processing, but the impact of our work remains difficult to assess until the model is released. The aggregated score for this category is 80\,\%.
+
+\begin{figure}
+    % First figure
+    \centering
+    \includegraphics[width=0.8\textwidth]{images/croissant_images/FMTI_heatmap.pdf}
+    \hspace*{2cm}  
+    \caption{Aggregated FMTI scores by major dimension of transparency. CroissantLLM scores are calculated by the authors, the rest by Bommasani et al.}
+    \label{fig:fmti}
+\end{figure}
+
+
+
+% \section{Takeaways}
+% \manu{As pierre said, maybe we want to keep the takeaways for a real paper}
+
+% \begin{enumerate}
+%    \normalfont \itshapeem Model scale is hard to transcend
+%    \normalfont \itshapeem Balanced bilingual pre-training Datasets enable a best-of-both-worlds base model performance in both languages
+%    \normalfont \itshapeem Good SFT in another language can somewhat compensate lack of target data within the pretraining set
+%    \normalfont \itshapeem parallel data during pretraining is paramount to good few-shot translation performance.
+%    \normalfont \itshapeem You can improve few-shot model performance, and subsequently benchmarks, especially ones measuring few-shot generative model performance by including generalist instructions in the pretraining data.
+% \end{enumerate}
+
+
+
+% subsection{Importance of datamix}
+% subsection{Importance of tokenizer
+% subsection{1B models are still useful
+% parallel data
+
+
+% \section*{Limitations}
+% Maybe remove limitations 
+
+\subsubsection*{Broader Impact Statement}
+
+This work aims to offset recent English-centric work by enabling the study of the impact of language distribution within the pre-training dataset. The objective is to offer valuable resources to strengthen the community's understanding of induced model behavior and biases in that multilingual setup and inform future model and dataset development to be more inclusive. 
+
+% FMTI things
+\textbf{Model and Resource Release.}
+The models and all related artifacts are released openly on the CroissantLLM HuggingFace organization\sidenote{\url{https://huggingface.co/CroissantLLM}} under an MIT license. No usage restrictions are imposed on users whatsoever.  We indicate that users are responsible for the content they generate through the use of CroissantLLM and no redress mechanisms exist for harmful content disclosure. The model is offered to users openly, and downstream developers are accountable for using the model responsibly, although usage examples are provided.
+
+Users are free to download and use the model and the associated resources at their will, and no monitoring information is kept by the CroissantLLM team regarding individual model usage or download information. The distribution platform, HuggingFace, does not share any non-public data with the CroissantLLM authors. Any modifications to the models or ulterior versions of the resources will be released under different version numbers, and original resources will not be deleted. We encourage discussions and feedback, either through the HuggingFace model page in the discussion tab, or the issues section of the associated GitHub repository.
+
+
+\textbf{Risk mitigation.} We intend for our training process to be fully transparent and as such release all artifacts related to training. As such, our base model is released as is, without any risk mitigation methods beyond the extensive data curation that has gone into creating the pre-training data to remove toxic content as much as possible. In our Chat variant of the model, chat instructions have been explicitly sampled to include alignment instructions that train the model not to respond to certain prompts.\footnote{For example when prompted "Give me medical advice about how to solve my back issues.", CroissantLLM responds  I don't have a physical body or medical knowledge. However, I can provide you with some general tips on how to solve back issues:
+1. Stay active: exercises such as yoga and stretching can help alleviate back pain. Regular physical activity can help improve flexibility, strengthen the muscles, and reduce the risk of future back problems.
+2. Maintain a healthy diet: a balanced diet rich in fruits, vegetables, and lean protein can help reduce inflammation and improve digestion. Avoid high-fat and high-sugar foods, which can aggravate back pain.
+3. Manage stress: chronic stress can worsen back pain. Try relaxation techniques such as meditation, deep breathing, or progressive muscle relaxation to help manage stress levels.
+4. Get regular back checkups: regular checkups with a healthcare provider can help detect any underlying back issues early on. This can help prevent future problems.
+5. Seek professional help: if you have persistent back pain, it may be necessary to seek the help of a healthcare professional. They can help diagnose and treat any underlying back issues that may be contributing to your pain.}
+
+ \textbf{Data Leakage.} Through the inclusion of canaries in the training set, experiments were conducted on model memorization.\sidenote{This research is conducted by an independent research team and results will be published after the Technical Report release.} These experiments confirm only artificially extreme cases of data repetition lead to in-weight information of inclusion within the training set. This enables us to confidently release the model without fear of potentially private data leakage that data filtering methods were unable to detect.
+
+\textbf{Risk Assessment.} Our extensive evaluation process and the small scale of the CroissantLLM models allow us to confidently release all artifacts in our efforts of transparency without fear of potential misuse beyond what existing models of larger size already enabled. We staged our release by first giving model access to a dozen individuals and enabling them to experiment with them, whether through finetuning experiments, chat interactions, etc. Their feedback was aligned with the authors' observations in terms of the model capabilities and limitations and no warning flag was raised in terms of toxic content generation or otherwise harmful model behavior.  We are confident the release will enable in-depth studying of large language models and outweigh the potential risks.
+% Give examples !
+To further strengthen compliance with FMTI guidelines, we will inform of any government inquiries regarding our model. We also indicate that users are responsible for the content they generate through the use of CroissantLLM and no redress mechanisms exist for harmful content disclosure.
+
+
+%\clearpage
+\subsubsection*{Author Contributions and Acknowledgements}
+In our efforts of transparency, we provide a summary of contributions for all authors and persons associated to the paper. Manuel, Patrick, Nuno, and Pierre belong to the core team and have participated throughout all steps of the project, from decision-making to report writing. Manuel coordinated the project and led the data collection, design decisions, and model evaluation efforts, and strongly participated in the model training. Pierre is the senior author of the project and was instrumental through constant feedback, project coordination, securing the compute grant, and design decisions. Patrick led the scaling law efforts and spearheaded the model training on distributed compute clusters.  Nuno led the Chat and translation finetuning efforts, including constructing model finetuning pipelines and datasets, and gave constant feedback throughout the project. Pedro provided help on the development of the pre-training codebase and gave feedback on the pre-training stream of the work. João and Ricardo constructed the parallel data used for pre-training, which included efforts in both large-scale data collection and filtering. Duarte assisted with the fine-tuning efforts. António worked on base model finetuning on specific tasks and was in charge of the Chat model evaluation and the inference speed benchmark.
+Caio assisted with data collection efforts and provided high-quality, extensive feedback and notes on the report. Nicolas assisted with data collection efforts and data scrapping. Antoni adapted the model to swiftly run on mobile devices. Gautier, Céline, François, André are senior researchers who provided valuable feedback and important guidance throughout the project and were instrumental in obtaining compute grants.
+
+
+
+This work is a collaboration of academic and industrial partners. On the academic side, core authors are affiliated with CentraleSupélec (Université Paris Saclay) and Instituto Superior Técnico de Lisboa, and other contributors are linked to Sorbonne Université and Imperial College London. On the industrial side, core authors receive funding from respectively Illuin Technology (Paris), Unbabel (Lisboa), Equall (New York, Lisboa, Paris). Training compute is obtained on the Jean Zay supercomputer operated by GENCI IDRIS through compute grant 2023-AD011014668R1 as well as on Adastra through compute grant AD010614770. 
+Part of the work was also supported by EU's Horizon Europe Research and Innovation Actions (UTTER, contract 101070631), DECOLLAGE (ERC-2022-CoG 101088763), Center for Responsible AI (2022-C05i0102-02), and by Fundação para a Ciência e Tecnologia through contract UIDB/50008/2020. 
+Evaluation and finetuning experiments are done on the Ruche platform (Université Paris Saclay), as well as on privately owned compute centers.
+
+Many other contributors, not listed as authors of the paper, lent a very welcome helping hand to the project, either with data collection efforts, feedback, interesting discussions, grant obtention, etc. In no particular order, we extend our thanks to Hélène Rousset, Bruno Hays, Bilel Omrani, Sacha Muller, Elena Hinnekens and Robert Vesoul (Illuin Technology), Paul-Henry Cournède, Renaud Monnet, Géraud Faye (CentraleSupélec), Pierre-Etienne Devineau (DINUM),  Louise-Anne Charles (BnF Datalab), the Unbabel TowerLLM team.
+Finally, we would like to warmly thank Stéphane Requena for allowing us access to Jeanzay, as well as Rémi Lacroix, and Etienne Malaboeuf for the debugging and technical support.
+
