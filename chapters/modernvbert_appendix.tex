@@ -45,7 +45,7 @@ To enrich our contrastive learning data mixture, we construct \natcap{} (Natural
 \begin{figure}[t]
     \centering    
     \includegraphics[width=0.95\textwidth]{images/modernvbert_figures/appendix/natcap_example.pdf}
-    \caption{Example from the NatCap dataset}
+    \caption[NatCap example]{Example from the NatCap dataset}
     \label{fig:natcap_example}
 \end{figure}
 
@@ -125,7 +125,7 @@ A lightweight OCR-free visual document retriever with only 174M parameters built
 \begin{figure}
     \centering
     \includegraphics[width=0.75\linewidth]{images/modernvbert_figures/vbert_style/objective_downstream__rebuttal.pdf}
-    \caption{\textbf{Impact of Modality Alignment objective on downstream tasks.} Early Fusion of vision and text models boosts document retrieval tasks regardless of the LM objective, but degrades natural image and classification tasks w.r.t. the standalone \textit{off-the-shelf} vision model SigLIP. Reported scores are aggregated MIEB scores (nDCG, Accuracy.)}
+    \caption[Modality alignment impact]{\textbf{Impact of Modality Alignment objective on downstream tasks.} Early Fusion of vision and text models boosts document retrieval tasks regardless of the LM objective, but degrades natural image and classification tasks w.r.t. the standalone \textit{off-the-shelf} vision model SigLIP. Reported scores are aggregated MIEB scores (nDCG, Accuracy.)}
     \label{fig:objective_downstream_noft}
 \end{figure}
 
@@ -135,7 +135,7 @@ We study the different training dynamics of the different training objectives. W
 \begin{figure}[ht]
     \centering
     \includegraphics[width=\linewidth]{images/modernvbert_figures/appendix/pt_scaling_with_clm_all.pdf}
-    \caption{\textbf{Attention masks impact on modality alignment phase scaling.} The dashed line marks the vision tower baseline. The orange curve shows the model initialized from a decoder LM with a \textit{CLM} objective, and the blue curve shows the model trained with an \textit{MLM} objective from an encoder LM. CLM performs better in low-data regimes, but MLM scales more effectively, surpassing CLM in document retrieval, while captioning and classification remain below the CLIP baseline.}
+    \caption[Attention mask scaling impact]{\textbf{Attention masks impact on modality alignment phase scaling.} The dashed line marks the vision tower baseline. The orange curve shows the model initialized from a decoder LM with a \textit{CLM} objective, and the blue curve shows the model trained with an \textit{MLM} objective from an encoder LM. CLM performs better in low-data regimes, but MLM scales more effectively, surpassing CLM in document retrieval, while captioning and classification remain below the CLIP baseline.}
     \label{fig:pt_scaling_clmvmlm}
 \end{figure}
 
@@ -146,7 +146,7 @@ Figure~\ref{fig:cl_scaling} shows the scaling behavior. Performance improves ove
 \begin{figure}[ht]
     \centering
     \includegraphics[width=\linewidth]{images/modernvbert_figures/vbert_style/cl_scaling.pdf}
-    \caption{Contrastive training scaling. Each dot on the blue curve represents one fraction of the baseline contrastive training mix (ColPali + MSCOCO). Performance improves with more in-distribution data, surpassing the baseline on document benchmarks and narrowing the gap on image captioning. There is no clear improvement in image classification, highlighting the need for more diverse pairs.}
+    \caption[Contrastive training scaling]{Contrastive training scaling. Each dot on the blue curve represents one fraction of the baseline contrastive training mix (ColPali + MSCOCO). Performance improves with more in-distribution data, surpassing the baseline on document benchmarks and narrowing the gap on image captioning. There is no clear improvement in image classification, highlighting the need for more diverse pairs.}
     \label{fig:cl_scaling}
 \end{figure}
 
@@ -157,7 +157,7 @@ Our findings in subsection~\ref{sec:scaling=-cont} indicate that incorporating a
 \begin{figure}[ht]
     \centering
     \includegraphics[width=.95\linewidth]{images/modernvbert_figures/appendix/image_text_ratio.pdf}
-    \caption{\textbf{Optimal text-to-image ratio in contrastive training mix.} Increasing the ratio in retrieval tasks consistently improves the performances. }
+    \caption[Optimal text-to-image ratio]{\textbf{Optimal text-to-image ratio in contrastive training mix.} Increasing the ratio in retrieval tasks consistently improves the performances. }
     \label{fig:text_image_ratio}
 \end{figure}
 
@@ -197,7 +197,7 @@ Our findings in subsection~\ref{sec:scaling=-cont} indicate that incorporating a
     \bottomrule
   \end{tabular}%
   }
-  \caption{\textbf{Generalist retrieval performances.} Late interaction benefits extend to non-documental retrieval tasks. Our multi-vector model increases its single-vector counterpart across all tasks, surpassing larger VLM-based retrievers. }
+  \caption[Generalist retrieval performance]{\textbf{Generalist retrieval performances.} Late interaction benefits extend to non-documental retrieval tasks. Our multi-vector model increases its single-vector counterpart across all tasks, surpassing larger VLM-based retrievers. }
   \label{tab:results_generalist}
 \end{table*}
 
@@ -211,7 +211,7 @@ Our contrastive learning stage provides direct performance trade-offs on differe
 \begin{figure}[ht]
     \centering
     \includegraphics[width=.7\linewidth]{images/modernvbert_figures/appendix/grouped_model_performance2.pdf}
-    \caption{Merging model results across tasks. Benefits are task-dependent, with performance degradation w.r.t. both original models in Document Retrieval.}
+    \caption[Merging model results]{Merging model results across tasks. Benefits are task-dependent, with performance degradation w.r.t. both original models in Document Retrieval.}
     \label{fig:model_merging_results}
 \end{figure}
 
@@ -239,7 +239,7 @@ Our contrastive learning stage provides direct performance trade-offs on differe
     \bottomrule
   \end{tabular}
 }
-\caption{\textbf{Performance of \flagship{} Document Specialisation Curriculums.} This table presents the performance of various contrastive training curriculums starting from \flagship{}-base, on the ViDoRe(v1) and ViDoRe(v2) benchmarks. The generalist contrastive learning mix used in the last two models is detailed in Table~\ref{tab:cl_mix}. We see that a preliminary stage of generalist contrastive learning harms the final document retrieval performance, regardless of whether a multi-vector approach is used.}
+\caption[\flagship{} curriculum performance]{\textbf{Performance of \flagship{} Document Specialisation Curriculums.} This table presents the performance of various contrastive training curriculums starting from \flagship{}-base, on the ViDoRe(v1) and ViDoRe(v2) benchmarks. The generalist contrastive learning mix used in the last two models is detailed in Table~\ref{tab:cl_mix}. We see that a preliminary stage of generalist contrastive learning harms the final document retrieval performance, regardless of whether a multi-vector approach is used.}
 \label{appendix:flagship_ablations}
 \end{table}
 
@@ -273,7 +273,7 @@ We conduct an ablation study to determine the optimal contrastive training curri
   Colqwen2.5-v0.2 & 3145* & 0.589\\
   \bottomrule
 \end{tabular}
-\caption{Average NDCG@5 of \colflagship{} on NanoBEIR, a text retrieval benchmark with multiple sub domains. *For multimodal models, we only consider parameters of the text encoder}
+\caption[NanoBEIR performance]{Average NDCG@5 of \colflagship{} on NanoBEIR, a text retrieval benchmark with multiple sub domains. *For multimodal models, we only consider parameters of the text encoder}
 \label{appendix:text_perf}
 \end{table}
 
@@ -288,7 +288,7 @@ The results in Table \ref{appendix:text_perf} detail the performance of \colflag
 
 \begin{figure}[ht] 
 \centering \includegraphics[width=0.6\linewidth]{images/modernvbert_figures/visual_tokens_hidden_size_vs_shuffling_ratio.pdf} 
-\caption{\textbf{\textcolor{red}{Image processing parameters impact on visual tokens.}} Here we assume a square image for simplicity. Scaling the image size introduces naturally more tokens, but having a large enough pixel shuffling ratio ($r\geq4$) allows to counterbalance by concatenating spatially close patch representations.} \label{fig:tokens_shuffling_tradeoff} \end{figure}
+\caption[Image processing parameters impact]{\textbf{\textcolor{red}{Image processing parameters impact on visual tokens.}} Here we assume a square image for simplicity. Scaling the image size introduces naturally more tokens, but having a large enough pixel shuffling ratio ($r\geq4$) allows to counterbalance by concatenating spatially close patch representations.} \label{fig:tokens_shuffling_tradeoff} \end{figure}
 
 \begin{table}[ht]
     \centering
@@ -306,7 +306,7 @@ The results in Table \ref{appendix:text_perf} detail the performance of \colflag
     \bottomrule
     \end{tabular}%
     }
-    \caption{\textcolor{red}{\textbf{\flagship{} image processing latency}}. Computing the average time to process a single image on GPU and CPU. The average is computed on 100 images. The values represent the mean latency in milliseconds, with the standard deviation included in parenthesis.}
+    \caption[\flagship{} image processing latency]{\textcolor{red}{\textbf{\flagship{} image processing latency}}. Computing the average time to process a single image on GPU and CPU. The average is computed on 100 images. The values represent the mean latency in milliseconds, with the standard deviation included in parenthesis.}
     \label{tab:image_resolution_latency}
 \end{table}
 

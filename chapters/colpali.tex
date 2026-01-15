@@ -63,7 +63,7 @@ We release all resources at \url{https://hf.co/vidore}.
 \begin{figure*}
     \centering
     \includegraphics[width = 1.2\textwidth]{images/colpali_images/final_architecture.png}
-    \caption{\textit{ColPali} simplifies document retrieval w.r.t. standard retrieval methods while achieving stronger performances with better latencies. Latencies and results are detailed in \autoref{section:results} and \autoref{paragraph:lantency_app}.}
+    \caption[\textit{ColPali} overview]{\textit{ColPali} simplifies document retrieval w.r.t. standard retrieval methods while achieving stronger performances with better latencies. Latencies and results are detailed in \autoref{section:results} and \autoref{paragraph:lantency_app}.}
     
     % Latencies indicated in the figure are computed on the same machine \texttt{g2-standard-16} with a NVIDIA-L4 GPU, and averaged over 100 pages. Further details in \autoref{subsection:latency}.The computed score is the average of from all datasets in \textit{ViDoRe} for PDF Parser + Captioning and ColPali respectively. Further details in \autoref{section:results}.} 
     \label{fig:colpali_architecture}
@@ -161,7 +161,7 @@ As many systems require large amounts of time to index pages (captioning-based a
         Shift Project &French & 100 &1000 & Environmental reports\\
         \bottomrule
     \end{tabular}
-    \caption{\textit{ViDoRe} comprehensively evaluates multimodal retrieval methods.}
+    \caption[\textit{ViDoRe} benchmark overview]{\textit{ViDoRe} comprehensively evaluates multimodal retrieval methods.}
     \label{table:docvisbench_eval_overview}
 \end{table}
 
@@ -209,7 +209,7 @@ Both strategies aim to integrate visual elements in the retrieval pipeline but i
 \begin{figure}[ht]
     \centering
     \includegraphics[width = 0.85\linewidth]{images/colpali_images/latency_comparison.pdf}
-    \caption{Offline document indexing with \textit{ColPali} is much simpler and faster compared to standard retrieval methods. The PDF Parser results are obtained following the \textit{Unstructured} settings with BGE-M3 detailed in \autoref{subsection:baseline_models}. All indexing speeds are averaged per-page latencies. More details in \autoref{paragraph:lantency_app}}.
+    \caption[Offline indexing latency comparison]{Offline document indexing with \textit{ColPali} is much simpler and faster compared to standard retrieval methods. The PDF Parser results are obtained following the \textit{Unstructured} settings with BGE-M3 detailed in \autoref{subsection:baseline_models}. All indexing speeds are averaged per-page latencies. More details in \autoref{paragraph:lantency_app}}.
     \label{fig:latency-comparison}
 \end{figure}
 
@@ -341,7 +341,7 @@ BiPali \tiny (+LLM) & 56.5\textcolor{red!75!black}{\tiny $\downarrow$-2.0} & 30.
 \end{tabular}}
 
 
-    \caption{\textbf{Comprehensive evaluation of baseline models and our proposed method on \textit{ViDoRe}.} Results are presented using nDCG@5 metrics, and illustrate the impact of different components. Text-only metrics are not computed for benchmarks with only visual elements.} 
+    \caption[Baseline and \textit{ViDoRe} evaluation]{\textbf{Comprehensive evaluation of baseline models and our proposed method on \textit{ViDoRe}.} Results are presented using nDCG@5 metrics, and illustrate the impact of different components. Text-only metrics are not computed for benchmarks with only visual elements.} 
     \label{table:results}
 \end{table*}
 
@@ -419,7 +419,7 @@ With a pool factor of 3, the total number of vectors is reduced by $66.7\%$ whil
   \centering
   \includegraphics[width=0.9\linewidth]{images/colpali_images/similarity_map_energy.png}
 \end{minipage}
-\caption{(Left: \textbf{Token Pooling}) Relative performance degradation when reducing the number of stored embeddings per document. (Right: \textbf{Interpretability}) For each term in a user query, \textit{ColPali} identifies the most relevant document image patches (highlighted zones) and computes a query-to-page matching score.}
+\caption[Token pooling and interpretability]{(Left: \textbf{Token Pooling}) Relative performance degradation when reducing the number of stored embeddings per document. (Right: \textbf{Interpretability}) For each term in a user query, \textit{ColPali} identifies the most relevant document image patches (highlighted zones) and computes a query-to-page matching score.}
 \label{fig:combined_figures}
 \end{figure}
 

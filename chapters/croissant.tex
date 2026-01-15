@@ -58,7 +58,7 @@ LLM scaling laws demonstrate the diminishing returns of training a model of a gi
     % First figure
     \centering
     \includegraphics[width=\textwidth]{images/croissant_images/lapin.png}
-    \caption{Conversation example with CroissantLLMChat}
+    \caption[CroissantLLMChat example]{Conversation example with CroissantLLMChat}
     \label{fig:example}
 \end{figure}
 
@@ -137,7 +137,7 @@ A variety of sources are integrated into our corpus, including carefully filtere
     \bottomrule
     \vspace{0.2mm}
     \end{tabular}
-    \caption{Final Data mix for CroissantLLM training}
+    \caption[CroissantLLM data mix]{Final Data mix for CroissantLLM training}
     \label{tab:tab_tot}
 \end{table*}
 
@@ -254,7 +254,7 @@ We construct 4 different model sizes by jointly scaling the number of attention 
         \vspace{0.2mm}
         \end{tabular}
 
-    \caption{Model information for scaling laws. Parameter count excludes embedding and output parameters.}
+    \caption[Scaling law model info]{Model information for scaling laws. Parameter count excludes embedding and output parameters.}
     \label{tab:model_scaling}
 \end{table}
 
@@ -273,7 +273,7 @@ Roughly, the Llama tokenizer is 17\,\% less token efficient at encoding French i
     % First figure
     \centering
     \includegraphics[width=0.8\textwidth]{images/croissant_images/fertility.pdf}
-    \caption{Fertility on unseen test sets using various tokenizers. Lower is better.}
+    \caption[Fertility across tokenizers]{Fertility on unseen test sets using various tokenizers. Lower is better.}
     \label{fig:tok_fertility}
 \end{figure}
 
@@ -296,14 +296,14 @@ and (3)  \textbf{enplus} containing 60\,\% English data, 20\,\% French data and 
     % First figure
     \centering
     \includegraphics[width=0.95\textwidth]{images/croissant_images/scaling_laws_croissant_wiki.pdf}
-    \caption{Evolution of test cross-entropy loss with model size in English (left) and French (right), for the \textit{wiki} domain, as well as the fitted joint scaling laws,}
+    \caption[Test loss scaling evolution]{Evolution of test cross-entropy loss with model size in English (left) and French (right), for the \textit{wiki} domain, as well as the fitted joint scaling laws,}
     \label{fig:scaling_laws_fit}
 \end{figure*}
 
 \begin{figure*}
     \centering
     \includegraphics[width=0.95\textwidth]{images/croissant_images/scaling_laws_capacity_wiki.pdf}
-    \caption{\textit{Effective capacity ratio} (as predicted by our fitted joint scaling law) for English and French as we change the weight of each language.}
+    \caption[Effective capacity ratio]{\textit{Effective capacity ratio} (as predicted by our fitted joint scaling law) for English and French as we change the weight of each language.}
     \label{fig:scaling-laws-capacity}
 \end{figure*}
 
@@ -356,7 +356,7 @@ We train with a max learning rate of $3e-4$, 1000 warmup steps, and a cosine lea
     \centering
     \includegraphics[width=0.47\textwidth]{images/croissant_images/training_loss.pdf}
     \includegraphics[width=0.47\textwidth]{images/croissant_images/croissant_wikitext_loss.pdf}
-    \caption{(Left) Training loss with respect to the number of seen tokens. (Right) Validation perplexity (Averaged Log Likelihood) on Wikitext (English), computed with a rolling stride }
+    \caption[Training loss and perplexity]{(Left) Training loss with respect to the number of seen tokens. (Right) Validation perplexity (Averaged Log Likelihood) on Wikitext (English), computed with a rolling stride }
     \label{fig:training_loss}
 \end{figure}
 
@@ -511,7 +511,7 @@ On English benchmarks  (Table~\ref{tab:eng_res}), CroissantLLM displays performa
             \end{tabular}
     
 
-    \caption{English Benchmarks (5-shot results)}
+    \caption[English benchmarks results]{English Benchmarks (5-shot results)}
     \label{tab:eng_res}
 \end{table*}
 
@@ -549,7 +549,7 @@ On French classification benchmarks, CroissantLLM largely outperforms models of 
         \bottomrule
         \vspace{0.2mm}
         \end{tabular}
-    \caption{FrenchBench MC (5-shot results)}
+    \caption[FrenchBench MC results]{FrenchBench MC (5-shot results)}
     \label{tab:fr_res}
 \end{table*}
 
@@ -581,7 +581,7 @@ On French classification benchmarks, CroissantLLM largely outperforms models of 
         \vspace{0.2mm}
         \end{tabular}
         
-    \caption{FrenchBench Gen (5-shot ROUGE1 results). Bloom models seem to have strong performance on QA tasks (Fquad), likely due to the inclusion of Question Answering datasets in its pretraining corpus \cite{laurençon2023bigscience}. Pagnol-XL and GPT-fr are trained exclusively on French text and as such cannot be fairly evaluated on the French Trivia test.}
+    \caption[FrenchBench Gen results]{FrenchBench Gen (5-shot ROUGE1 results). Bloom models seem to have strong performance on QA tasks (Fquad), likely due to the inclusion of Question Answering datasets in its pretraining corpus \cite{laurençon2023bigscience}. Pagnol-XL and GPT-fr are trained exclusively on French text and as such cannot be fairly evaluated on the French Trivia test.}
     \label{tab:fr_resgen}
 \end{table*}
 
@@ -593,7 +593,7 @@ The model performance continues to improve on downstream tasks during the entire
     % First figure
     \centering
     \includegraphics[width=\textwidth]{images/croissant_images/croissant_wmt_parallel_step.pdf}
-    \caption{Performance evolution on the WMT Translation task (5-shot)}
+    \caption[WMT translation performance]{Performance evolution on the WMT Translation task (5-shot)}
     \label{fig:training_evol}
 \end{figure}
 
@@ -624,7 +624,7 @@ This hints at the fact that quasi-monolingual models with only a minor share of 
     % First figure
     \centering
     \includegraphics[width=\linewidth]{images/croissant_images/results_both_turns.png}
-    \caption{MT Bench Results (Both Turns)}
+    \caption[MT Bench results]{MT Bench Results (Both Turns)}
     \label{fig:mt_bench_fr}
 \end{figure*}
 
@@ -686,7 +686,7 @@ This hints at the fact that quasi-monolingual models with only a minor share of 
 \bottomrule
 \vspace{0.2mm}
 \end{tabular}
-\caption{Performance in machine translation, according to COMET-22 and BLEU, across three different benchmarks: WMT14, TICO and FLORES. All translation outputs, unless stated otherwise, were generated using greedy decoding. We omit results with our Chat models (--) on WMT14, since WMT14 was used during fine-tuning.}
+\caption[Machine translation performance]{Performance in machine translation, according to COMET-22 and BLEU, across three different benchmarks: WMT14, TICO and FLORES. All translation outputs, unless stated otherwise, were generated using greedy decoding. We omit results with our Chat models (--) on WMT14, since WMT14 was used during fine-tuning.}
 \label{tab:translate}
 \end{table*}
 
@@ -730,7 +730,7 @@ To assess performance on specific downstream applications, we finetune base mode
     Mistral (7B)        & \textbf{0.588} & \textbf{4.60} & \textbf{4.73} & 4.72 & \textbf{4.59} \\
     \bottomrule
     \end{tabular}
-    \caption{Dialog summarization results. Except ROUGE-1, scores are measured by GPT-4, out of 5.}
+    \caption[Dialog summarization results]{Dialog summarization results. Except ROUGE-1, scores are measured by GPT-4, out of 5.}
     \label{tab:sum-finetuned-1}
 \end{table}
 
@@ -768,7 +768,7 @@ At a 1.3B scale, CroissantLLM runs easily on local hardware (personal computers,
         \bottomrule
         \vspace{0.2mm}
     \end{tabular}
-    \caption{Inference Results in French and English on an A100 GPU with 40GB VRAM (average results over 100 tokens generations with 100 tokens input based on 100 Wikipedia text samples, vLLM backend and batch size 1)}
+    \caption[Inference throughput results]{Inference Results in French and English on an A100 GPU with 40GB VRAM (average results over 100 tokens generations with 100 tokens input based on 100 Wikipedia text samples, vLLM backend and batch size 1)}
     \label{tab:inf_french_res}
 \end{table}
 
@@ -804,7 +804,7 @@ To assess the transparency of our work, we evaluate our model through the Stanfo
     \centering
     \includegraphics[width=0.8\textwidth]{images/croissant_images/FMTI_heatmap.pdf}
     \hspace*{2cm}  
-    \caption{Aggregated FMTI scores by major dimension of transparency. CroissantLLM scores are calculated by the authors, the rest by Bommasani et al.}
+    \caption[Aggregated FMTI scores]{Aggregated FMTI scores by major dimension of transparency. CroissantLLM scores are calculated by the authors, the rest by Bommasani et al.}
     \label{fig:fmti}
 \end{figure}
 
@@ -870,4 +870,3 @@ Evaluation and finetuning experiments are done on the Ruche platform (Universit�
 
 Many other contributors, not listed as authors of the paper, lent a very welcome helping hand to the project, either with data collection efforts, feedback, interesting discussions, grant obtention, etc. In no particular order, we extend our thanks to Hélène Rousset, Bruno Hays, Bilel Omrani, Sacha Muller, Elena Hinnekens and Robert Vesoul (Illuin Technology), Paul-Henry Cournède, Renaud Monnet, Géraud Faye (CentraleSupélec), Pierre-Etienne Devineau (DINUM),  Louise-Anne Charles (BnF Datalab), the Unbabel TowerLLM team.
 Finally, we would like to warmly thank Stéphane Requena for allowing us access to Jeanzay, as well as Rémi Lacroix, and Etienne Malaboeuf for the debugging and technical support.
-

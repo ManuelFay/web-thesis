@@ -47,7 +47,7 @@ Retrieving specific information from a large corpus of documents is a prevalent 
 \begin{figure}[t]
   \centering
   \includegraphics[width=0.88\linewidth]{images/modernvbert_figures/fig_1/pareto_large_models_ColModernVBERT_orange.pdf}
-  \caption{\textbf{Pareto efficiency.} \colflagship{} outperforms models in its category on ViDoRe, achieving a leading performance-size tradeoff.}
+  \caption[Pareto efficiency]{\textbf{Pareto efficiency.} \colflagship{} outperforms models in its category on ViDoRe, achieving a leading performance-size tradeoff.}
   \label{fig:pareto_vidore}
   %\vspace{-10pt}                         % tighten bottom spacing (tweak as needed)
 \end{figure}
@@ -250,7 +250,7 @@ All ablations thus stem from iso-data controlled setups, and as further describe
 \begin{figure}[t]
     \centering
     \includegraphics[width=0.99\textwidth]{images/modernvbert_figures/vbert_architecture.png}
-    \caption{
+    \caption[Early fusion architecture]{
     \textbf{MLM-based early fusion architecture.} The visual encoder produces patch representations, which are passed to a language model. 
     %We apply pixel shuffling to compress the visual representations produced by the vision tower.
     Our end-to-end bidirectional attention fused architecture is trained with Masked Language Modeling objectives and is perfectly suited for sequence and token-level representation tasks.}
@@ -329,7 +329,7 @@ The contrastively trained models are evaluated on retrieval and zero-shot classi
 
 \begin{figure}[t] % <- 12 = approx. number of text lines to wrap
   \includegraphics[width=0.95\linewidth]{images/modernvbert_figures/vbert_style/objective_downstream__rebuttal_ft.pdf}
-    \caption{\textbf{Impact of Modality Alignment objective on downstream tasks.} Early Fusion of vision and text models boosts document retrieval tasks regardless of the LM objective, but degrades natural image and classification tasks w.r.t. the standalone \textit{fine-tuned} vision model SigLIP. Reported scores are aggregated MIEB scores (nDCG, Accuracy.)}
+    \caption[Modality alignment impact]{\textbf{Impact of Modality Alignment objective on downstream tasks.} Early Fusion of vision and text models boosts document retrieval tasks regardless of the LM objective, but degrades natural image and classification tasks w.r.t. the standalone \textit{fine-tuned} vision model SigLIP. Reported scores are aggregated MIEB scores (nDCG, Accuracy.)}
     \label{fig:objective_downstream}
 \end{figure}
 
@@ -390,7 +390,7 @@ Although document retrieval improves consistently with more modality alignment d
 \begin{figure}[t]
     \centering    
     \includegraphics[width=0.95\textwidth]{images/modernvbert_figures/vbert_style/pt_scaling.pdf}
-    \caption{\textbf{Modality alignment scaling of early fusion encoders for up to 1 epoch (3.5B tokens) of data.} The dashed line indicates the vision encoder evaluated standalone without further training. Our findings show that retrieval tasks benefits from extended modality alignment phase, particularly in document retrieval, where performance quickly surpasses that of the standalone vision encoder. }
+    \caption[Modality alignment scaling]{\textbf{Modality alignment scaling of early fusion encoders for up to 1 epoch (3.5B tokens) of data.} The dashed line indicates the vision encoder evaluated standalone without further training. Our findings show that retrieval tasks benefits from extended modality alignment phase, particularly in document retrieval, where performance quickly surpasses that of the standalone vision encoder. }
     % \manu{paul: could we have this in terms of B tokens seen instrad of steps ? remove average, increase fonts}}
     \label{fig:pt_scaling}
 \end{figure}
@@ -445,7 +445,7 @@ Removing the causal attention mask during training does not suffice to recover t
     \centering
 
     \includegraphics[width=0.43\textwidth]{images/modernvbert_figures/enc_dec_vidore_palette.pdf}
-    \caption{\textbf{Impact of attention masks and training objectives on document retrieval performances.} 
+    \caption[Attention mask impact]{\textbf{Impact of attention masks and training objectives on document retrieval performances.} 
     We report the average nDCG@5 on English splits of ViDoRe benchmarks for models post-trained on ColPali.
     % Employing native bidirectional attention outperforms the other approaches when used in multi-vector settings 
     }
@@ -471,7 +471,7 @@ Removing the causal attention mask during training does not suffice to recover t
     \bottomrule
     \end{tabular}%
     }
-    \caption{\textbf{Effect of image resolution on VL encoder abilities.} Document retrieval performance increases with higher image resolution. Further annealing the encoder on high-resolution images (HR Cooldown) at the end of modality alignment yields additional gains. By contrast, for non-document tasks, raising the resolution tends to degrade performance.}
+    \caption[Image resolution effect]{\textbf{Effect of image resolution on VL encoder abilities.} Document retrieval performance increases with higher image resolution. Further annealing the encoder on high-resolution images (HR Cooldown) at the end of modality alignment yields additional gains. By contrast, for non-document tasks, raising the resolution tends to degrade performance.}
     \label{table:image_resolution}
 
 \end{figure*}
@@ -635,7 +635,7 @@ Modality alignment is done at a fixed image resolution of 1024 pixels (longer si
     \bottomrule
   \end{tabular}%
   }
-  \caption{\textbf{Impact of contrastive training mixtures on downstream tasks.} Incorporating text-only pairs improves performance on document retrieval, but degrades other performances. Adding natural images-captions pairs substantially enhances performance on classification tasks.}
+  \caption[Contrastive training mixtures impact]{\textbf{Impact of contrastive training mixtures on downstream tasks.} Incorporating text-only pairs improves performance on document retrieval, but degrades other performances. Adding natural images-captions pairs substantially enhances performance on classification tasks.}
   \label{table:cl_mix_impact}
 \end{table*}
 
@@ -933,4 +933,3 @@ By design, our analysis targets relatively small models. An important next step 
 
 % Second, the pretraining phase could be improved with additional high-quality data. High-quality multimodal datasets remain scarce, and systematic filtering efforts comparable to those in large-scale text-only pretraining are still lacking. This gap limits the potential of models to acquire additional capabilities. \paul{TC3}
 % Finally, we note that incorporating a masked autoencoding (MAE) loss may further improve performance. However, the benefits of such an addition remain to be validated in our setting, and we leave a systematic exploration of this direction to future work. \paul{Other ways to hedge from MAE?}
-

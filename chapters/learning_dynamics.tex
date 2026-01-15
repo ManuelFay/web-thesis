@@ -153,7 +153,7 @@ In this section, we delve into $\mathcal{S}_1$, which specifically aims to exten
 \begin{figure}[ht]
     \centering
     \includegraphics[width=0.8\textwidth]{images/learning_dynamics/exp1b_all.pdf}
-    \caption{Incorporating $0 \leq N \leq 1000$ real task samples into IFT model training}
+    \caption[IFT training with real samples]{Incorporating $0 \leq N \leq 1000$ real task samples into IFT model training}
     \label{fig:exp1b_all}
 \end{figure} %  N in \{10,50,100,200, 500,1000\}
 
@@ -175,7 +175,7 @@ In this section, we delve into $\mathcal{S}_1$, which specifically aims to exten
 \begin{figure}[ht]
     \centering
     \includegraphics[width=0.8\textwidth]{images/learning_dynamics/sym_exp1.pdf}
-    \caption{Incorporating  $0 \leq N \leq 1000$ (H)uman, (S)ynthetic and (R)andomly labeled synthetic data samples in IFT training set. (S+H) is trained on 100 synthetic samples, then $N$ human data samples. }\vspace{-.8cm}
+    \caption[IFT training data mixes]{Incorporating  $0 \leq N \leq 1000$ (H)uman, (S)ynthetic and (R)andomly labeled synthetic data samples in IFT training set. (S+H) is trained on 100 synthetic samples, then $N$ human data samples. }\vspace{-.8cm}
     \label{fig:random}
 \end{figure}
 
@@ -193,7 +193,7 @@ Intuitively, IFT models are better able to leverage the task description given i
 \begin{figure}[ht]
     \centering
     \includegraphics[width=0.8\textwidth]{images/learning_dynamics/exp4_all.pdf}
-    \caption{GPT4 score on SST-2 test set after finetuning with $0 \leq N \leq 1000$  samples on a (base) LM or an IFT model. Further experiments can be found in \autoref{sec:extra-datasets-exp4}. }
+    \caption[GPT4 SST-2 scores]{GPT4 score on SST-2 test set after finetuning with $0 \leq N \leq 1000$  samples on a (base) LM or an IFT model. Further experiments can be found in \autoref{sec:extra-datasets-exp4}. }
     \label{fig:exp4}
 \end{figure}
 

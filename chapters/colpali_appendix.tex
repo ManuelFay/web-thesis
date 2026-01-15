@@ -116,7 +116,7 @@ The statistics of the train set are given in the following table. The creation o
         \textbf{TOTAL} & \textbf{118,695} & \textbf{English-only} & \textbf{Mixed} \\
         \bottomrule
     \end{tabular}
-    \caption{Details on the different splits in the dataset used to train ColPali.}
+    \caption[ColPali dataset splits]{Details on the different splits in the dataset used to train ColPali.}
     \label{table:training_set_overview}
 \end{table}
 % \newpage
@@ -151,7 +151,7 @@ Minimizing storage footprint can be essential to industrial retrieval systems if
     \textit{ColPali} (float16)            & 257.5              \\
     % \hline
     \end{tabular}
-    \caption{Comparison of the embedding sizes for the DocVQA test set from \textit{ViDoRe} w.r.t. different retrieval models. The \textit{mean ± std} size is given for the sparse embeddings. In general multiple vectors (2-5) per page are used for BGE-M3 and BM25.}
+    \caption[DocVQA embedding sizes]{Comparison of the embedding sizes for the DocVQA test set from \textit{ViDoRe} w.r.t. different retrieval models. The \textit{mean ± std} size is given for the sparse embeddings. In general multiple vectors (2-5) per page are used for BGE-M3 and BM25.}
     \label{table:embedding_size}
 \end{table}
 
@@ -172,7 +172,7 @@ To ensure comparison fairness, the latencies of the different retrieval systems 
     Page encoding                                & \multicolumn{1}{c|}{0.03}                  & \multicolumn{1}{c|}{0.12}            & 0.39                                          \\ \hline
     Total                                        & \multicolumn{1}{c|}{7.22}                  & \multicolumn{1}{c|}{0.12}            & 0.39
     \end{tabular}
-    \caption{Page-level latencies for document indexing using various retrieval systems. SigLIP and \textit{ColPali} are much faster than \texttt{Unstructured} because they don't require the layout detection, OCR, and captioning operations.}
+    \caption[Page-level indexing latencies]{Page-level latencies for document indexing using various retrieval systems. SigLIP and \textit{ColPali} are much faster than \texttt{Unstructured} because they don't require the layout detection, OCR, and captioning operations.}
     \label{table:latency-comparison}
 \end{table}
 
@@ -191,7 +191,7 @@ You are an assistant specialized in document analysis. Given a table or a figure
     \centering
     \includegraphics[width = 0.7 \textwidth]{images/colpali_images/ex_figure_caption.pdf}
     
-    \caption{Example from the ``Energy" test set.\\
+    \caption[Energy test set example]{Example from the ``Energy" test set.\\
     \textbf{Caption:} \textit{The image depicts the hourly energy generation profile, illustrating the contributions of various energy sources over 24 hours. The data is presented as a stacked bar chart, with the x-axis representing the hours of the day from 1 to 2, and the y-axis showing the average hourly generation in MW. The bars are segmented into different colors, each representing a distinct energy source: nuclear, bio, geothermal, solar, wind, hydro, natural gas, and other imports. The chart provides insights into the temporal variations in energy generation across different sources, highlighting the interplay between baseload and intermittent sources throughout the day.}}
     \label{fig:caption_figure}
 \end{figure}
@@ -202,7 +202,7 @@ You are an assistant specialized in document analysis. Given a table or a figure
     \centering
     \includegraphics[width = 0.7 \textwidth]{images/colpali_images/ex_table_caption.pdf}
     
-    \caption{Example from the ``Government Reports" test set.\\
+    \caption[Government reports example]{Example from the ``Government Reports" test set.\\
     \textbf{Caption:} \textit{The image shows a table titled ``System of Record" which outlines the different types of documents or records maintained across various systems or departments within an organization related to project management and construction. The rows list documents like project plans, budgets, schedules, contracts, purchase orders, invoices, change requests, bid submissions, drawings, manuals, meeting minutes, and reports. The columns indicate the system or department responsible for maintaining each record, such as County Servers, Project View, OnBase, CGI Advantage Financial System, and Purchasing Department. The table uses "W" and "T" markers to denote which system or department serves as the primary source (writer) or storage location (trailer) for each type of document.}}
     \label{fig:caption_table}
 \end{figure}
@@ -310,7 +310,7 @@ You are an assistant specialized in document analysis. Given a table or a figure
     }
     
 
-    \caption{\textbf{Comprehensive evaluation of baseline models and our proposed method on \textit{ViDoRe}.} Results are presented using Recall@1 metrics. Text-only metrics are not computed for benchmarks with only visual elements.}
+    \caption[ViDoRe Recall@1 evaluation]{\textbf{Comprehensive evaluation of baseline models and our proposed method on \textit{ViDoRe}.} Results are presented using Recall@1 metrics. Text-only metrics are not computed for benchmarks with only visual elements.}
     \label{table:results_appendix}
 \end{table*}
 
@@ -356,7 +356,7 @@ You are an assistant specialized in document analysis. Given a table or a figure
     }
     
 
-    \caption{\textbf{Benchmark scores for the ``negative results" and various ablations on \textit{ViDoRe}; \textit{ColPali} for reference.} Results are presented using nDCG@5 metrics. Text-only metrics are not computed for benchmarks with only visual elements.}
+    \caption[ViDoRe ablations and negative results]{\textbf{Benchmark scores for the ``negative results" and various ablations on \textit{ViDoRe}; \textit{ColPali} for reference.} Results are presented using nDCG@5 metrics. Text-only metrics are not computed for benchmarks with only visual elements.}
     \label{table:negative_results}
 \end{table*}
 
@@ -372,7 +372,7 @@ In \autoref{fig:similarity_map_kazakhstan}, \textit{ColPali} assigns a high simi
 \begin{figure}
 \centering
     \includegraphics[width=0.5\linewidth]{images/colpali_images/similarity_maps/similarity_map_kazakhstan.png} 
-    \caption{Similarity of the image patches w.r.t. the underlined token in the user query. This example is from the \textit{Shift} test set.}
+    \caption[Similarity map example]{Similarity of the image patches w.r.t. the underlined token in the user query. This example is from the \textit{Shift} test set.}
 \label{fig:similarity_map_kazakhstan}
 \end{figure}
 

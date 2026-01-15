@@ -121,7 +121,7 @@ We chunk these documents, and use GPT-4o to annotate which chunk, among the gold
     \end{tabular}
     }
     
-    \caption{Training Dataset Statistics} 
+    \caption[Training dataset statistics]{Training Dataset Statistics} 
     \label{table:training-data}
 \end{table}
 
@@ -177,7 +177,7 @@ Results of training an InSeNT model with concatenated short document data (using
     \bottomrule
     \end{tabular}}
 
-    \caption{Evaluation (nDCG@10) of baseline models and our proposed method on \textit{ConTEB}. We show MB+InSeNT(Nomic) behaves like a non-contextual model after training on independant documents concatenated in a single sequence.} 
+    \caption[ConTEB evaluation results]{Evaluation (nDCG@10) of baseline models and our proposed method on \textit{ConTEB}. We show MB+InSeNT(Nomic) behaves like a non-contextual model after training on independant documents concatenated in a single sequence.} 
     \label{table:nomic-results}
 \end{table*}
 
@@ -204,7 +204,7 @@ We show the results of the different values for $\lambda_{seq}$ on all our evalu
     \includegraphics[width=0.49\linewidth]{images/conteb_images/lambda_seq_mb-large_full.pdf}
     \hfill
     \includegraphics[width=0.49\linewidth]{images/conteb_images/lambda_seq_colbert_full.pdf}
-    \caption{Evaluation results for varying $\lambda_{seq}$ values. Left: ModernBERT-Large. Right: GTE-ModernColBERT. Trends vary across the datasets depending on their nature.}
+    \caption[$\lambda_{seq}$ evaluation results]{Evaluation results for varying $\lambda_{seq}$ values. Left: ModernBERT-Large. Right: GTE-ModernColBERT. Trends vary across the datasets depending on their nature.}
     \label{fig:lambda_seq_side_by_side}
 \end{figure*}
 

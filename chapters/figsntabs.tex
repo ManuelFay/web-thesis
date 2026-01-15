@@ -140,7 +140,7 @@ are a wide figure and a wide table.
 \end{figure*}
 
 \begin{table*}[h!]
-    \caption{A wide table with invented data about three people living in the UK. Note that wide figures and tables are centered and their caption also extends into the margin.}
+    \caption[Wide table example]{A wide table with invented data about three people living in the UK. Note that wide figures and tables are centered and their caption also extends into the margin.}
     \begin{tabular}{p{2.0cm} p{2.0cm} p{2.0cm} p{2.0cm} p{2.0cm} p{2.0cm} p{1.5cm}}
         \toprule
         Name    & Surname   & Job       & Salary           & Age   & Height    & Country \\
@@ -158,7 +158,7 @@ obtained with the following code:
 
 \begin{lstlisting}[caption=How to typeset a wide table]
 \begin{table*}[h!]
-    \caption{A wide table with invented data about three people living in the UK. Note that wide figures and tables are centered and their caption also extends into the margin.}
+    \caption[Wide table example]{A wide table with invented data about three people living in the UK. Note that wide figures and tables are centered and their caption also extends into the margin.}
     \begin{tabular}{p{2.0cm} p{2.0cm} p{2.0cm} p{2.0cm} p{2.0cm} p{2.0cm} p{1.5cm}}
         \toprule
         Name    & Surname   & Job       & Salary           & Age   & Height    & Country \\
@@ -196,7 +196,7 @@ correctly.} environment behaves a bit differently from
     One & Two & Three \\
     Left & Center & Center \\
     \hline
-    \caption{Caption of the longtable.}
+    \caption[Longtable caption]{Caption of the longtable.}
 \end{longtable}
 \end{lstlisting}
 
@@ -206,7 +206,7 @@ to obtain the following table:
     One & Two & Three \\
     Left & Center & Center \\
     \hline
-    \caption{Caption of the longtable.}
+    \caption[Longtable caption]{Caption of the longtable.}
 \end{longtable}
 
 The caption of a \Environment{longtable} is always positioned below the 
