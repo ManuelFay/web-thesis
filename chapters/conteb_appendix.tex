@@ -214,4 +214,4 @@ ModernBERT was trained on documents of up to 8192 tokens \sidecite{modernbert}. 
 
 Based on these results, we tried two approaches to handle documents longer than 8192 tokens with ModernBERT (necessary for the ESG reports dataset): computing Late Chunking with a context of max. 8192 tokens in an sliding window fashion (computing chunk embeddings in several forward passes of 8192 tokens, with 10 overlapping chunks between the various windows), and naively feeding the complete documents to the embedder. 
 
-To our surprise, the latter worked better by a large margin (43.1 on ESG as reported in \ref{table:results}, vs 25.4 for the sliding window approach), so we reported the results of this approach. Further studies could be led to better understand the dynamics underlying this extension.
+To our surprise, the latter worked better by a large margin (43.1 on ESG as reported in \ref{table:conteb:results}, vs 25.4 for the sliding window approach), so we reported the results of this approach. Further studies could be led to better understand the dynamics underlying this extension.

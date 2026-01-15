@@ -543,7 +543,7 @@ Additionally, we compare against various contextualization approaches. Specifica
 In this work, we leverage recent advances in long-context embedding models \sidecite{zhang2024mgte, modernbert} to improve upon existing approaches through novel training strategies.
 
 \subsection{Architecture}
-\label{subsection:architecture}
+\label{subsection:conteb:architecture}
 
 % modern models through techniques dsuch as fmasjh attent,ion have greatly been able to lengthen the context size. Recent encoders go up to 8k, decoders go up to much more. In out setup, we leverage bidirectional encoder model architecture, notably modernbert (8k context length). modernbert is optimized for low vram usage % search o)n the internet to get all perks.
 
@@ -647,7 +647,7 @@ Batches are constructed by sampling 4 long documents per device, retrieving all 
 
 
 \section{Results}
-\label{section:results}
+\label{section:conteb:results}
 
 
 % \begin{table*}[ht]
@@ -776,7 +776,7 @@ Batches are constructed by sampling 4 long documents per device, retrieving all 
   \end{tabular}%
   }
   \caption[ConTEB evaluation results]{Evaluation (nDCG@10) of baseline models and our proposed method on \textit{ConTEB}. Runtime is per‐document indexing time in milliseconds; smaller is better, so the fastest model is bolded.}
-  \label{table:results}
+  \label{table:conteb:results}
 \end{table*}
 
 
@@ -844,7 +844,7 @@ Batches are constructed by sampling 4 long documents per device, retrieving all 
 
 %
 % \subsection{Not using doc wide context is suboptimal for retrieval}
-\noindent\textbf{Document-wide context is essential.} As seen in \autoref{table:results}, methods leveraging contextual information widely outperform non-contextual methods across \emph{ConTEB} tasks. These results highlight the critical role of context-aware embeddings in improving retrieval performance in such settings, whether through untrained Late Chunking approaches or expensive context-aware reformulation approaches. 
+\noindent\textbf{Document-wide context is essential.} As seen in \autoref{table:conteb:results}, methods leveraging contextual information widely outperform non-contextual methods across \emph{ConTEB} tasks. These results highlight the critical role of context-aware embeddings in improving retrieval performance in such settings, whether through untrained Late Chunking approaches or expensive context-aware reformulation approaches. 
 As expected, the gap is even more notable in \emph{ConTEB}'s controlled setting experiments. 
 
 
@@ -892,7 +892,7 @@ As expected, the gap is even more notable in \emph{ConTEB}'s controlled setting 
 \end{figure*}
 
 
-\noindent\textbf{Efficiency-Performance.} As shown in the Runtime column of \autoref{table:results}, our approach is very capable on contextual tasks, yet does not add much computational overhead. In fact, we find slight indexing speed improvements, attributed to our approach's reduced need for padding in-batch sequences of different lengths. While \textit{Anthropic Contextual} achieves sensibly similar performances on \emph{ConTEB}, it relies on costly LLM-based summarization and chunk reformulation, that are hardly scalable to huge corpora (120x slower).
+\noindent\textbf{Efficiency-Performance.} As shown in the Runtime column of \autoref{table:conteb:results}, our approach is very capable on contextual tasks, yet does not add much computational overhead. In fact, we find slight indexing speed improvements, attributed to our approach's reduced need for padding in-batch sequences of different lengths. While \textit{Anthropic Contextual} achieves sensibly similar performances on \emph{ConTEB}, it relies on costly LLM-based summarization and chunk reformulation, that are hardly scalable to huge corpora (120x slower).
 
 \noindent\textbf{Short-Context Performance.} Careful hyperparameter tuning enables our best model to maintain strong performance on standard non-contextual benchmarks (\textit{NanoBEIR}), demonstrating that long-context optimization does not compromise short-context retrieval. Interestingly, LI models suffer from more degradation, which we posit is due to the original reliance on very local features modified through our training. Mixing in non-contextual "replay" data during training or merging models \sidecite{li2024improvinggeneraltextembedding_merging, modelmerging_lines} should further enable preserving the original embedding model's performances.
 
@@ -957,7 +957,7 @@ We experiment with concatenating semantically similar yet independent short chun
 
 
 \section{Conclusions}
-\label{section:conclusions_and_future_work}
+\label{section:conteb:conclusions_and_future_work}
 
 In this work, we introduced \textit{ConTEB}, a benchmark designed to assess the effectiveness of retrieval models in leveraging document-wide contextual information. Our evaluation demonstrates that standard retrieval models struggle in context-dependent settings, while our proposed approach \textit{InSeNT}, which combines Late Chunking and a novel training methodology, performs strongly on \textit{ConTEB} without additional compute costs. % \textcolor{red}{These results prove the value of \emph{in-sequence} negatives in the training objective, and further bridge the gap towards practical utilization of the \textit{Late Chunking} paradigm.}
 These insights build towards the broader development of the \textit{Late Chunking} paradigm in practice, and highlight the everlasting need for evaluation benchmarks that rigorously reflect how embedding models are used in real-world scenarios.

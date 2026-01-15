@@ -96,7 +96,7 @@ Experimentally, we show the importance of integrating data from another cultural
 The models we train are all released under open licenses. Our largest model is trained on a 2300:1 token to parameter ratio (115 times longer than a Chinchilla Optimal 1.3B model) leading to very strong performance in its size category.
 We show that model performance on downstream tasks continues to dramatically improve with lengthened pre-training runs, although model perplexity does not significantly improve.
 We release all checkpoints for all model sizes, as well as the exact training data seen at every step for research purposes.\sidenote{Training data indexing order will be released in a second stage.} These models are extremely efficient to run, leading to low-latency, energy-efficient on-edge inference, even on low-resource devices such as phones or personal computers.
-These releases\sidenote{Code for dataset collection and filtering is available at \url{https://github.com/ManuelFay/llm-data-hub}. Code for model training is hosted at \url{https://github.com/CoderPat/croissant-llm-training}. Datasets and model checkpoints are available at \url{https://huggingface.co/CroissantLLM}.} are motivated by a commitment to transparency to allow research and reassuring users for industrial deployment: our models comply with 81\,\% of criteria listed by the Foundation Model Transparency Index \sidecite{bommasani2023fmti} (see Section~\ref{sec:transparency}). 
+These releases\sidenote{Code for dataset collection and filtering is available at \url{https://github.com/ManuelFay/llm-data-hub}. Code for model training is hosted at \url{https://github.com/CoderPat/croissant-llm-training}. Datasets and model checkpoints are available at \url{https://huggingface.co/CroissantLLM}.} are motivated by a commitment to transparency to allow research and reassuring users for industrial deployment: our models comply with 81\,\% of criteria listed by the Foundation Model Transparency Index \sidecite{bommasani2023fmti} (see Section~\ref{sec:croissant:transparency}). 
 
 
 
@@ -786,7 +786,7 @@ Evaluation results indicate the model is strong in its size category, and offers
 
 
 
-\section{Foundation Model Transparency Index \label{sec:transparency}}
+\section{Foundation Model Transparency Index \label{sec:croissant:transparency}}
 % https://github.com/stanford-crfm/fmti/blob/main/fmti-indicators.pdf
 % https://github.com/stanford-crfm/fmti/blob/main/scores.csv
 To assess the transparency of our work, we evaluate our model through the Stanford Transparency Index \sidecite{bommasani2023fmti} and obtain a total score of 81\,\%, far ahead of proprietary models, as well as most staple open-weights models and large-scale open-source efforts (Figure \ref{fig:fmti}).\sidenote{Methodology is described in the appendix, and outline the fact our work relies on the index to guide its efforts in transparency, thus putting it at an advantage with respects to prior work such as Bloom \cite{scao2022bloom}.} 

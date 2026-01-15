@@ -31,7 +31,7 @@ Document Retrieval consists of matching a user query to relevant documents in a 
 
 \noindent Over recent years, pretrained language models have enabled large improvements in text embedding models. In practical industrial settings, however, the primary performance bottleneck for efficient document retrieval stems not from embedding model performance but from the prior data ingestion pipeline. Indexing a standard PDF document involves several steps. First, PDF parsers or Optical Character Recognition (OCR) systems are used to extract words from the pages. Document layout detection models can then be run to segment paragraphs, titles, and other page objects such as tables, figures, and headers. A chunking strategy is then defined to group text passages with some semantical coherence, and modern retrieval setups may even integrate a captioning step to describe visually rich elements in a natural language form, more suitable for embedding models. 
 % This leads to ingestion pipelines that are lengthy, require heavy parametrization, and orchestrate independent subsystems. 
-In our experiments (\autoref{table:results}), we typically find that optimizing the ingestion pipeline yields much better performance on visually rich document retrieval than optimizing the text embedding model.
+In our experiments (\autoref{table:colpali:results}), we typically find that optimizing the ingestion pipeline yields much better performance on visually rich document retrieval than optimizing the text embedding model.
 
 
 % The race to ever-more performant text embedding models should perhaps not be the only focus of research in the retrieval space.
@@ -63,7 +63,7 @@ We release all resources at \url{https://hf.co/vidore}.
 \begin{figure*}
     \centering
     \includegraphics[width = 1.2\textwidth]{images/colpali_images/final_architecture.png}
-    \caption[\textit{ColPali} overview]{\textit{ColPali} simplifies document retrieval w.r.t. standard retrieval methods while achieving stronger performances with better latencies. Latencies and results are detailed in \autoref{section:results} and \autoref{paragraph:lantency_app}.}
+    \caption[\textit{ColPali} overview]{\textit{ColPali} simplifies document retrieval w.r.t. standard retrieval methods while achieving stronger performances with better latencies. Latencies and results are detailed in \autoref{section:colpali:results} and \autoref{paragraph:latency_app}.}
     
     % Latencies indicated in the figure are computed on the same machine \texttt{g2-standard-16} with a NVIDIA-L4 GPU, and averaged over 100 pages. Further details in \autoref{subsection:latency}.The computed score is the average of from all datasets in \textit{ViDoRe} for PDF Parser + Captioning and ColPali respectively. Further details in \autoref{section:results}.} 
     \label{fig:colpali_architecture}
@@ -203,13 +203,13 @@ Both strategies aim to integrate visual elements in the retrieval pipeline but i
 
 \noindent\textbf{Contrastive VLMs.} We also evaluate the strongest available vision-language embedding models; Jina CLIP \sidecite{koukounas_jina_2024}, Nomic Embed Vision \sidecite{nomic_nomic_2024}, and \texttt{SigLIP-So400m/14}  \sidecite{alabdulmohsin_getting_2023}.
 
-\noindent\textbf{Results.} From a performance perspective, best results are obtained by combining the \texttt{Unstructured} parser with visual information, either from captioning strategies or by running OCR on the visual elements (\autoref{table:results}). Little difference is seen between BM25 and BGE-M3 embeddings highlighting the visual information bottleneck. Contrastive VLMs lag behind. Beyond retrieval performance (R1), the indexing latencies (R2) reported in \autoref{fig:latency-comparison} illustrate that PDF parsing pipelines can be very lengthy, especially when incorporating OCR or captioning strategies. Querying latencies at runtime (R3) are very good for all evaluated systems ($\leq22$ ms on a NVIDIA L4) due to fast query encoding and cosine similarity matching. 
+\noindent\textbf{Results.} From a performance perspective, best results are obtained by combining the \texttt{Unstructured} parser with visual information, either from captioning strategies or by running OCR on the visual elements (\autoref{table:colpali:results}). Little difference is seen between BM25 and BGE-M3 embeddings highlighting the visual information bottleneck. Contrastive VLMs lag behind. Beyond retrieval performance (R1), the indexing latencies (R2) reported in \autoref{fig:latency-comparison} illustrate that PDF parsing pipelines can be very lengthy, especially when incorporating OCR or captioning strategies. Querying latencies at runtime (R3) are very good for all evaluated systems ($\leq22$ ms on a NVIDIA L4) due to fast query encoding and cosine similarity matching. 
 
 
 \begin{figure}[ht]
     \centering
     \includegraphics[width = 0.85\linewidth]{images/colpali_images/latency_comparison.pdf}
-    \caption[Offline indexing latency comparison]{Offline document indexing with \textit{ColPali} is much simpler and faster compared to standard retrieval methods. The PDF Parser results are obtained following the \textit{Unstructured} settings with BGE-M3 detailed in \autoref{subsection:baseline_models}. All indexing speeds are averaged per-page latencies. More details in \autoref{paragraph:lantency_app}}.
+    \caption[Offline indexing latency comparison]{Offline document indexing with \textit{ColPali} is much simpler and faster compared to standard retrieval methods. The PDF Parser results are obtained following the \textit{Unstructured} settings with BGE-M3 detailed in \autoref{subsection:baseline_models}. All indexing speeds are averaged per-page latencies. More details in \autoref{paragraph:latency_app}}.
     \label{fig:latency-comparison}
 \end{figure}
 
@@ -224,7 +224,7 @@ Both strategies aim to integrate visual elements in the retrieval pipeline but i
 
 
 \subsection{Architecture}
-\label{subsection:architecture}
+\label{subsection:colpali:architecture}
 
 
 \textbf{Vision-Language Models.}
@@ -277,7 +277,7 @@ Following \sidecite{khattab_colbert_2020}, we define our in-batch contrastive lo
 
 \subsection{Model training}
 
-\noindent\textbf{Dataset.} Our training dataset of 118,695 query-page pairs is comprised of train sets of openly available academic datasets ($63\%$) and a synthetic dataset made up of pages from web-crawled PDF documents and augmented with VLM-generated (Claude-3 Sonnet) pseudo-questions ($37\%$). Dataset split details are given in \autoref{subsection: training_dataset}.
+\noindent\textbf{Dataset.} Our training dataset of 118,695 query-page pairs is comprised of train sets of openly available academic datasets ($63\%$) and a synthetic dataset made up of pages from web-crawled PDF documents and augmented with VLM-generated (Claude-3 Sonnet) pseudo-questions ($37\%$). Dataset split details are given in \autoref{subsection:training_dataset}.
 Our training set is fully English by design, enabling us to study zero-shot generalization to non-English languages\sidenote{Multilingual data is present in the pretraining corpus of the language model (Gemma-2B) and potentially occurs during PaliGemma-3B's multimodal training.}. We explicitly verify no multi-page PDF document is used both \textit{ViDoRe} and in the train set to prevent evaluation contamination. A validation set is created with $2\%$ of the samples to tune hyperparameters. We openly release the training dataset\sidenote{\url{https://huggingface.co/datasets/vidore/colpali_train_set}} for reproducibility and to encourage further research. 
 
 \noindent\textbf{Parameters.} All models are trained for 1 epoch on the train set. Unless specified otherwise, we train models in \texttt{bfloat16} format, use low-rank adapters (LoRA, \sidecite{hu2021loralowrankadaptationlarge}) with $\alpha=32 $ and $r=32$ on the transformer layers from the language model, as well as the final randomly initialized projection layer, and use a \texttt{paged\_adamw\_8bit} optimizer. We train on an 8 GPU setup with data parallelism, a learning rate of $5e-5$ with linear decay with 2.5\% warmup steps, and a batch size of 32.
@@ -290,7 +290,7 @@ Our training set is fully English by design, enabling us to study zero-shot gene
 % We also explore the effect of adding the table and the figures to a naive baseline of only OCR. 
 
 \section{Results}
-\label{section:results}
+\label{section:colpali:results}
 
 
 
@@ -342,7 +342,7 @@ BiPali \tiny (+LLM) & 56.5\textcolor{red!75!black}{\tiny $\downarrow$-2.0} & 30.
 
 
     \caption[Baseline and \textit{ViDoRe} evaluation]{\textbf{Comprehensive evaluation of baseline models and our proposed method on \textit{ViDoRe}.} Results are presented using nDCG@5 metrics, and illustrate the impact of different components. Text-only metrics are not computed for benchmarks with only visual elements.} 
-    \label{table:results}
+    \label{table:colpali:results}
 \end{table*}
 
 
@@ -367,7 +367,7 @@ We show performance is achieved iteratively through the combination of three fac
 
 \noindent\textbf{Leveraging Multi-Vector Embeddings through Late Interaction: \textit{ColPali}.}
 One benefit of inputting image patch embeddings through a language model is that they are natively mapped to a latent space similar to the textual input (query). This enables leveraging the ColBERT strategy to construct one embedding per image patch token, and at inference compute all interactions between text tokens and image patches, resulting in a step-change improvement in performance compared to BiPali. 
-Results in \autoref{table:results} show that our \textit{ColPali} model also largely outperforms the strong baselines based on \texttt{Unstructured} and captioning, as well as all evaluated text-image embedding models. The difference is particularly stark on the more visually complex benchmark tasks, such as InfographicVQA, ArxivQA, and TabFQuAD, respectively representing infographics, figures, and tables. However, text-centric documents are also better retrieved by the \textit{ColPali} models across all evaluated domains and languages, making our approach the overall best-performing document-retrieval model.
+Results in \autoref{table:colpali:results} show that our \textit{ColPali} model also largely outperforms the strong baselines based on \texttt{Unstructured} and captioning, as well as all evaluated text-image embedding models. The difference is particularly stark on the more visually complex benchmark tasks, such as InfographicVQA, ArxivQA, and TabFQuAD, respectively representing infographics, figures, and tables. However, text-centric documents are also better retrieved by the \textit{ColPali} models across all evaluated domains and languages, making our approach the overall best-performing document-retrieval model.
 
 \noindent\textbf{Negative Results.} For extensiveness, we also train ColSigLIP, a late interaction variant of the BiSigLIP model but obtain abysmal performances. We attribute this to the large gaps w.r.t. SigLIP's pre-training, in which only a pooled latent representation is used in the contrastive loss, which does not optimize the representations of individual patch and token embeddings. Similarly, we train a BiSigLIP$_{PaliGemma}$ variant, in which we retrieve the image representations from the SigLIP model that has been further updated by PaliGemma fine-tuning, and use the text representations from PaliGemma's text model. After fine-tuning on our dataset, performance is severely inferior to SigLIP$_{Vanilla}$ which simply encodes with SigLIP's original text and vision components. This indicates a logical misalignment between SigLIP embeddings, and Gemma embeddings after PaliGemma training. We detail these results in \autoref{subection:additional_results}.
 
@@ -384,11 +384,11 @@ Results in \autoref{table:results} show that our \textit{ColPali} model also lar
 
 % TODO: https://arxiv.org/abs/2304.01982
 
-\noindent \textbf{Online Querying. (R2)} Logically, querying latencies differ between \textit{ColPali} and a BGE-M3 embedding model. For BGE, encoding takes about $22$ ms for 15 tokens, while encoding a query with \textit{ColPali}'s language model takes about $30$ ms\sidenote{Computed for a batch size of $1$ (online), and averaged over 1000 queries. See \autoref{paragraph:lantency_app}}. For smaller corpus sizes, computing the late interaction operation induces marginally small overheads ($\approx 1$ ms per 1000 pages in the corpus), and the cosine similarity computation between bi-encoder vectors is even faster. Optimized late interaction engines \sidecite{santhanam_plaid_2022, lee_rethinking_2023} enable to easily scale corpus sizes to millions of documents with reduced latency degradations.
+\noindent \textbf{Online Querying. (R2)} Logically, querying latencies differ between \textit{ColPali} and a BGE-M3 embedding model. For BGE, encoding takes about $22$ ms for 15 tokens, while encoding a query with \textit{ColPali}'s language model takes about $30$ ms\sidenote{Computed for a batch size of $1$ (online), and averaged over 1000 queries. See \autoref{paragraph:latency_app}}. For smaller corpus sizes, computing the late interaction operation induces marginally small overheads ($\approx 1$ ms per 1000 pages in the corpus), and the cosine similarity computation between bi-encoder vectors is even faster. Optimized late interaction engines \sidecite{santhanam_plaid_2022, lee_rethinking_2023} enable to easily scale corpus sizes to millions of documents with reduced latency degradations.
 
 
 \noindent\textbf{Offline Indexing. (R3)} 
-Standard retrieval methods using bi-encoders represent each chunk as a single vector embedding, which is easy to store and fast to compute. However, processing a PDF to get the different chunks is the most time-consuming part (layout detection, OCR, chunking), and using captioning to handle multimodal data will only exacerbate this already lengthy process. On the other hand, \textit{ColPali} directly encodes pages from their image representation. Although the model is larger than standard retrieval encoders, skipping the preprocessing allows large speedups at indexing\sidenote{Measures a NVIDIA L4 GPU, averaged on 100 pages, with a batch size of 4 pages for \textit{ColPali} and 8 text chunks for Bi-Encoders. On average, a page is divided into 2.1 chunks. See \autoref{paragraph:lantency_app}.} (\autoref{fig:latency-comparison}). As pages are embedded end-to-end in single forward pass, the VRAM usage depends exclusively on the sequence length (number of patches per image) which is fixed as well, enabling efficient batching strategies to fully leverage hardware acceleration. ColPali also benefits from most LLM efficiency improvements introduced in the ecosystem such as Flash Attention \sidecite{dao2023flashattention2fasterattentionbetter}.
+Standard retrieval methods using bi-encoders represent each chunk as a single vector embedding, which is easy to store and fast to compute. However, processing a PDF to get the different chunks is the most time-consuming part (layout detection, OCR, chunking), and using captioning to handle multimodal data will only exacerbate this already lengthy process. On the other hand, \textit{ColPali} directly encodes pages from their image representation. Although the model is larger than standard retrieval encoders, skipping the preprocessing allows large speedups at indexing\sidenote{Measures a NVIDIA L4 GPU, averaged on 100 pages, with a batch size of 4 pages for \textit{ColPali} and 8 text chunks for Bi-Encoders. On average, a page is divided into 2.1 chunks. See \autoref{paragraph:latency_app}.} (\autoref{fig:latency-comparison}). As pages are embedded end-to-end in single forward pass, the VRAM usage depends exclusively on the sequence length (number of patches per image) which is fixed as well, enabling efficient batching strategies to fully leverage hardware acceleration. ColPali also benefits from most LLM efficiency improvements introduced in the ecosystem such as Flash Attention \sidecite{dao2023flashattention2fasterattentionbetter}.
 
 \noindent\textbf{Storage Footprint.} Our method requires storing a vector per image patch, along with 6 extra text tokens ``Describe the image" concatenated to image patches. We project each PaliGemma vector to a lower dimensional space ($D=128$) to maximize efficiency, leading to a memory footprint of $257.5$ KB per page (\autoref{subsection:embedding_size}). Importantly, the memory footprint of the naive ColBERT indexing strategy can be drastically improved through compression and clustering mechanisms \sidecite{santhanam_plaid_2022, clavie_reducing_2024}.
 
@@ -494,7 +494,7 @@ ColPali generalizes well outside of its training distribution, and demonstrate t
 %In practice, these models are most often used off-the-shelf without further fine-tuning in the majority of use cases.}
 
 \section{Conclusions}
-\label{section:conclusions_and_future_work}
+\label{section:colpali:conclusions_and_future_work}
 
 In this work, we introduced the Visual Document Retrieval Benchmark (\textit{ViDoRe}), which evaluates document retrieval systems in realistic settings involving visually complex documents. We demonstrated that current retrieval pipelines and contrastive vision-language models struggle to efficiently exploit visual information embedded in documents, leading to suboptimal performance. To address this, we presented \textit{ColPali}, a novel retrieval method that leverages Vision-Language Models to create high-quality, multi-vector embeddings purely from visual document features. \textit{ColPali} largely outperforms the best existing document retrieval methods while enabling faster corpus indexing times and maintaining low querying latencies, thus circumventing many pain points of modern document retrieval applications. We hope to drive industrial adoption, and to encourage future work by publicly releasing the \textit{ViDoRe} benchmark, the data, the codebase, and all models and baselines from our work.
 
