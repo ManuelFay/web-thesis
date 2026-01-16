@@ -54,14 +54,9 @@ Given the inherently open nature of IFT model generation, we adopt a reference-f
 \noindent \textbf{Baseline Metrics.}  We assess the fulfillment of both \texttt{CAT} and \texttt{TFA} by comparing the proposed metrics against well-established \textit{reference-based} metrics, including ROUGE\footnote{ROUGE-1 is used here, it is best on one-word long labels}, BScore \sidecite{zhang2020bertscore}, and SBERT \sidecite{reimers2019sentencebert}, as well as a \textit{machine learned} metric, the OpenAssistant Reward Model (RM) \sidecite{köpf2023openassistant} trained on human preferences. 
 
 \begin{figure*}[ht]
-\begin{minipage}{.95\textwidth}
 \centering
-    % \captionof{table}{\emph{(Left)} \textbf{$\rho$ correlation between human scores and metrics} on the summarization task (SUM), on the \emph{human data} tasks individually then averaged in (CIT), and on the concatenated human tasks (CAT) to form inter-task settings. (TFA) denotes relative metric improvement after 1000 target task samples are added to the training set. \emph{(Right)} \textbf{Metric scores} averaged per \emph{synthetic data} category}\vspace{-.3cm}
-    \begin{minipage}{.45\textwidth}
-      \centering
-      \tiny
-      \label{tab:main_metrics}
-\resizebox{\textwidth}{!}{\begin{tabular}{lrrrr}
+\tiny
+\resizebox{0.6\textwidth}{!}{\begin{tabular}{lrrrr}
     \toprule
      Scorers & SUM & CAT &  CIT & TFA \\ %TFA $\Delta$ CIT\
     \midrule
@@ -77,11 +72,14 @@ Given the inherently open nature of IFT model generation, we adopt a reference-f
     Human & 0.54 & - & - & +12.0 \% \\
     \bottomrule
     \end{tabular}}
-    \end{minipage}\hspace{-.2cm}
-    \begin{minipage}{.55\textwidth}
-      \centering
-        \tiny
-            \resizebox{0.92\textwidth}{!}{\begin{tabular}{lrrrrrrr}
+\caption[Metric correlations across tasks]{Spearman $\rho$ correlation between human scores and metrics on the summarization task (SUM), the average of human data tasks (CIT), and concatenated tasks (CAT). TFA reports the relative metric improvement after adding 1000 target task samples to the training set.}
+\label{tab:main_metrics}
+\end{figure*}
+
+\begin{figure*}[ht]
+\centering
+\tiny
+\resizebox{0.65\textwidth}{!}{\begin{tabular}{lrrrrrrr}
     \toprule
     Scorers & Logic & Code  & Memory & Write \\
     \midrule
@@ -95,14 +93,16 @@ Given the inherently open nature of IFT model generation, we adopt a reference-f
      GPT-3.5 & \textbf{0.88} & \textit{0.82} & 0.87 & 0.86 \\
     \bottomrule
     \end{tabular}}
-    \end{minipage} \hfill
-\end{minipage}
-    \begin{minipage}{.28\textwidth}
-    \includegraphics[width=\textwidth]{images/learning_dynamics/exp1a_corr.pdf}
-    % \captionof{figure}{\textbf{Spearman $\rho$ between metrics} on synthetic data.}
-    \label{fig:correlations}
-    \end{minipage}
+\caption[Metric scores by synthetic category]{Metric scores averaged per synthetic data category.}
+\label{tab:main_metrics_synth}
 \end{figure*}
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.4\textwidth]{images/learning_dynamics/exp1a_corr.pdf}
+    \caption[Metric correlations on synthetic data]{Spearman $\rho$ between metrics on synthetic data.}
+    \label{fig:correlations}
+\end{figure}
 \subsection{Experimental setup}
 
 \textbf{Training an IFT model.} IFT models are trained by fine-tuning a base model on a large instruction corpus, collected either through human annotations \sidecite{ouyang2022training, köpf2023openassistant} or concatenating task-specific datasets \sidecite{sanh2022multitask, mishra2022crosstask}. In line with recent work \sidecite{vicuna2023,wang2023selfinstruct,peng2023instruction}, we leverage synthetic data as the base instruction set in our IFT models \sidecite{alpaca2023}.
@@ -113,23 +113,23 @@ Given the inherently open nature of IFT model generation, we adopt a reference-f
 
 
 \subsection{Experimental results}
-To better understand the limitation of existing metrics we conduct both single-task analysis to ensure that metrics are able to score tasks reliably as well as multi-task analysis, which is the standard setting for IFT models. Results are reported in Tab. \ref{tab:main_metrics}.
+To better understand the limitation of existing metrics we conduct both single-task analysis to ensure that metrics are able to score tasks reliably as well as multi-task analysis, which is the standard setting for IFT models. Results are reported in Tab. \ref{tab:main_metrics} and Tab. \ref{tab:main_metrics_synth}.
 % Insert table with checks or not
 
-\noindent\textbf{\texttt{CIT} Analysis.} From Tab. \ref{tab:main_metrics}(left, \texttt{SUM}), we observe that the average correlation with human scores for evaluated summaries are higher for LLM models than with traditionally used metrics. Intra-task correlations on all other \emph{human data} tasks, averaged in \texttt{CIT} lead to similar conclusions. 
+\noindent\textbf{\texttt{CIT} Analysis.} From Tab. \ref{tab:main_metrics} (\texttt{SUM}), we observe that the average correlation with human scores for evaluated summaries are higher for LLM models than with traditionally used metrics. Intra-task correlations on all other \emph{human data} tasks, averaged in \texttt{CIT} lead to similar conclusions. 
 
 
-\noindent\textbf{\texttt{CAT} Analysis.} Tab. \ref{tab:main_metrics}(left) shows that all metrics, \emph{with the exception of the GPT4-based metric}, exhibit weak or no correlation in the context of inter-task consistency. While it is true that existing metrics demonstrate the ability to differentiate between good and bad samples within a single task (\texttt{CIT}), their \emph{performance falls short when confronted with the open setting imposed by IFT models}.
+\noindent\textbf{\texttt{CAT} Analysis.} Tab. \ref{tab:main_metrics} shows that all metrics, \emph{with the exception of the GPT4-based metric}, exhibit weak or no correlation in the context of inter-task consistency. While it is true that existing metrics demonstrate the ability to differentiate between good and bad samples within a single task (\texttt{CIT}), their \emph{performance falls short when confronted with the open setting imposed by IFT models}.
 % here we could mention GPT3 bad results on CAT (see comment thread)
 %u: très mal calibré sur de l inter taches, d autres scorers donnaient aussi des resultats negatifs ou nuls qu on a enlevé petit a petit, ca parait effectivement plus choquant mtn que les autres sont à ~20%il est aussi reference-free ce qui l handicappe intrinsequement sur des taches du genre, c est une conclusion qu on avaitmise a un moment, que le modele LLM de scoring se devait d etre bon en soit sur la tache en question pour avoir une chance
 
 
 % Express 
-\noindent\textbf{\texttt{TFA} Analysis.} On non-LLM-based metrics, performance gains reported between zero-shot models, and models trained on 1000 target-task samples (Tab. \ref{tab:main_metrics}(left), \texttt{TFA}) largely exceed the  12.0 \% relative improvement of human scores, and demonstrate how format, once learned, unrealistically boosts reference-based metrics which are heavily impacted by format.
+\noindent\textbf{\texttt{TFA} Analysis.} On non-LLM-based metrics, performance gains reported between zero-shot models, and models trained on 1000 target-task samples (Tab. \ref{tab:main_metrics}, \texttt{TFA}) largely exceed the  12.0 \% relative improvement of human scores, and demonstrate how format, once learned, unrealistically boosts reference-based metrics which are heavily impacted by format.
 
 \noindent\textbf{Metric Similarity Analysis.} \autoref{fig:correlations} displays metric correlation at the sample level on the synthetic dataset. The results align with \sidecite{chen2022reproducibility}, indicating a moderate to high correlation between BERT-based metrics and ROUGE-L. However, all metrics exhibit a low correlation with GPT4, indicating different response features are scored. 
 
-\noindent\textbf{Zoom on GPT4.} Tab.\ref{tab:main_metrics}(right) shows a strong correlation between the results of GPT4-based metrics and the corresponding LLM task abilities reported in \sidecite{wei2022emergentabilitieslargelanguage} (Logic and Coding are non-trivial for LLMs, Writing tasks are relatively easier). However, reference-based metrics such as ROUGE suggest the opposite, as they are biased by the high syntactic overlap between model outputs and reference answers in these categories. The GPT3.5 scorer also highly rates results on the Logical Reasoning tasks, contrarily to GPT4. This is due to its lesser ability to spot logical inconsistencies in the evaluated responses \sidecite{bubeck2023sparks}, hinting that evaluator models must be capable at the evaluated task themselves in order to produce meaningful scores.
+\noindent\textbf{Zoom on GPT4.} Tab.\ref{tab:main_metrics_synth} shows a strong correlation between the results of GPT4-based metrics and the corresponding LLM task abilities reported in \sidecite{wei2022emergentabilitieslargelanguage} (Logic and Coding are non-trivial for LLMs, Writing tasks are relatively easier). However, reference-based metrics such as ROUGE suggest the opposite, as they are biased by the high syntactic overlap between model outputs and reference answers in these categories. The GPT3.5 scorer also highly rates results on the Logical Reasoning tasks, contrarily to GPT4. This is due to its lesser ability to spot logical inconsistencies in the evaluated responses \sidecite{bubeck2023sparks}, hinting that evaluator models must be capable at the evaluated task themselves in order to produce meaningful scores.
 
 % \autoref{tab:main_metrics}(right) illustrates the importance of a unified scale across different tasks (as illustrated by automatically tagged classes such as logic, code, rewrite). We observe that the results of GPT4 correlate with related weaks and we found that some tasks (Logic) also require strong task abilities while task such as rewrite are easier. By considering other metrics such as ROUGE tge results is less clear (extract is harder that rewrite).
 

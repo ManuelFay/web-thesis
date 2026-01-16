@@ -394,7 +394,7 @@ Standard retrieval methods using bi-encoders represent each chunk as a single ve
 
 \noindent\textbf{Token pooling.}
 % Multi-vector embeddings scale linearly in size with respect to the number of tokens, inducing longer indexing and search time. 
-Token pooling \sidecite{clavie_reducing_2024} is a CRUDE-compliant method (document addition/deletion-friendly) that aims amountto reduce the amount of multi-vector embeddings. For ColPali, many image patches share redundant information, e.g. white background patches. By pooling these patches together, we can reduce the amount of embeddings while retaining most information. Retrieval performance with hierarchical mean token pooling on image embeddings is shown in \autoref{fig:combined_figures} (left).
+Token pooling \sidecite{clavie_reducing_2024} is a CRUDE-compliant method (document addition/deletion-friendly) that aims amountto reduce the amount of multi-vector embeddings. For ColPali, many image patches share redundant information, e.g. white background patches. By pooling these patches together, we can reduce the amount of embeddings while retaining most information. Retrieval performance with hierarchical mean token pooling on image embeddings is shown in \autoref{fig:token-pooling}.
 With a pool factor of 3, the total number of vectors is reduced by $66.7\%$ while $97.8\%$ of the original performance is maintained. We note that the Shift dataset—composed of the most text-dense documents—is a clear outlier, showcasing more information dense documents contain less redundant patches and may be prone to worse performance degradation with such pooling techniques.
 
 \subsection{Interpretability}
@@ -410,17 +410,17 @@ With a pool factor of 3, the total number of vectors is reduced by $66.7\%$ whil
 
 
 \begin{figure}
-\centering
-\begin{minipage}{.5\textwidth}
   \centering
-  \includegraphics[width=1\linewidth]{images/colpali_images/token_pooling_ndcg.pdf}
-\end{minipage}%
-\begin{minipage}{.45\textwidth}
+  \includegraphics[width=0.8\linewidth]{images/colpali_images/token_pooling_ndcg.pdf}
+  \caption[Token pooling performance]{Relative performance degradation when reducing the number of stored embeddings per document.}
+  \label{fig:token-pooling}
+\end{figure}
+
+\begin{figure}
   \centering
-  \includegraphics[width=0.9\linewidth]{images/colpali_images/similarity_map_energy.png}
-\end{minipage}
-\caption[Token pooling and interpretability]{(Left: \textbf{Token Pooling}) Relative performance degradation when reducing the number of stored embeddings per document. (Right: \textbf{Interpretability}) For each term in a user query, \textit{ColPali} identifies the most relevant document image patches (highlighted zones) and computes a query-to-page matching score.}
-\label{fig:combined_figures}
+  \includegraphics[width=0.75\linewidth]{images/colpali_images/similarity_map_energy.png}
+  \caption[Interpretability heatmap]{For each term in a user query, \textit{ColPali} identifies the most relevant document image patches (highlighted zones) and computes a query-to-page matching score.}
+  \label{fig:similarity-maps}
 \end{figure}
 
 % \begin{figure}
@@ -444,7 +444,7 @@ With a pool factor of 3, the total number of vectors is reduced by $66.7\%$ whil
 %ColPali outputs a 128-dimensional vector for every input image patch (1024), which is used for late interaction matching.\
 
 
-By superimposing the late interaction heatmap on top of the original image, we can visualize the most salient image patches with respect to each term of the query, yielding interpretable insights into model focus zones. As epitomized in \autoref{fig:combined_figures} (right), we observe \textit{ColPali} exhibits strong OCR capabilities as both the words \textit{``hourly"} and \textit{``hours"} present a high similarity score with the query token \texttt{<\_hour>}. We also note particular focus on other non-trivial image features such as the x-axis representing hours being salient. Other visualization examples are shown in \autoref{section:more_similarity_maps}.
+By superimposing the late interaction heatmap on top of the original image, we can visualize the most salient image patches with respect to each term of the query, yielding interpretable insights into model focus zones. As epitomized in \autoref{fig:similarity-maps}, we observe \textit{ColPali} exhibits strong OCR capabilities as both the words \textit{``hourly"} and \textit{``hours"} present a high similarity score with the query token \texttt{<\_hour>}. We also note particular focus on other non-trivial image features such as the x-axis representing hours being salient. Other visualization examples are shown in \autoref{section:more_similarity_maps}.
 
 % By superimposing the late interaction heatmap on top of the original image, we can visualize the most salient image patches with respect to each term of the query, yielding interpretable insights into model focus zones. In the first figure in \autoref{fig:similarity_maps}, we observe \textit{ColPali} exhibits strong OCR capabilities as both the words \textit{"hourly"} and \textit{"hours"} present a high similarity score with the query token \texttt{<\_hour>}. We also note particular focus on other non-trivial image features such as the x-axis representing hours being salient.
 
