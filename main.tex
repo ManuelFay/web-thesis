@@ -147,7 +147,7 @@
 %\counterwithin*{sidenote}{chapter}
 
 %----------------------------------------------------------------------------------------
-
+% \includeonly{chapters/croissant, chapters/croissant_appendix}
 \begin{document}
 
 %----------------------------------------------------------------------------------------
@@ -257,7 +257,8 @@
 \setlength{\textheight}{230\hscale} % Manually adjust the height of the ToC pages
 
 % Turn on compatibility mode for the etoc package
-\etocstandarddisplaystyle % "toc display" as if etoc was not loaded
+% \etocstandarddisplaystyle % "toc display" as if etoc was not loaded
+\etocclasstocstyle % "toc display" as if etoc was not loaded
 \etocstandardlines % "toc lines" as if etoc was not loaded
 
 \tableofcontents % Output the table of contents
@@ -326,7 +327,7 @@
 \include{chapters/colpali_appendix}
 \include{chapters/modernvbert_appendix}
 \include{chapters/conteb_appendix}
-% \include{chapters/croissant_appendix}
+\include{chapters/croissant_appendix}
 \include{chapters/learning_dynamics_appendix}
 \chapter{Introduction Appendix}
 
