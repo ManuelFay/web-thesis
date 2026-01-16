@@ -29,7 +29,7 @@ jobs:
           mktexlsr
 
       - name: Compile LaTeX document
-        run: bash ./compileall.sh
+        run: latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex
 
       - name: Rename PDF (optional)
         run: mv main.pdf Thesis.pdf
