@@ -82,7 +82,7 @@ Tables~\ref{tab: english-only retrieval} and \ref{tab: french-only retrieval} pr
 \begin{table*}[t]
 \small
 \centering
-\setlength{\tabcolsep}{4pt}
+\setlength{\tabcolsep}{6pt}
 \renewcommand{\arraystretch}{1.15}
 
 \begin{tabularx}{\textwidth}{
@@ -238,8 +238,6 @@ Reports, Slides \\
 
 \begin{table}[H]
 \centering
-
-\resizebox{\columnwidth}{!}{%
 \begin{tabular}{lccc}
 \toprule
 \textbf{Dataset} & \textbf{$\alpha$ (ord)} & \textbf{Gwet's AC2} \\ %& \textbf{Wgt. Agree} \\
@@ -258,7 +256,6 @@ Physics & 0.213 & 0.334 \\%& 0.668 \\
 \textbf{Overall} & \textbf{0.469} & \textbf{0.760} \\%& \textbf{0.815} \\
 \bottomrule
 \end{tabular}
-}
 \caption{Inter-annotator agreement for relevance ratings by dataset.}
 \label{tab:iaa}
 \end{table}
@@ -486,14 +483,14 @@ German & 57.9 \\
 
 \begin{figure}[t]
     \centering
-    \includegraphics[width=0.9\columnwidth]{images/vidorev3_images/annotated_pages_by_query_type.pdf}
+    \includegraphics[width=\columnwidth]{images/vidorev3_images/annotated_pages_by_query_type.pdf}
     \caption{\textbf{Average number of annotated pages by query type.}} 
     \label{fig:num pages per query type}
 \end{figure}
 
 \begin{figure}[h!]
     \centering
-    \includegraphics[width=0.8\columnwidth]{images/vidorev3_images/ndcg_query_type_num_pages.pdf}
+    \includegraphics[width=\columnwidth]{images/vidorev3_images/ndcg_query_type_num_pages.pdf}
     \caption{\textbf{ColEmbed-3B-v2 NDCG@10 by number of annotated pages and query type.}} 
     \label{fig:perf content num pages}
 \end{figure}
