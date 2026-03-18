@@ -126,6 +126,48 @@
 \colourcheck{blue}
 \colourcheck{darkgreen}
 
+\definecolor{superlightgray}{gray}{0.95}
+\definecolor{borderblack}{gray}{0.1}
+
+\newenvironment{promptfigure}[3][superlightgray]{%
+    \begin{figure*}[h!]
+    \centering
+    \def\promptCaption{#2}%
+    \def\promptLabel{#3}%
+    \begin{tcolorbox}[
+        width=\textwidth,
+        colback=#1,
+        colframe=borderblack,
+        boxrule=0.5pt,
+        arc=3mm,
+        left=4mm, right=4mm, top=4mm, bottom=4mm,
+        fonttitle=\bfseries\Large,
+        fontupper=\small,
+        parskip=0.5\baselineskip
+    ]
+}{%
+    \end{tcolorbox}
+    \caption{\promptCaption}
+    \label{\promptLabel}
+    \end{figure*}
+}
+
+
+\definecolor{ownpurple}{RGB}{111, 8, 201}
+\definecolor{sportingreen}{RGB}{0, 128, 87}
+\definecolor{ownblue}{RGB}{68, 140, 255}
+\definecolor{borderblack}{rgb}{0.1, 0.1, 0.1} % Darker black for the frame
+\definecolor{superlightgray}{rgb}{0.97, 0.97, 0.97} % Very light background
+
+\newcommand{\vidorev}{ViDoRe~V3}
+
+% Variables
+\def\questionmark{\textbf{?}}
+\def\partially{$\sim$}
+\def\vidore{ViDoRe}
+\def\vidorev{\mbox{ViDoRe V3}}
+
+
 \usepackage{siunitx}
 \usepackage{tabularx}
 \sisetup{detect-all}  % makes siunitx obey surrounding font styles
@@ -283,21 +325,21 @@
 \include{chapters/introduction.tex}
 
 \pagelayout{wide} % No margins
-\addpart{Document Retrieval}
+\addpart{New Frontiers in Document Retrieval}
 \pagelayout{margin} % Restore margins
 
-\include{chapters/colpali}
+%\include{chapters/colpali}
 \include{chapters/vidorev2}
-\include{chapters/modernvbert}
-\include{chapters/conteb}
+\include{chapters/vidorev3}
+%\include{chapters/modernvbert}
 
 
 \pagelayout{wide} % No margins
-\addpart{Generative Models}
+\addpart{Agentic Search}
 \pagelayout{margin} % Restore margins
 
-\include{chapters/croissant}
-\include{chapters/learning_dynamics}
+%\include{chapters/conteb}
+%\include{chapters/croissant}
 
 \addpart{Conclusion: On the Future of Search}
 \include{chapters/conclusion}
@@ -322,13 +364,15 @@
 \pagelayout{wide} % No margins
 \addpart{Appendix}
 \pagelayout{margin} % Restore margins
-\include{chapters/canaries}
-\include{chapters/reranking_short}
-\include{chapters/colpali_appendix}
-\include{chapters/modernvbert_appendix}
-\include{chapters/conteb_appendix}
-\include{chapters/croissant_appendix}
-\include{chapters/learning_dynamics_appendix}
+% \include{chapters/canaries}
+% \include{chapters/reranking_short}
+% \include{chapters/learning_dynamics}
+% \include{chapters/colpali_appendix}
+\include{chapters/vidorev3_appendix}
+% \include{chapters/modernvbert_appendix}
+% \include{chapters/conteb_appendix}
+% \include{chapters/croissant_appendix}
+% \include{chapters/learning_dynamics_appendix}
 \chapter{Introduction Appendix}
 
 
