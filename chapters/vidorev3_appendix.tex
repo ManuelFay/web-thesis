@@ -1,3 +1,4 @@
+\setchapterpreamble[u]{}
 \chapter{ViDoRe v3 Appendix}
 
 
@@ -12,37 +13,37 @@
 
 \section{Supplementary benchmark details}
 
-\paragraph{Domains} \Cref{tab:datasets} details the type of documents used in each corpus as well as several statistics.
+\paragraph{Domains} \Cref{vidorev3:tab:datasets} details the type of documents used in each corpus as well as several statistics.
 
 \paragraph{Query type and format descriptions}
 
-\Cref{tab:query_taxonomy} describes the types and formats of the queries, while \Cref{fig:upset plot} gives details about query type intersection frequency.
+\Cref{vidorev3:tab:query_taxonomy} describes the types and formats of the queries, while \Cref{vidorev3:fig:upset plot} gives details about query type intersection frequency.
 
 \paragraph{Query type by generation method}
 
-Query type distributions by generation method (Figure~\ref{fig:query type by generation method}) confirm that open-ended queries dominate synthetic queries as the synthetic pipeline attributed more weight to this type, while extractive queries dominate human-image queries since they are more naturally chosen by annotators.
+Query type distributions by generation method (Figure~\ref{vidorev3:fig:query type by generation method}) confirm that open-ended queries dominate synthetic queries as the synthetic pipeline attributed more weight to this type, while extractive queries dominate human-image queries since they are more naturally chosen by annotators.
 
 \section{Annotator pool and training details}
-\label{appendix: annotator pool}
+\label{vidorev3:appendix: annotator pool}
 \paragraph{Annotator Pool and Selection.} Annotation was conducted by a curated pool of 76 annotators who were selected based on having: (1) a bachelor's degree or higher in the relevant domain, (2) professional experience in the domain, (3) native-level language proficiency as required by task, and (4) prior experience with RAG, retrieval, or VQA annotation projects. Quality control was performed by 13 senior annotators with enhanced domain knowledge and extensive annotation experience, with project oversight provided by data leads with multiple years of experience in human data generation.
 
 \paragraph{Training and Pilot Phase.} The annotation process began with a comprehensive onboarding phase where annotators received task-specific training using gold-standard examples. For each domain, a pilot of several hundred tasks was conducted with 100\% quality control coverage and multiple annotators per task. During this phase, data leads and the research team continuously evaluated annotations, provided clarifications, and refined guidelines. Inter-annotator agreement and time-per-task baselines were calculated to establish ongoing evaluation benchmarks. The pilot concluded upon validation of both data quality and guideline effectiveness.
 
 \section{Supplementary agreement metrics}
-\label{appendix: relevance agreement}
+\label{vidorev3:appendix: relevance agreement}
 
 Pages were pre-filtered by a VLM before human annotation; as most pages shown to annotators were likely relevant, this created a skewed class distribution. This prevalence imbalance causes traditional chance-corrected metrics like Krippendorff's Alpha to appear paradoxically low even when annotators genuinely agree, as inflated expected chance agreement penalizes the score. To address this, we report 2 complementary metrics: Krippendorff's Alpha (ordinal) as the standard measure and Gwet's AC2 which remains stable under prevalence skew. Overall, annotators achieved $\alpha = 0.469$, AC2 $= 0.760$. The divergence between Alpha and AC2/Weighted Agreement is expected given the pre-filtered data and confirms substantial agreement despite the skewed distribution.
 
 \section{Supplementary retrieval details}
-\label{appendix:supp retrieval}
+\label{vidorev3:appendix:supp retrieval}
 \paragraph{Retriever model reference}
 
-Table~\ref{tab:model_metadata} lists the retriever models evaluated in this work, along with their HuggingFace model names and citations.
+Table~\ref{vidorev3:tab:model_metadata} lists the retriever models evaluated in this work, along with their HuggingFace model names and citations.
 
 
-\paragraph{Monolingual performance} \label{sec:english retrievers}
+\paragraph{Monolingual performance} \label{vidorev3:sec:english retrievers}
 
-Tables~\ref{tab: english-only retrieval} and \ref{tab: french-only retrieval} present the monolingual performance of our models, where retrieval is conducted using language-matched queries and documents for English and French, respectively.
+Tables~\ref{vidorev3:tab: english-only retrieval} and \ref{vidorev3:tab: french-only retrieval} present the monolingual performance of our models, where retrieval is conducted using language-matched queries and documents for English and French, respectively.
 
 \begin{table*}[t!]
 \centering
@@ -64,7 +65,7 @@ Tables~\ref{tab: english-only retrieval} and \ref{tab: french-only retrieval} pr
 \textbf{Instruction} & A directive specifying a task. & Identify the use case of a drill point gauge. \\ \bottomrule
 \end{tabularx}
 \caption{Taxonomy of Query Types and Formats.}
-\label{tab:query_taxonomy}
+\label{vidorev3:tab:query_taxonomy}
 \end{table*}
 
 % \vspace{15cm}
@@ -74,7 +75,7 @@ Tables~\ref{tab: english-only retrieval} and \ref{tab: french-only retrieval} pr
     \centering
     \includegraphics[width=\textwidth]{images/vidorev3_images/upset_plot_query_types_complete.pdf}
     \caption{\textbf{UpSet plot illustrating the distribution and intersection of query types in ViDoRe V3.} The horizontal bars on the left display the total count of queries for each individual type. The vertical bars at the top represent the frequency of specific combinations (intersections), as indicated by the connected dots in the matrix below. While \textit{Extractive} queries are the most prevalent overall, \textit{Open Ended} queries form the dominant unique category. Complex dependencies are evident in the frequent intersection of \textit{Enumerative} and \textit{Extractive types}, indicating a substantial subset of queries requiring list-based fact retrieval.} 
-    \label{fig:upset plot}
+    \label{vidorev3:fig:upset plot}
 \end{figure*}
 
 % \clearpage
@@ -82,18 +83,18 @@ Tables~\ref{tab: english-only retrieval} and \ref{tab: french-only retrieval} pr
 \begin{table*}[t]
 \small
 \centering
-\setlength{\tabcolsep}{6pt}
-\renewcommand{\arraystretch}{1.15}
-
-\begin{tabularx}{\textwidth}{
-    >{\RaggedRight\arraybackslash}X
-    >{\RaggedRight\arraybackslash}X
-    >{\RaggedRight\arraybackslash}p{4.2cm}
+\setlength{\tabcolsep}{4pt}
+\renewcommand{\arraystretch}{1.12}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{
+    p{4.2cm}
+    p{2.2cm}
+    p{6.6cm}
     c
     c
     c
     c
-    >{\RaggedRight\arraybackslash}X
+    p{2.8cm}
 }
 \toprule
 \textbf{Corpus} &
@@ -161,10 +162,11 @@ Gathers official documents from French public agencies on energy, economic, and 
 fr & 42 & 2229 & 308 &
 Reports, Slides \\
 \bottomrule
-\end{tabularx}
+\end{tabular}%
+}
 
 \caption{Description of ViDoRe V3 public corpora. $^{*}$Number of queries is without translations}
-\label{tab:datasets}
+\label{vidorev3:tab:datasets}
 \end{table*}
 
 % \textbf{Nuclear} \newline \textbf{Power Plant} \newline \textbf{Docs} & 
@@ -197,7 +199,7 @@ Reports, Slides \\
 %     \centering
 %     \includegraphics[clip, width=0.7\textwidth]{images/vidorev3_images/ridge_plot.pdf}
 %     \caption{\textbf{Distribution of annotated page counts across domains.} This ridge plot displays the density of annotated pages per document for each specific domain, with vertical dashed lines marking the mean values. While the global average is $5.1$ pages, the distributions reveal distinct domain-specific characteristics: \textit{Physics} is a notable outlier, exhibiting the highest mean ($\mu=7.2$) and a heavy tail, suggesting that relevant information is often sparse and scattered across multiple pages. In contrast, \textit{Energy} queries appear more localized ($\mu=3.6$), with evidence typically concentrated within a narrower range.}
-%     \label{fig:ridge_plot_query_types}
+%     \label{vidorev3:fig:ridge_plot_query_types}
 % \end{figure*}
 
 
@@ -206,13 +208,13 @@ Reports, Slides \\
     \centering
     \includegraphics[clip, width=\textwidth]{images/vidorev3_images/query_types_by_generation_method.pdf}
     \caption{\textbf{Query type distribution by generation method.}}
-    \label{fig:query type by generation method}
+    \label{vidorev3:fig:query type by generation method}
 \end{figure*}
 
 % \clearpage
 % \paragraph{Page relevance scale}
 
-% Table~\ref{tab:relevance_scale} details the relevance score rubrics provided to human annotator. Pages given a score of 0 were dropped from the final benchmark.
+% Table~\ref{vidorev3:tab:relevance_scale} details the relevance score rubrics provided to human annotator. Pages given a score of 0 were dropped from the final benchmark.
 
 % \begin{table}[h]
 % \small
@@ -227,7 +229,7 @@ Reports, Slides \\
 % \bottomrule
 % \end{tabular}
 % \caption{\textbf{Relevance scale used for page-level annotations.}}
-% \label{tab:relevance_scale}
+% \label{vidorev3:tab:relevance_scale}
 % \end{table}
 
 
@@ -257,7 +259,7 @@ Physics & 0.213 & 0.334 \\%& 0.668 \\
 \bottomrule
 \end{tabular}
 \caption{Inter-annotator agreement for relevance ratings by dataset.}
-\label{tab:iaa}
+\label{vidorev3:tab:iaa}
 \end{table}
 
 
@@ -290,8 +292,8 @@ ColModernVBERT & colmodernvbert & \cite{teiletche2025modernvbert} \\
 ColSmol-256M & colSmol-256M & \cite{marafioti2025smolvlmredefiningsmallefficient} \\
 \bottomrule
 \end{tabular}
-\caption{\textbf{Retriever reference table.} Model aliases used in Tables~\ref{tab:retriever_comparison_updated},~\ref{tab: english-only retrieval}, and~\ref{tab: french-only retrieval} are mapped to their HuggingFace model name and citation.}
-\label{tab:model_metadata}
+\caption{\textbf{Retriever reference table.} Model aliases used in Tables~\ref{vidorev3:tab:retriever_comparison_updated},~\ref{vidorev3:tab: english-only retrieval}, and~\ref{vidorev3:tab: french-only retrieval} are mapped to their HuggingFace model name and citation.}
+\label{vidorev3:tab:model_metadata}
 \end{table*}
 
 % \paragraph{Retrieval performance with model size}
@@ -302,7 +304,7 @@ ColSmol-256M & colSmol-256M & \cite{marafioti2025smolvlmredefiningsmallefficient
 %     \centering
 %     \includegraphics[width=\columnwidth]{images/vidorev3_images/size-performance_large_no_tomoro.pdf}
 %     \caption{\textbf{Scaling of benchmark retrieval performance with model size.}} 
-%     \label{fig:size-performance}
+%     \label{vidorev3:fig:size-performance}
 % \end{figure}
 
 
@@ -343,7 +345,7 @@ ColSmol-256M & 0.25 & 57.4 & 36.5 & 47.7 & 51.4 & 46.0 & 38.5 & 47.5 & 46.4 \\
 \end{tabular}
 %}
 \caption{\textbf{English-only retrieval performance (NDCG@10).} $\bigstar$: single-vector models. Results are computed on the English queries of the English datasets.}
-\label{tab: english-only retrieval}
+\label{vidorev3:tab: english-only retrieval}
 \end{table*}
 
 
@@ -380,12 +382,12 @@ ColPali	& 7 & 43.2	&50.5	&23.6 & 39.1 \\
 \end{tabular}
 %}
 \caption{\textbf{French-only retrieval performance (NDCG@10).} $\bigstar$: single-vector models. Results are computed on the French queries of the French datasets.}
-\label{tab: french-only retrieval}
+\label{vidorev3:tab: french-only retrieval}
 \end{table*}
 
 % \clearpage
 
-\paragraph{Additional Retrieval Modality Performances} To evaluate the hybrid retrieval setup, we use the multimodal Jina-v4 model to generate separate visual and textual rankings. We then construct a hybrid retrieval set by merging the top-5 results from each modality and removing duplicates. Because this set-union operation does not preserve a strict ranking order, we report the unranked F1 score. As shown in \Cref{tab:hybrid_comparison}, the hybrid approach consistently outperforms single-modality baselines.
+\paragraph{Additional Retrieval Modality Performances} To evaluate the hybrid retrieval setup, we use the multimodal Jina-v4 model to generate separate visual and textual rankings. We then construct a hybrid retrieval set by merging the top-5 results from each modality and removing duplicates. Because this set-union operation does not preserve a strict ranking order, we report the unranked F1 score. As shown in \Cref{vidorev3:tab:hybrid_comparison}, the hybrid approach consistently outperforms single-modality baselines.
 
 % \clearpage
 
@@ -409,7 +411,7 @@ Hybrid	&\textbf{43.0}	&\textbf{27.7}	&\textbf{30.9}	&\textbf{29.7}	&\textbf{32.6
 \end{tabular}
 % }
 \caption{\textbf{Performance comparison of retrieval modalities (F1@10) on Jina-v4.} Evaluation is performed using the multimodal retriever Jina-v4. The Hybrid method combines the top-5 visual and top-5 textual matches, subsequently removing duplicates. The final row reports the average number of unique pages remaining in the hybrid set. The Hybrid setup constantly outperforms both textual and visual retrieval.}
-\label{tab:hybrid_comparison}
+\label{vidorev3:tab:hybrid_comparison}
 \end{table*}
 
 
@@ -418,9 +420,9 @@ Hybrid	&\textbf{43.0}	&\textbf{27.7}	&\textbf{30.9}	&\textbf{29.7}	&\textbf{32.6
 % \newpage
 
 
-\section{ColEmbed-3B-v2 performance breakdown}\label{appendix: colembed-v2-perf-breakdown}
+\section{ColEmbed-3B-v2 performance breakdown}\label{vidorev3:appendix: colembed-v2-perf-breakdown}
 
-\Cref{tab:perf language} details the retrieval scores of ColEmbed-3B-v2 by query language, highlighting small performance variations by language.
+\Cref{vidorev3:tab:perf language} details the retrieval scores of ColEmbed-3B-v2 by query language, highlighting small performance variations by language.
 
 % \begin{table}[h!]
 % \centering
@@ -444,12 +446,12 @@ Hybrid	&\textbf{43.0}	&\textbf{27.7}	&\textbf{30.9}	&\textbf{29.7}	&\textbf{32.6
 % \end{tabular}
 % }
 % \caption{\textbf{ColEmbed-3B-v2 NDCG@10 by query type and format.}}
-% \label{tab:perf query type format}
+% \label{vidorev3:tab:perf query type format}
 % \end{table}
 
 \paragraph{Performance by number of annotated pages}
 
-As seen in Figure~\ref{fig:perf number of pages}, performance drops with the number of annotated pages. However, a potential confounding factor is the correlation between query type and the number of annotated pages, since more complex query types also have higher number of annotated pages (Figure~\ref{fig:num pages per query type}). We perform a stratified regression analysis to isolate these two effects.
+As seen in Figure~\ref{vidorev3:fig:perf number of pages}, performance drops with the number of annotated pages. However, a potential confounding factor is the correlation between query type and the number of annotated pages, since more complex query types also have higher number of annotated pages (Figure~\ref{vidorev3:fig:num pages per query type}). We perform a stratified regression analysis to isolate these two effects.
 
 
 
@@ -458,7 +460,7 @@ We model NDCG@10 as a linear function of the number of annotated pages ($P$) str
     NDCG@10 = a \cdot P + b + \epsilon.
 \end{equation*}
 
-Results in Figure~\ref{fig:perf content num pages} and Table~\ref{tab:num pages content type decay} reveal that all query types suffer a significant performance penalty as the number of annotated pages increases. Slope values are nearly uniform ($a \approx -0.024$), suggesting a similar drop in retrieval accuracy across most query types. The open-ended and enumerative types are the two exceptions: despite having the lowest NDCG@10 for low page counts, they also have the shallowest slope, which suggests that retrieval success on these queries is constrained by the model's fundamental difficulty in synthesizing multiple relevant sources rather than the volume of relevant context.
+Results in Figure~\ref{vidorev3:fig:perf content num pages} and Table~\ref{vidorev3:tab:num pages content type decay} reveal that all query types suffer a significant performance penalty as the number of annotated pages increases. Slope values are nearly uniform ($a \approx -0.024$), suggesting a similar drop in retrieval accuracy across most query types. The open-ended and enumerative types are the two exceptions: despite having the lowest NDCG@10 for low page counts, they also have the shallowest slope, which suggests that retrieval success on these queries is constrained by the model's fundamental difficulty in synthesizing multiple relevant sources rather than the volume of relevant context.
 
 \begin{table}[!h]
 \small
@@ -478,21 +480,21 @@ German & 57.9 \\
 \end{tabular}
 %}
 \caption{\textbf{ColEmbed-3B-v2 NDCG@10 by query language.}}
-\label{tab:perf language}
+\label{vidorev3:tab:perf language}
 \end{table}
 
 \begin{figure}[t]
     \centering
     \includegraphics[width=\columnwidth]{images/vidorev3_images/annotated_pages_by_query_type.pdf}
     \caption{\textbf{Average number of annotated pages by query type.}} 
-    \label{fig:num pages per query type}
+    \label{vidorev3:fig:num pages per query type}
 \end{figure}
 
 \begin{figure}[h!]
     \centering
     \includegraphics[width=\columnwidth]{images/vidorev3_images/ndcg_query_type_num_pages.pdf}
     \caption{\textbf{ColEmbed-3B-v2 NDCG@10 by number of annotated pages and query type.}} 
-    \label{fig:perf content num pages}
+    \label{vidorev3:fig:perf content num pages}
 \end{figure}
 
 \begin{table}[h!]
@@ -512,12 +514,12 @@ Open-ended        & -0.0129 & 0.577 & 0.057 \\
 \bottomrule
 \end{tabular}
 \caption{\textbf{Linear regression analysis of NDCG@10 decay with number of annotated pages, by query type.} The slope $a$ represents performance sensitivity to retrieval context size, while the intercept $b$ represents intrinsic difficulty at minimum context size.}
-\label{tab:num pages content type decay}
+\label{vidorev3:tab:num pages content type decay}
 \end{table}
 
 \paragraph{Performance by content type}
 
-NDCG@10 by content type in Table~\ref{tab:perf content type} show that retrieval is more challenging for visual content, with Image performing 10pp below Text. However, content type and query type are correlated in our benchmark: for instance, tables appear in numerical queries 2.2 $\times$ more often than the baseline, while images are over-represented in open-ended queries (Figure~\ref{fig:lift content type}). Since numerical queries are easier than open-ended ones, we test whether the effect of content type is a byproduct of query type confounding. We fit an additive model that predicts performance as the sum of independent query-type and content-type effects. Figure~\ref{fig:ndcg content query residuals heatmap} shows the residuals which measure deviation from this baseline. We see that most residuals are below 5pp, indicating that the two factors combine additively without significant interaction.
+NDCG@10 by content type in Table~\ref{vidorev3:tab:perf content type} show that retrieval is more challenging for visual content, with Image performing 10pp below Text. However, content type and query type are correlated in our benchmark: for instance, tables appear in numerical queries 2.2 $\times$ more often than the baseline, while images are over-represented in open-ended queries (Figure~\ref{vidorev3:fig:lift content type}). Since numerical queries are easier than open-ended ones, we test whether the effect of content type is a byproduct of query type confounding. We fit an additive model that predicts performance as the sum of independent query-type and content-type effects. Figure~\ref{vidorev3:fig:ndcg content query residuals heatmap} shows the residuals which measure deviation from this baseline. We see that most residuals are below 5pp, indicating that the two factors combine additively without significant interaction.
 
 
 \begin{table}[h!]
@@ -539,21 +541,21 @@ Mixed & 45.1 & 1164 \\
 \end{tabular}
 %}
 \caption{\textbf{ColEmbed-3B-v2 NDCG@10 by content type.} Content type is labeled on each annotated page based on the nature of the query-relevant content delimited by the bounding boxes. One page may be tagged with several content types if it contains multiple relevant sections of distinct nature. The Mixed type corresponds to annotations encompassing several content types.}
-\label{tab:perf content type}
+\label{vidorev3:tab:perf content type}
 \end{table}
 
 \begin{figure}[h!]
 \centering
 \includegraphics[width=\columnwidth]{images/vidorev3_images/lift_content_query_type.pdf}
 \caption{\textbf{Lift of query types by content type.} Each cell shows the ratio of observed query type frequency to baseline frequency for a given content type. Values >1 indicate over-representation (e.g., tables appear 2.15× more in numerical queries than expected), while values <1 indicate under-representation.}
-\label{fig:lift content type}
+\label{vidorev3:fig:lift content type}
 \end{figure}
 
 \begin{figure}[h!]
 \centering
 \includegraphics[width=\columnwidth]{images/vidorev3_images/ndcg_content_query_residuals_heatmap.pdf}
 \caption{\textbf{Residuals from additive performance model.} Each cell shows the difference between observed NDCG@10 and the value predicted by an additive model of query type and content type main effects. Values near zero (white) indicate no interaction; positive values (red) indicate better-than-expected performance for that combination; negative values (blue) indicate worse-than-expected.} 
-\label{fig:ndcg content query residuals heatmap}
+\label{vidorev3:fig:ndcg content query residuals heatmap}
 \end{figure}
 
 % \begin{table}[h!]
@@ -570,7 +572,7 @@ Mixed & 45.1 & 1164 \\
 % \end{tabular}
 % }
 % \caption{\textbf{ColEmbed-3B-v2 NDCG@10 by query format.}}
-% \label{tab:perf query format}
+% \label{vidorev3:tab:perf query format}
 % \end{table}
 
 % \begin{table}[h!]
@@ -591,7 +593,7 @@ Mixed & 45.1 & 1164 \\
 % \end{tabular}
 % }
 % \caption{\textbf{colembed-3b-v2 NDCG@10 by query type.} The sum of the query type count column exceeds the number of individual queries since a query may have multiple tags,}
-% \label{tab:perf query type}
+% \label{vidorev3:tab:perf query type}
 % \end{table}
 
 % \begin{table}[h!]
@@ -616,7 +618,7 @@ Mixed & 45.1 & 1164 \\
 % \end{tabular}
 % }
 % \caption{\textbf{colembed-3b-v2 NDCG@10 by query type and format.} The sum of the query type counts exceeds the number of individual queries since a query may have multiple tags.}
-% \label{tab:perf query type format}
+% \label{vidorev3:tab:perf query type format}
 % \end{table}
 
 % \begin{table}[h!]
@@ -637,7 +639,7 @@ Mixed & 45.1 & 1164 \\
 % \end{tabular}
 % }
 % \caption{\textbf{ColEmbed-3B-v2 NDCG@10 by content type.} Content type is labeled on each annotated page based on the nature of the query-relevant content delimited by the bounding boxes.}
-% \label{tab:perf content type}
+% \label{vidorev3:tab:perf content type}
 % \end{table}
 
 % \begin{table}[h!]
@@ -658,7 +660,7 @@ Mixed & 45.1 & 1164 \\
 % \end{tabular}
 % % }
 % \caption{\textbf{colembed-3b-v2 NDCG@10 by number of annotated pages.}}
-% \label{tab:perf number of pages}
+% \label{vidorev3:tab:perf number of pages}
 % \end{table}
 
 
@@ -677,15 +679,15 @@ Mixed & 45.1 & 1164 \\
 % \end{tabular}
 % }
 % \caption{\textbf{ColEmbed-3B-v2 NDCG@10 by query generation method.}}
-% \label{fig:perf query generation method}
+% \label{vidorev3:fig:perf query generation method}
 % \end{table}
 
 \section{Bounding box annotations}
-\label{appendix: bbox}
+\label{vidorev3:appendix: bbox}
 
-\paragraph{Inter-annotator agreement} \label{appendix: annotator agreement bbox}
+\paragraph{Inter-annotator agreement} \label{vidorev3:appendix: annotator agreement bbox}
 
-Table~\ref{tab:inter-annotator bbox agreement} shows IoU and F1 scores between human annotations, to detail results of Section~\ref{sec: grounded qa}.
+Table~\ref{vidorev3:tab:inter-annotator bbox agreement} shows IoU and F1 scores between human annotations, to detail results of Section~\ref{vidorev3:sec: grounded qa}.
 
 \begin{table*}[h!]
 \centering
@@ -702,23 +704,23 @@ Table~\ref{tab:inter-annotator bbox agreement} shows IoU and F1 scores between h
 \end{tabular}
 }
 \caption{\textbf{Inter-annotator agreement metrics on bounding box annotations.}}
-\label{tab:inter-annotator bbox agreement} 
+\label{vidorev3:tab:inter-annotator bbox agreement} 
 \end{table*}
 
 \paragraph{Bounding box predictions}
 
-Figure~\ref{fig:bbox_instructions} shows the prompt used to generate final answers with inline bounding boxes for visual grounding, and Figure~\ref{fig:bbox evaluation} reports bounding box localization F1 scores by dataset.
+Figure~\ref{vidorev3:fig:bbox_instructions} shows the prompt used to generate final answers with inline bounding boxes for visual grounding, and Figure~\ref{vidorev3:fig:bbox evaluation} reports bounding box localization F1 scores by dataset.
 
 \begin{figure*}[h!]
     \centering
     \includegraphics[width=\textwidth]{images/vidorev3_images/bbox_localization_by_dataset.pdf}
     \caption{\textbf{Model bounding box localization performance}. Each F1 score measures the zone-based overlap between model-generated bounding boxes and human annotations, using the annotator yielding the highest F1.} 
-    \label{fig:bbox evaluation}
+    \label{vidorev3:fig:bbox evaluation}
 \end{figure*}
 
-\section{Final answer evaluation} \label{appendix:final answer eval}
+\section{Final answer evaluation} \label{vidorev3:appendix:final answer eval}
 
-\paragraph{Evaluation setup} Generated final answers are evaluated in a pass@1 setting using GPT 5.2 with medium reasoning effort as the LLM judge. The judge compares each generated answer against the ground-truth annotation and returns a binary correctness label. The answer generation and judge prompts are shown in Figure~\ref{fig:generation_prompt} and Figure~\ref{fig:judge_prompt} respectively. We evaluated Gemini 3 Pro with low thinking effort, GPT-5 with medium reasoning effort, as well as the thinking version of Qwen3-VL-235B-A22B.
+\paragraph{Evaluation setup} Generated final answers are evaluated in a pass@1 setting using GPT 5.2 with medium reasoning effort as the LLM judge. The judge compares each generated answer against the ground-truth annotation and returns a binary correctness label. The answer generation and judge prompts are shown in Figure~\ref{vidorev3:fig:generation_prompt} and Figure~\ref{vidorev3:fig:judge_prompt} respectively. We evaluated Gemini 3 Pro with low thinking effort, GPT-5 with medium reasoning effort, as well as the thinking version of Qwen3-VL-235B-A22B.
 
 % To assess the variance of this evaluation, we conducted 5 independent runs on Gemini 3 Pro outputs using the oracle retriever with image context. Individual run scores were 71.72\,\%, 72.14\,\%, 72.14\,\%, 72.14\,\%, and 72.30\,\%, for a mean score of 72.09\,\% and a standard deviation of 0.22\,\% ((Krippendorff's $\alpha = 0.91$, indicating high intra-judge consistency).
 
@@ -728,7 +730,7 @@ To assess the reliability of our judge, we conducted 5 independent evaluation ru
 
 We measured an average score of 65.74\,\% with a standard deviation of 0.94\,\%. Crucially, the evaluation signal remains robust against generative noise, achieving a Krippendorff's $\alpha$ of 0.80. This agreement confirms that the end-to-end results are statistically reliable even when subjected to the most difficult evaluation scenarios.
 
-\paragraph{Easy/hard query filtering} To classify queries by difficulty, we prompt a panel of 6 LLMs to answer each query without access to any corpus context. We select GPT-5-nano, GPT-5-mini, GPT-5, Qwen3-VL-30B-A3B, Gemini 2.5 Flash, and Gemini 2.5 Pro to span different model families and capability levels. Each model receives only the query text and is asked to provide a direct answer with the prompt in Figure~\ref{fig:easy_query_prompt}. Answers are evaluated for correctness using the same GPT-5.2 judge described above. A query is labeled \textit{easy} if at least one model answers correctly, and \textit{hard} otherwise. Table~\ref{tab: easy hard filtering} reports per-model accuracy and the resulting proportion of easy queries for each dataset. The distribution varies substantially across domains: knowledge-intensive datasets such as Computer Science and Physics have over 85\% easy queries, while domain-specific datasets such as Finance and Energy contain fewer than 35\% easy queries, reflecting the specialized nature of their content.
+\paragraph{Easy/hard query filtering} To classify queries by difficulty, we prompt a panel of 6 LLMs to answer each query without access to any corpus context. We select GPT-5-nano, GPT-5-mini, GPT-5, Qwen3-VL-30B-A3B, Gemini 2.5 Flash, and Gemini 2.5 Pro to span different model families and capability levels. Each model receives only the query text and is asked to provide a direct answer with the prompt in Figure~\ref{vidorev3:fig:easy_query_prompt}. Answers are evaluated for correctness using the same GPT-5.2 judge described above. A query is labeled \textit{easy} if at least one model answers correctly, and \textit{hard} otherwise. Table~\ref{vidorev3:tab: easy hard filtering} reports per-model accuracy and the resulting proportion of easy queries for each dataset. The distribution varies substantially across domains: knowledge-intensive datasets such as Computer Science and Physics have over 85\% easy queries, while domain-specific datasets such as Finance and Energy contain fewer than 35\% easy queries, reflecting the specialized nature of their content.
 
 
 % \begin{table*}[h!]
@@ -744,12 +746,12 @@ We measured an average score of 65.74\,\% with a standard deviation of 0.94\,\%.
 % \bottomrule
 % \end{tabular}
 % \caption{\textbf{\textit{Hard} query filtering statistics}. We report the original query counts versus the number of \textit{hard} queries remaining after filtering for model consensus.}
-% \label{tab: hard queries answer generation}
+% \label{vidorev3:tab: hard queries answer generation}
 % \end{table*}
 
 \begin{table*}[h!]
 \centering
-\label{tab:performance_model}
+\label{vidorev3:tab:performance_model}
 % \resizebox{\textwidth}{!}{%
 \begin{tabular}{l c c c c c c c c >{\columncolor{avgcol}}c}
 \toprule
@@ -769,7 +771,7 @@ Gemini 2.5 Pro  & 70.2 & 16.8 & 29.4 & 15.4 & 23.7 & 63.9 & 20.5 & 20.0 & 32.9 \
 \end{tabular}
 % }
 \caption{\textbf{Percentage of queries correctly answered by LLMs without corpus context.} A panel of 6 LLMs is asked to answer the queries of the 8 public datasets without access to any corpus context. Queries correctly answered by at least one of the 6 models are classified as \textit{easy} queries, while the rest are labeled as \textit{hard}. Easy queries account for 48.6\,\% of all the queries.}
-\label{tab: easy hard filtering}
+\label{vidorev3:tab: easy hard filtering}
 \end{table*}
 
 
@@ -779,37 +781,37 @@ Gemini 2.5 Pro  & 70.2 & 16.8 & 29.4 & 15.4 & 23.7 & 63.9 & 20.5 & 20.0 & 32.9 \
 
 % Merge of the 2 paragraphs below:
 
-Qualitative analysis reveals distinct failure modes. Gemini frequently produces off-by-one page indexing errors: the predicted coordinates would correctly localize the target content if applied to an adjacent page. The two models also differ in box granularity: Gemini tends to draw tight boxes around individual elements (e.g., a single table cell or text line), whereas Qwen3-VL generates larger boxes encompassing entire sections or paragraphs, more closely matching human annotation patterns. Figures~\ref{fig:bbox examples qwen} and~\ref{fig:bbox examples gemini} illustrate these tendencies across four dataset pages: Qwen3-VL's bounding boxes are comparatively wide and encompass entire page elements (pages (a), (c), and (d)), while Gemini 3 Pro's visual grounding is more precise (pages (b) and (c)). This difference in granularity partially explains Qwen3-VL's higher F1 scores, as broader boxes are more likely to overlap with the ground-truth zones used in our evaluation. Both models exhibit errors and omissions: in page (b), the chart is not labeled by Qwen3-VL, and in page (d), Gemini 3 Pro predicts incorrect bounding boxes for the bottom table while Qwen3-VL provides grounding for the wrong table.
+Qualitative analysis reveals distinct failure modes. Gemini frequently produces off-by-one page indexing errors: the predicted coordinates would correctly localize the target content if applied to an adjacent page. The two models also differ in box granularity: Gemini tends to draw tight boxes around individual elements (e.g., a single table cell or text line), whereas Qwen3-VL generates larger boxes encompassing entire sections or paragraphs, more closely matching human annotation patterns. Figures~\ref{vidorev3:fig:bbox examples qwen} and~\ref{vidorev3:fig:bbox examples gemini} illustrate these tendencies across four dataset pages: Qwen3-VL's bounding boxes are comparatively wide and encompass entire page elements (pages (a), (c), and (d)), while Gemini 3 Pro's visual grounding is more precise (pages (b) and (c)). This difference in granularity partially explains Qwen3-VL's higher F1 scores, as broader boxes are more likely to overlap with the ground-truth zones used in our evaluation. Both models exhibit errors and omissions: in page (b), the chart is not labeled by Qwen3-VL, and in page (d), Gemini 3 Pro predicts incorrect bounding boxes for the bottom table while Qwen3-VL provides grounding for the wrong table.
 
 %Qualitative analysis reveals distinct failure modes. Gemini frequently produces off-by-one page indexing errors: the predicted coordinates would correctly localize the target content if applied to an adjacent page. The two models also differ in box granularity: Gemini tends to draw tight boxes around individual elements (e.g., a single table cell or text line), whereas Qwen3-VL generates larger boxes encompassing entire sections or paragraphs, more closely matching human annotation patterns \gmor{If we need to save some space for submission, these details about how Gemini and Qwen3-VL generates boxes could go to the Appendix}. This difference partially explains Qwen3-VL's higher F1 scores, as broader boxes are more likely to overlap with the ground-truth zones used in our evaluation.
 
-%Figures~\ref{fig:bbox examples qwen} and~\ref{fig:bbox examples gemini} show examples of bounding box predictions by Qwen3-VL-30B-A3B and Gemini 3 Pro for 4 dataset pages. They show examples of the qualitative behavior of the models we observe throughout the dataset. Qwen3-VL's bounding boxes tend to be comparatively wide and encompass entire page elements, as seen in pages (a), (c) and (d), while Gemini 3 Pro's visual grounding is more precise (pages (b) and (c)). We also include evidence of errors and omissions from these two models: in page (b), the chart is not labeled by Qwen3-VL and in page (d), Gemini 3 Pro predicts wrong bounding boxes for the bottom table, while Qwen3-VL provides grounding for the wrong table.
+%Figures~\ref{vidorev3:fig:bbox examples qwen} and~\ref{vidorev3:fig:bbox examples gemini} show examples of bounding box predictions by Qwen3-VL-30B-A3B and Gemini 3 Pro for 4 dataset pages. They show examples of the qualitative behavior of the models we observe throughout the dataset. Qwen3-VL's bounding boxes tend to be comparatively wide and encompass entire page elements, as seen in pages (a), (c) and (d), while Gemini 3 Pro's visual grounding is more precise (pages (b) and (c)). We also include evidence of errors and omissions from these two models: in page (b), the chart is not labeled by Qwen3-VL and in page (d), Gemini 3 Pro predicts wrong bounding boxes for the bottom table, while Qwen3-VL provides grounding for the wrong table.
 
 \begin{figure*}[h!]
     \centering
     \includegraphics[width=\textwidth]{images/vidorev3_images/bbox_examples_qwen.pdf}
     \caption{\textbf{Visual grounding comparative examples for Qwen3-VL-30B-A3B.} Each panel shows a document page with Qwen3-VL's predicted bounding boxes (solid magenta) and human bounding boxes (dashed blue and green, one color per annotator). Corresponding datasets and queries: (a) finance\_en: What was the average daily Value at Risk (VaR) for Goldman Sachs during 2024?, (b) finance\_en: List the 3 components of regulatory capital under Basel III, and determine the role of each component., (c) hr\_en: Analyze how full-time employment among returning health workers evolved in the Netherlands and Italy from 2018 to 2023, and describe the differences in their employment trends., (d) finance\_fr: Croissance Mode Maroquinerie vs Vins Spiritueux 2023 performance}
-    \label{fig:bbox examples qwen}
+    \label{vidorev3:fig:bbox examples qwen}
 \end{figure*}
 
 \begin{figure*}[h!]
     \centering
     \includegraphics[width=\textwidth]{images/vidorev3_images/bbox_examples_gemini.pdf}
     \caption{\textbf{Visual grounding comparative examples for Gemini 3 Pro.} Each panel shows a document page with Gemini's predicted bounding boxes (solid magenta) and human bounding boxes (dashed blue and green, one color per annotator). Corresponding datasets and queries: (a) finance\_en: What was the average daily Value at Risk (VaR) for Goldman Sachs during 2024?, (b) finance\_en: List the 3 components of regulatory capital under Basel III, and determine the role of each component., (c) hr\_en: Analyze how full-time employment among returning health workers evolved in the Netherlands and Italy from 2018 to 2023, and describe the differences in their employment trends., (d) finance\_fr: Croissance Mode Maroquinerie vs Vins Spiritueux 2023 performance}
-    \label{fig:bbox examples gemini}
+    \label{vidorev3:fig:bbox examples gemini}
 \end{figure*}
 
-\label{appendix: bbox examples}
+\label{vidorev3:appendix: bbox examples}
 
 % \clearpage
 
 \section{Instructions given to Annotators}
-\label{appendix: annotator_instructions}
+\label{vidorev3:appendix: annotator_instructions}
 
-\paragraph{Query Generation}\Cref{fig:task_1_instructions} details step-by-step instructions to annotators to generate queries from summaries and images.
+\paragraph{Query Generation}\Cref{vidorev3:fig:task_1_instructions} details step-by-step instructions to annotators to generate queries from summaries and images.
 
-\begin{promptfigure}[blue!5]{\textbf{Instructions given to human annotators to create queries}}{fig:task_1_instructions}
-\begin{verbatim}
+\begin{promptfigure}[blue!5]{\textbf{Instructions given to human annotators to create queries}}{vidorev3:fig:task_1_instructions}
+\begin{Verbatim}[breaklines=true,breakanywhere=true,fontsize=\scriptsize]
 # Step 1
     The annotator will be provided with content(text summary or image(s)) and a list of instructions
     on the queries that are expected.
@@ -824,11 +826,11 @@ Qualitative analysis reveals distinct failure modes. Gemini frequently produces 
     - If the summary is not adapted to a specific type or format of questions, the annotator may skip. 
     - They should follow the number of queries asked for each category.
     - They should follow the expected type of queries provided and the format.
-\end{verbatim}
+\end{Verbatim}
 \end{promptfigure}
 
 
-\paragraph{Query-Page Relevancy linking}\Cref{fig:task_2_instructions} details the step-by-step instructions provided to annotators for assessing page relevance, identifying content modalities, and localizing evidence via bounding boxes. \Cref{tab:relevance_scale} gives the definitions of relevancy scores used by the human annotators.
+\paragraph{Query-Page Relevancy linking}\Cref{vidorev3:fig:task_2_instructions} details the step-by-step instructions provided to annotators for assessing page relevance, identifying content modalities, and localizing evidence via bounding boxes. \Cref{vidorev3:tab:relevance_scale} gives the definitions of relevancy scores used by the human annotators.
 
 \begin{table}[h!]
 \centering
@@ -846,7 +848,7 @@ Qualitative analysis reveals distinct failure modes. Gemini frequently produces 
 \bottomrule
 \end{tabularx}
 \caption{\textbf{Relevance definitions used for page-level annotations.}}
-\label{tab:relevance_scale}
+\label{vidorev3:tab:relevance_scale}
 \end{table}
 
 % \begin{table*}[h!]
@@ -862,11 +864,11 @@ Qualitative analysis reveals distinct failure modes. Gemini frequently produces 
 % \bottomrule
 % \end{tabular}
 % \caption{\textbf{Relevance scale used for page-level annotations.}}
-% \label{tab:relevance_scale}
+% \label{vidorev3:tab:relevance_scale}
 % \end{table*}
 
-\begin{promptfigure}[blue!5]{\textbf{Instructions given to human annotators to annotate query-page relevancy}}{fig:task_2_instructions}
-\begin{verbatim}
+\begin{promptfigure}[blue!5]{\textbf{Instructions given to human annotators to annotate query-page relevancy}}{vidorev3:fig:task_2_instructions}
+\begin{Verbatim}[breaklines=true,breakanywhere=true,fontsize=\scriptsize]
 # Task overview
 In this task, the annotator will be provided with a query and pages that are supposed to be relevant
 to answer the query. The annotator’s goal is to rate the relevance in answerability of each page with
@@ -904,15 +906,15 @@ Modality : [“text”, “table”, “chart”, infographic”, “image”, �
     - Propose an answer to the query, given the relevant pages.
     - If the query is not answerable, rate it as “unanswerable”
 
-\end{verbatim}
+\end{Verbatim}
 \end{promptfigure}
 
 \section{Prompts}
 
-All the prompts used for both dataset generation and evaluations are detailed from \Cref{fig:query_generation_prompt} to \Cref{fig:bbox_instructions}.
+All the prompts used for both dataset generation and evaluations are detailed from \Cref{vidorev3:fig:query_generation_prompt} to \Cref{vidorev3:fig:bbox_instructions}.
 
-\begin{promptfigure}{\textbf{Prompt used generate synthetic queries with the NeMo Data Designer tool}}{fig:query_generation_prompt}
-\begin{verbatim}
+\begin{promptfigure}{\textbf{Prompt used generate synthetic queries with the NeMo Data Designer tool}}{vidorev3:fig:query_generation_prompt}
+\begin{Verbatim}[breaklines=true,breakanywhere=true,fontsize=\scriptsize]
 <mission>
 You are an assistant specialized in visual document understanding tasks. You will be given a context, 
 summarizing the content of a section or multiple document sections. Your goal is to carefully analyze 
@@ -975,12 +977,12 @@ query. The query should be {{ query_type }} using the provided context and have 
 {{ query_format }} query.
 The query should be self-sufficient and related to the context.
 </instructions>
-\end{verbatim}
+\end{Verbatim}
 \end{promptfigure}
 
-\begin{promptfigure}{\textbf{Prompt used to pre-filter the irrelevant pages for a given query}}{fig:query_linking_prompt}
+\begin{promptfigure}{\textbf{Prompt used to pre-filter the irrelevant pages for a given query}}{vidorev3:fig:query_linking_prompt}
 
-\begin{verbatim}
+\begin{Verbatim}[breaklines=true,breakanywhere=true,fontsize=\scriptsize]
 <mission>
 You are an assistant specialized in visual document understanding tasks. You will be given a document
 page by page and a question. Your goal is to carefully analyze the page and say if it is related to
@@ -1029,11 +1031,11 @@ Here is the question :
 And there is the page content :
 
 </instructions>
-\end{verbatim}
+\end{Verbatim}
 \end{promptfigure}
 
-\begin{promptfigure}{\textbf{Prompt used to merge human annotators answers}}{fig:answer_merging_prompt}
-\begin{verbatim}
+\begin{promptfigure}{\textbf{Prompt used to merge human annotators answers}}{vidorev3:fig:answer_merging_prompt}
+\begin{Verbatim}[breaklines=true,breakanywhere=true,fontsize=\scriptsize]
 You are given a set of document pages (images), a query, and a list of one or more
 proposed answers.
 
@@ -1080,19 +1082,19 @@ Do not use outside knowledge.
 from the text.
 
 - Your final output must be only the JSON object.
-\end{verbatim}
+\end{Verbatim}
 \end{promptfigure}
 
-\begin{promptfigure}{\textbf{Easy/hard query filtering prompt}}{fig:easy_query_prompt}
-\begin{verbatim}
+\begin{promptfigure}{\textbf{Easy/hard query filtering prompt}}{vidorev3:fig:easy_query_prompt}
+\begin{Verbatim}[breaklines=true,breakanywhere=true,fontsize=\scriptsize]
 Give a very precise and concise answer to the following query.
 If you are unable to answer, output 'I don't know'.
 Query: {{ query }}
-\end{verbatim}
+\end{Verbatim}
 \end{promptfigure}
 
-\begin{promptfigure}{\textbf{Judge prompt used for end to end evaluation}}{fig:judge_prompt}
-\begin{verbatim}
+\begin{promptfigure}{\textbf{Judge prompt used for end to end evaluation}}{vidorev3:fig:judge_prompt}
+\begin{Verbatim}[breaklines=true,breakanywhere=true,fontsize=\scriptsize]
 You are an expert judge evaluating the accuracy of a test answer against a gold-standard true answer.
 Your goal is to determine if the test answer captures the essential "core information."
 
@@ -1117,11 +1119,11 @@ Test Answer: {{ test_answer }}
 Provide a very brief explanation for your judgment. You must output your final response in a JSON
 format with two fields: "explanation" and "judgment" (which must be "Correct", "Partially Correct",
 or "Incorrect").
-\end{verbatim}
+\end{Verbatim}
 \end{promptfigure}
 
-\begin{promptfigure}{\textbf{Answer generation prompt used for end to end evaluation}}{fig:generation_prompt}
-\begin{verbatim}
+\begin{promptfigure}{\textbf{Answer generation prompt used for end to end evaluation}}{vidorev3:fig:generation_prompt}
+\begin{Verbatim}[breaklines=true,breakanywhere=true,fontsize=\scriptsize]
 You are an expert at answering query based on documents.
 
 Here is a list of relevant documents: {{ documents }}
@@ -1129,11 +1131,11 @@ Here is a list of relevant documents: {{ documents }}
 Based on the above documents, answer the following query: {{ query }}
 
 Keep the response short when appropriate. Output the answer only.
-\end{verbatim}
+\end{Verbatim}
 \end{promptfigure}
 
-\begin{promptfigure}{\textbf{Query translation from English to French prompt}}{fig:query_translation}
-\begin{verbatim}
+\begin{promptfigure}{\textbf{Query translation from English to French prompt}}{vidorev3:fig:query_translation}
+\begin{Verbatim}[breaklines=true,breakanywhere=true,fontsize=\scriptsize]
 English text to translate: {{ query }}
 
 Translate the English text above to French.
@@ -1142,11 +1144,11 @@ Follow the following json schema.
 {
     "french_translation": ...
 }
-\end{verbatim}
+\end{Verbatim}
 \end{promptfigure}
 
-\begin{promptfigure}{\textbf{Bounding box prediction prompt}}{fig:bbox_instructions}
-\begin{verbatim}
+\begin{promptfigure}{\textbf{Bounding box prediction prompt}}{vidorev3:fig:bbox_instructions}
+\begin{Verbatim}[breaklines=true,breakanywhere=true,fontsize=\scriptsize]
 # Role and Objective
 - Serve as an expert in document analysis and visual grounding.
 - Given a query and multiple document page images, provide a natural language answer with inline
@@ -1178,5 +1180,5 @@ significant non-relevant content.
 - Example: "The valuation technique described on page 1 
   <bboxes image="0">[[120, 450, 890, 670], [100, 800, 330, 960]]</bboxes> 
   uses discounted cash flow analysis."
-\end{verbatim}
+\end{Verbatim}
 \end{promptfigure}
