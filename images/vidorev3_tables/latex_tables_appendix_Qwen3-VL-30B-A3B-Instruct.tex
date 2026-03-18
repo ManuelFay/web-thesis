@@ -1,0 +1,39 @@
+% VLM Bounding Box Evaluation Results
+% Model: Qwen3-VL-30B-A3B-Instruct
+% Comprehensive Performance Table (Appendix)
+% Generated automatically
+
+\begin{table*}[H]
+\centering
+\small
+\setlength{\tabcolsep}{6pt}
+\begin{tabular}{l c c c c c}
+\toprule
+\textbf{Category} & \textbf{\% Total} & \textbf{Precision} & \textbf{Recall} & \textbf{F1} & \textbf{IoU} \\
+\midrule
+\textit{By dataset} & & & & & \\
+\hspace{3mm} Physics (FR) & 7.9\% & 0.544 & 0.560 & 0.443 & 0.363 \\
+\hspace{3mm} Healthcare (EN) & 9.5\% & 0.448 & 0.325 & 0.327 & 0.266 \\
+\hspace{3mm} Telecom (EN) & 10.3\% & 0.314 & 0.297 & 0.266 & 0.216 \\
+\hspace{3mm} Energy (EN) & 10.2\% & 0.289 & 0.320 & 0.257 & 0.207 \\
+\hspace{3mm} Energy (FR) & 7.9\% & 0.253 & 0.307 & 0.235 & 0.197 \\
+\hspace{3mm} HR (EN) & 12.6\% & 0.262 & 0.272 & 0.228 & 0.184 \\
+\hspace{3mm} Computer Science (EN) & 7.3\% & 0.262 & 0.281 & 0.226 & 0.180 \\
+\hspace{3mm} Finance (EN) & 11.7\% & 0.243 & 0.249 & 0.203 & 0.162 \\
+\hspace{3mm} Finance (FR) & 13.8\% & 0.214 & 0.215 & 0.183 & 0.156 \\
+\hspace{3mm} Industrial (EN) & 8.8\% & 0.185 & 0.163 & 0.139 & 0.109 \\
+\addlinespace
+\midrule
+\textit{By annotator agreement} & & & & & \\
+\hspace{3mm} High ($\text{IoU} \ge 0.7$) & 2.6\% & 0.817 & 0.738 & 0.697 & 0.606 \\
+\hspace{3mm} Medium ($0.3\text{--}0.7$) & 3.2\% & 0.780 & 0.738 & 0.688 & 0.580 \\
+\hspace{3mm} Low ($< 0.3$) & 2.7\% & 0.733 & 0.710 & 0.641 & 0.525 \\
+\hspace{3mm} Single Annotator & 34.8\% & 0.656 & 0.658 & 0.540 & 0.435 \\
+\hspace{3mm} None (no annotations) & 56.8\% & 0.000 & 0.000 & 0.000 & 0.000 \\
+\midrule
+\textbf{Overall Average} & \textbf{100.0\%} & \textbf{0.294} & \textbf{0.291} & \textbf{0.245} & \textbf{0.199} \\
+\bottomrule
+\end{tabular}
+\caption{\textbf{VLM Bounding Box Detection Performance} (Model: Qwen3-VL-30B-A3B-Instruct). Results are reported across different domain/language pairs and stratified by inter-annotator agreement levels. The \% Total column shows the proportion of samples in each category. The overall average includes all samples; note that samples with no human annotations (None category) have F1=0.0 by definition. IoU denotes the spatial overlap between predicted and ground-truth regions.}
+\label{tab:appendix_performance_Qwen3-VL-30B-A3B-Instruct}
+\end{table*}
