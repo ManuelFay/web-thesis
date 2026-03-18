@@ -13,7 +13,7 @@ Retrieval-Augmented Generation (RAG) pipelines must address challenges beyond si
     \centering
     \includegraphics[trim={2cm 6.5cm 2cm 3.5cm}, clip, width=0.9\textwidth]{images/vidorev3_images/vidore_sample.pdf}
     \caption{\textbf{ViDoRe V3 sample.} Each query is annotated with the relevant pages, a document-grounded answer, bounding boxes localizing supporting evidence and modality labels for each bounding box. Documents are provided in image, text and PDF formats.} % TODO: clean this caption
-    \label{fig:sample}
+    \label{vidorev3:fig:sample}
 \end{figure*}
 
 % In these settings, accurate information retrieval offers the highest operational value yet faces the most unstructured, heterogeneous data. That is why, real-world pipelines must tackle challenges that extend beyond single-document textual retrieval.
@@ -27,7 +27,7 @@ Existing benchmarks leave these requirements only partially addressed. Early Vis
     % \includegraphics[trim={0cm 2cm 0cm 2cm}, clip, width=\textwidth]{images/vidorev3_images/test-vidore-v0.png}
     \includegraphics[width=\textwidth]{images/vidorev3_images/dataset-generation-vf.pdf}
     \caption{\textbf{Overview of the benchmark creation process.} Queries are sourced from 3 streams: \textit{human extractive} (using raw pages), \textit{human blind contextual} (using summaries to mitigate extractive bias), and \textit{synthetic blind contextual}. For each query, a VLM pre-filtered subset of candidate pages is labeled by 1--3 human annotators that perform relevance scoring, bounding box localization and answer generation. A final response aggregation combines annotator answers into a single answer.} %\gmor{Could you identify in the main figure what are Tasks 1 and Task 2?}\anto{Yes, it would be great to reuse the terms Query Writing and Query Linking}}
-    \label{fig:full process}
+    \label{vidorev3:fig:full process}
 \end{figure*}
 
 To address these limitations, we introduce \textbf{\vidorev}, a benchmark designed for complex and realistic end-to-end RAG evaluation on visually rich document corpora. Our contributions are:
@@ -49,7 +49,7 @@ To address these limitations, we introduce \textbf{\vidorev}, a benchmark design
 % %     \centering
 % %     \includegraphics[trim={0cm 2cm 0cm 2cm}, clip, width=\textwidth]{images/vidorev3_images/dataset_overview.pdf}
 % %     \caption{\anto{Placeholder for benchmark overview figure, make it single column if possible} \vic{We can use Antoine's figure as the main figure? Just being cautious about the limited space we have}\anto{Examples of samples are mandatory in a benchmark paper like this, I think we can do a single column figure to make it fit cf. \href{here}{https://arxiv.org/pdf/2007.00398}}}
-% %     \label{fig:full process}
+% %     \label{vidorev3:fig:full process}
 % % \end{figure*}
 
 % \que{More focus on VISUAL retrieving}\que{need to introduce MM-RAG in the abstract}
@@ -62,8 +62,8 @@ To address these limitations, we introduce \textbf{\vidorev}, a benchmark design
 
 % To address this gap, we introduce the following contributions:
 % % \manu{Bullet points are a waste of paper space, you won't find them a lot in most papers cause it means you had space to spare}
-% \paragraph{Contribution 1} We release \textbf{ViDoRe V3}, a comprehensive RAG benchmark emphasizing open-ended queries on long-form, visually rich document corpora. It is composed of 10 datasets from diverse industry domains, totaling about 26,000 document pages paired with 3,099 unique queries available in 6 languages. \manu{do we want to include something about the fact is representative of existing RAG use cases ? ie. domains are diverse but also carefully chosen} It contains fine-grained expert \que{is the expert ok here?} human annotations developed through a 12,000-hour annotation process, including relevant page annotations for retrieval, bounding boxes for visual grounding, and verified reference answers (Section~\ref{sec:benchmark creation}).
-% \paragraph{Contribution 2} Using benchmark annotations, we evaluate \textbf{(i)} retrieval accuracy, providing insights into the effects of pipeline modality, query language and type, and context modality and length (Section~\ref{sec:retrieval results}), \textbf{(ii)} final answer generation and how it varies with retrieval pipeline design choices (Section~\ref{sec:visual grounding results}), \textbf{(iii)} visual grounding based on bounding box localization accuracy (Section~\ref{sec:visual grounding results}). \manu{Contrib 1 is meant to enable this so this is not a contribution on its own. what is a contribution is to evaluate "current models / current pipelines to gather actionnable practicle insights". }
+% \paragraph{Contribution 1} We release \textbf{ViDoRe V3}, a comprehensive RAG benchmark emphasizing open-ended queries on long-form, visually rich document corpora. It is composed of 10 datasets from diverse industry domains, totaling about 26,000 document pages paired with 3,099 unique queries available in 6 languages. \manu{do we want to include something about the fact is representative of existing RAG use cases ? ie. domains are diverse but also carefully chosen} It contains fine-grained expert \que{is the expert ok here?} human annotations developed through a 12,000-hour annotation process, including relevant page annotations for retrieval, bounding boxes for visual grounding, and verified reference answers (Section~\ref{vidorev3:sec:benchmark creation}).
+% \paragraph{Contribution 2} Using benchmark annotations, we evaluate \textbf{(i)} retrieval accuracy, providing insights into the effects of pipeline modality, query language and type, and context modality and length (Section~\ref{vidorev3:sec:retrieval results}), \textbf{(ii)} final answer generation and how it varies with retrieval pipeline design choices (Section~\ref{vidorev3:sec:visual grounding results}), \textbf{(iii)} visual grounding based on bounding box localization accuracy (Section~\ref{vidorev3:sec:visual grounding results}). \manu{Contrib 1 is meant to enable this so this is not a contribution on its own. what is a contribution is to evaluate "current models / current pipelines to gather actionnable practicle insights". }
 
 % \manu{I believe one of the selling points and the novelty of this paper lies in the "method" behind the annotation and this is what we can insist in as a contribution. Figure 2 perfectly goes with my point here."Novel methodology to produce high quality RAG annotations at scale using human in the loop and AI agents etc etc. Remember that Vidore v2 was never published so all contribs of v2 can be used in this paper directly I believe this "methodology as a novelty" angle is the one that will be of interest to the ACL reviewers. Personnaly, this would be contrib 1 to me, then the benchm,ark as 2, then the insights as 3 --> clear storyline.}
 
@@ -99,7 +99,7 @@ To address these limitations, we introduce \textbf{\vidorev}, a benchmark design
 % \bottomrule
 % \end{tabular}
 % \caption{Comparison of Visual Retrieval Benchmarks. \anto{Should I add this benchmark \href{https://huggingface.co/datasets/llamaindex/vdr-multilingual-test}{llamaindex benchmark} ?}\anto{How would we add a row for query diversity}\anto{The first row means checks if the corpus is based on real world pdfs}\anto{Maybe we can find a way of presenting }\anto{Improve presentation of criteria column}} % Existing benchmarks don't cover all the criteria for enterprise evaluation
-% \label{table:benchmark_comparison}
+% \label{vidorev3:table:benchmark_comparison}
 % \end{table*}
 
 \section{Related Work}
@@ -115,20 +115,20 @@ UniDocBench \sidecite{peng2025unidocbenchunifiedbenchmarkdocumentcentric} repres
 %UniDocBench \sidecite{peng2025unidocbenchunifiedbenchmarkdocumentcentric} is a concurrent benchmark featuring diverse query types and a comparative evaluation of multiple RAG paradigms. However, the queries are synthetically generated via knowledge-graph traversal, the benchmark is English-only, and grounding is limited to parsed document elements. Our benchmark provides fully human-verified annotations, multilingual coverage, free-form bounding boxes, and we conduct more systematic evaluations of visual RAG pipeline components.
 
 
-\section{Benchmark Creation} \label{sec:benchmark creation}
+\section{Benchmark Creation} \label{vidorev3:sec:benchmark creation}
 
-We design the benchmark to mirror the diversity of information retrieval situations in large-scale realistic environments. To enable pipeline-agnostic evaluation of the 3 core RAG components (retrieval, generation and grounding), while avoiding limitations of synthetic benchmarks, we employ a rigorous three-stage human-in-the-loop annotation process involving document collection, query generation and grounded query answering (\Cref{fig:full process}).
+We design the benchmark to mirror the diversity of information retrieval situations in large-scale realistic environments. To enable pipeline-agnostic evaluation of the 3 core RAG components (retrieval, generation and grounding), while avoiding limitations of synthetic benchmarks, we employ a rigorous three-stage human-in-the-loop annotation process involving document collection, query generation and grounded query answering (\Cref{vidorev3:fig:full process}).
 
-%The goal is to obtain annotations that can help assess the 3 main components of RAG pipelines: information retrieval, answer generation and answer grounding while being agnostic to the type of pipeline used. To avoid problems of preceding synthetic benchmarks and produce high-quality queries, we design a meticulous human annotation involving 3 steps: document collection, query generation and grounded question answering as described by \Cref{fig:full process}.
+%The goal is to obtain annotations that can help assess the 3 main components of RAG pipelines: information retrieval, answer generation and answer grounding while being agnostic to the type of pipeline used. To avoid problems of preceding synthetic benchmarks and produce high-quality queries, we design a meticulous human annotation involving 3 steps: document collection, query generation and grounded question answering as described by \Cref{vidorev3:fig:full process}.
 
 % TODO: rewrite this paragraph well
 
 \subsection{Document Collection}
 
-We curate 10 diverse corpora by manually selecting openly-licensed documents from governmental, educational, and industry sources, focusing on English and French documents (7 and 3 corpora respectively). The corpora span Finance, Computer Science, Energy, Pharmaceuticals, Human Resources, Industrial Maintenance, Telecom, and Physics. Each features domain-specific terminology and document structures representative of realistic retrieval tasks (details in \Cref{tab:datasets}).
-%\footnote{See Appendix \ref{tab:datasets} for corpus details}.
+We curate 10 diverse corpora by manually selecting openly-licensed documents from governmental, educational, and industry sources, focusing on English and French documents (7 and 3 corpora respectively). The corpora span Finance, Computer Science, Energy, Pharmaceuticals, Human Resources, Industrial Maintenance, Telecom, and Physics. Each features domain-specific terminology and document structures representative of realistic retrieval tasks (details in \Cref{vidorev3:tab:datasets}).
+%\footnote{See Appendix \ref{vidorev3:tab:datasets} for corpus details}.
 
-%To reproduce enterprise scenarios and facilitate enterprise adoption, we created the 10 domain corpora by manually selecting documents from governmental, educational and enterprise websites that met our open license criteria. Each corpus focuses on a well-defined domain with specialized terminology and document structures that are representative of real-world industrial document retrieval tasks\footnote{A detailed breakdown of each corpus is provided in Appendix \ref{tab:datasets}.}. Our focus was on a English-French collection, so 7 corpora were selected in English and 3 in French. Domains cover a wide range of enterprise sectors including Finance, Computer Science, Education, Nuclear Energy, Pharmaceuticals, Human Resources, Industrial Maintenance, Telecom and Physics.
+%To reproduce enterprise scenarios and facilitate enterprise adoption, we created the 10 domain corpora by manually selecting documents from governmental, educational and enterprise websites that met our open license criteria. Each corpus focuses on a well-defined domain with specialized terminology and document structures that are representative of real-world industrial document retrieval tasks\footnote{A detailed breakdown of each corpus is provided in Appendix \ref{vidorev3:tab:datasets}.}. Our focus was on a English-French collection, so 7 corpora were selected in English and 3 in French. Domains cover a wide range of enterprise sectors including Finance, Computer Science, Education, Nuclear Energy, Pharmaceuticals, Human Resources, Industrial Maintenance, Telecom and Physics.
 % TODO: rewrite this paragraph well
 
 \subsection{Query Generation}
@@ -137,7 +137,7 @@ We curate 10 diverse corpora by manually selecting openly-licensed documents fro
 % \que{TODO : merge with 2.3}
 % Unlike traditional retrieval benchmarks that treat user intent as monolithic, the benchmark recognizes that complex enterprise queries often layer multiple formats and types. As detailed in Section \ref{sec:query_generation}, we classified queries using a multi-label taxonomy of 7 distinct types across 3 formats.
 
-\paragraph{Query Taxonomy} To evaluate document visual retrieval systems across diverse realistic scenarios, we develop a query taxonomy with two orthogonal dimensions: \textit{Query Type}, defining the user's information need, and \textit{Query Format}, describing the query's syntactic structure. This dual-axis classification enables more nuanced performance analysis than benchmarks focusing solely on interrogative extractive queries. We define 7 Query Types: \textit{open-ended}, \textit{extractive}, \textit{numerical}, \textit{multi-hop}, \textit{compare-contrast}, \textit{boolean}, and \textit{enumerative}, and 3 Query Formats: \textit{question}, \textit{keyword}, and \textit{instruction}. % that reflect modern search engine usage \vic{last part to justify or remove}\footnote{Taxonomy details are described in \Cref{tab:query_taxonomy}}. % To generate even more diverse queries, a synthetic and human query generation processes were followed.
+\paragraph{Query Taxonomy} To evaluate document visual retrieval systems across diverse realistic scenarios, we develop a query taxonomy with two orthogonal dimensions: \textit{Query Type}, defining the user's information need, and \textit{Query Format}, describing the query's syntactic structure. This dual-axis classification enables more nuanced performance analysis than benchmarks focusing solely on interrogative extractive queries. We define 7 Query Types: \textit{open-ended}, \textit{extractive}, \textit{numerical}, \textit{multi-hop}, \textit{compare-contrast}, \textit{boolean}, and \textit{enumerative}, and 3 Query Formats: \textit{question}, \textit{keyword}, and \textit{instruction}. % that reflect modern search engine usage \vic{last part to justify or remove}\footnote{Taxonomy details are described in \Cref{vidorev3:tab:query_taxonomy}}. % To generate even more diverse queries, a synthetic and human query generation processes were followed.
 
 %\paragraph{Query Taxonomy} A primary objective of our benchmark is to evaluate document visual retrieval systems across a comprehensive spectrum of real-world search scenarios. To achieve this, we first develop a detailed query taxonomy that classifies queries along two orthogonal dimensions: \textit{Query Type}, which defines the user's underlying information need, and \textit{Query Format}, which describes the syntactic structure of the query itself. This dual-axis classification allows for a more nuanced analysis of model performance than benchmarks that focus solely on interrogative extractive queries.
 
@@ -177,7 +177,7 @@ Two types of input contexts are used: specific document sections that target loc
 
 %\manu{This is a big blob of text, maybe simolifying a tad and adding details in the appendix, or structruring this a bit more if ytou decide to make this process as a contribiution (human in the loop blablabla)}
 
-\subsection{Answer Detection and Generation} \label{sec: grounded qa}
+\subsection{Answer Detection and Generation} \label{vidorev3:sec: grounded qa}
 
 Queries are filtered and linked to relevant pages using a hybrid pipeline of VLM pre-filtering and human annotation. It is followed by human answer annotation and visual grounding.
 
@@ -195,15 +195,15 @@ Queries are filtered and linked to relevant pages using a hybrid pipeline of VLM
 %Extractive queries are annotated by at least one annotator and one reviewer, while more complex non-extractive queries are annotated by at least two annotators and one reviewer. A page is retained as relevant if it is marked as such by either (i) one annotator and one reviewer or (ii) at least two annotators.
 % simplifying formulation: we run a first phase of model-assisted and heuristic filters, relying on Qwen2.5-VL-32B-Instruct \sidecite{qwen25vl}.
 
-\paragraph{Relevant Page Selection} To ensure annotation quality, each task is completed by multiple annotators and reviewed by annotation supervisors. Since VLM pre-filtering biases the distribution toward relevant pages, we report Gwet's AC2, as it remains stable under prevalence skew, at 0.760 (see \Cref{appendix: relevance agreement} for dataset-level breakdowns). Given this strong but imperfect agreement, we implement a tiered review process: extractive queries require at least one annotator and one reviewer, while more complex non-extractive queries require at least two annotators and one reviewer. A page is retained as relevant if marked by either (i) one annotator and one reviewer, or (ii) at least two annotators.  %\manu{to me this is a detail that should go in app. here we can say double annotation is used to guarantee quality.}\anto{probably to remove}
+\paragraph{Relevant Page Selection} To ensure annotation quality, each task is completed by multiple annotators and reviewed by annotation supervisors. Since VLM pre-filtering biases the distribution toward relevant pages, we report Gwet's AC2, as it remains stable under prevalence skew, at 0.760 (see \Cref{vidorev3:appendix: relevance agreement} for dataset-level breakdowns). Given this strong but imperfect agreement, we implement a tiered review process: extractive queries require at least one annotator and one reviewer, while more complex non-extractive queries require at least two annotators and one reviewer. A page is retained as relevant if marked by either (i) one annotator and one reviewer, or (ii) at least two annotators.  %\manu{to me this is a detail that should go in app. here we can say double annotation is used to guarantee quality.}\anto{probably to remove}
 
-%Because pages were pre-filtered by a VLM before human annotation, most pages shown to annotators were likely relevant, creating a skewed class distribution. To address this, we report Gwet's AC2 which remains stable under prevalence skew at $0.760$, on average. Details of agreement metrics by domain are given in appendix \ref{appendix: relevance agreement} Given this score, we ensure a safe relevancy annotation by annotating extractive queries by at least one annotator and one reviewer, while more complex non-extractive queries are annotated by at least two annotators and one reviewer. A page is retained as relevant if it is marked as such by either (i) one annotator and one reviewer or (ii) at least two annotators. \manu{to me this is a detail that should go in app. here we can say double annotation is used to guarantee quality.}\anto{probably to remove}
+%Because pages were pre-filtered by a VLM before human annotation, most pages shown to annotators were likely relevant, creating a skewed class distribution. To address this, we report Gwet's AC2 which remains stable under prevalence skew at $0.760$, on average. Details of agreement metrics by domain are given in appendix \ref{vidorev3:appendix: relevance agreement} Given this score, we ensure a safe relevancy annotation by annotating extractive queries by at least one annotator and one reviewer, while more complex non-extractive queries are annotated by at least two annotators and one reviewer. A page is retained as relevant if it is marked as such by either (i) one annotator and one reviewer or (ii) at least two annotators. \manu{to me this is a detail that should go in app. here we can say double annotation is used to guarantee quality.}\anto{probably to remove}
 
 
 
 \paragraph{Answer Generation} For each selected query, annotators were tasked with writing an answer based on the pages they marked as relevant. Given that different annotators might have different answer interpretations and tend not to be exhaustive in their answers, we use Qwen2.5-VL-32B-Instruct to generate a final answer based on the relevant page images marked by the annotators and their answers.
 
-%\paragraph{Inter-Annotator Agreement.} Because pages were pre-filtered by a VLM before human annotation, most pages shown to annotators were likely relevant, creating a skewed class distribution. To address this, we report Gwet's AC2 which remains stable under prevalence skew. On average over all domains, annotators achieved an AC2 of $0.760$. \que{Do we still give the other numbers?}\vic{No but need to add a comment interpreting this metric value}Details of agreement metrics by domain are given in appendix \ref{appendix: relevance agreement}
+%\paragraph{Inter-Annotator Agreement.} Because pages were pre-filtered by a VLM before human annotation, most pages shown to annotators were likely relevant, creating a skewed class distribution. To address this, we report Gwet's AC2 which remains stable under prevalence skew. On average over all domains, annotators achieved an AC2 of $0.760$. \que{Do we still give the other numbers?}\vic{No but need to add a comment interpreting this metric value}Details of agreement metrics by domain are given in appendix \ref{vidorev3:appendix: relevance agreement}
 
 % To filter most of the irrelevant pages, we use a VLM Qwen2.5-VL-32B-Instruct \sidecite{qwen25vl} that is given the query and each page image in the corpus and asked if the page is relevant to answer the query. After this step, we filter out queries whose answers are dispersed on too many pages, more than 30 flagged pages.
 % The remaining queries and the corresponding pages are given to a human annotator that filters the final relevant pages. Queries that are tagged as extractive have at least one annotator and one reviewer and others have at least two annotators and one reviewer, as some annotators might miss relevant pages. Only pages that are tagged as relevant by one annotator and one verifier or at least two annotators are kept as relevant. 
@@ -217,33 +217,33 @@ We compute inter-annotator agreement on the subset of query-page pairs labeled b
 
 %\anto{precision, recall, F1 are not the right terminology here. According to Gemini, prefer Inclusion Ratio (A in B), Inclusion Ratio (B in A) and Symmetric Agreement Score or Dice Coefficient} \vic{Gemini tells me it's fine with the changes I made. It's more convenient to have an asymmetric metric for the VLM bounding box evaluation.}
 
-%Across all 10 datasets, we observe a mean IoU of 0.50 and F1 of 0.60, with per-dataset IoU (Table~\ref{tab:inter-annotator bbox agreement}) ranging from 0.44 (Physics) to 0.62 (Pharma) \manu{per dateset stats aere details that could be removed if need be}.
+%Across all 10 datasets, we observe a mean IoU of 0.50 and F1 of 0.60, with per-dataset IoU (Table~\ref{vidorev3:tab:inter-annotator bbox agreement}) ranging from 0.44 (Physics) to 0.62 (Pharma) \manu{per dateset stats aere details that could be removed if need be}.
 
-Across all 10 datasets, we observe an average IoU of 0.50 and F1 of 0.60. These moderate agreement scores reflect the inherent subjectivity of the task: annotators typically agreed on the relevant content but differed in granularity (Appendix \ref{appendix: bbox examples}), with some marking tight bounds around specific content while others included surrounding context.
+Across all 10 datasets, we observe an average IoU of 0.50 and F1 of 0.60. These moderate agreement scores reflect the inherent subjectivity of the task: annotators typically agreed on the relevant content but differed in granularity (Appendix \ref{vidorev3:appendix: bbox examples}), with some marking tight bounds around specific content while others included surrounding context.
 
-\paragraph{Quality Control} The annotation was conducted by a curated pool of 76 domain-qualified experts with native-level language proficiency. Quality control was performed by 13 senior annotators with enhanced domain knowledge and extensive annotation experience. Detailed protocols regarding the annotator pool and training are provided in Appendix \ref{appendix: annotator pool}.
+\paragraph{Quality Control} The annotation was conducted by a curated pool of 76 domain-qualified experts with native-level language proficiency. Quality control was performed by 13 senior annotators with enhanced domain knowledge and extensive annotation experience. Detailed protocols regarding the annotator pool and training are provided in Appendix \ref{vidorev3:appendix: annotator pool}.
 
 \subsection{Final Query Distribution} 
 % \anto{Move some part to the appendix if not enough space}
 
-We conducted a final human review to remove low-quality queries and resolve labeling ambiguities. \Cref{fig:query_type_distribution} shows the resulting distribution. Extractive queries predominate due to human annotator preference, followed by open-ended queries from targeted sampling. Multi-hop queries were the hardest to scale, suggesting a need for dedicated pipelines. \Cref{fig:content_type_distribution} details page modalities; while text is most prevalent, visual elements like tables, charts, and infographics are well-represented.
+We conducted a final human review to remove low-quality queries and resolve labeling ambiguities. \Cref{vidorev3:fig:query_type_distribution} shows the resulting distribution. Extractive queries predominate due to human annotator preference, followed by open-ended queries from targeted sampling. Multi-hop queries were the hardest to scale, suggesting a need for dedicated pipelines. \Cref{vidorev3:fig:content_type_distribution} details page modalities; while text is most prevalent, visual elements like tables, charts, and infographics are well-represented.
 
-% A final review stage was conducted to remove remaining low-quality queries and resolve labeling ambiguities, as some queries could belong to multiple types. The final query type distribution is shown in \Cref{fig:query_type_distribution}. Extractive queries are the most represented, as annotators generally preferred this type. Open-ended queries also appear frequently due to targeted sampling to ensure adequate coverage. Multi-hop queries proved most difficult to generate at scale; producing more high-quality examples of this type would require a dedicated pipeline. \Cref{fig:content_type_distribution} shows the modality distribution of relevant pages in the benchmark. Text is the most prevalent modality, but visual elements are well represented, with substantial coverage of tables, charts, and infographics.
+% A final review stage was conducted to remove remaining low-quality queries and resolve labeling ambiguities, as some queries could belong to multiple types. The final query type distribution is shown in \Cref{vidorev3:fig:query_type_distribution}. Extractive queries are the most represented, as annotators generally preferred this type. Open-ended queries also appear frequently due to targeted sampling to ensure adequate coverage. Multi-hop queries proved most difficult to generate at scale; producing more high-quality examples of this type would require a dedicated pipeline. \Cref{vidorev3:fig:content_type_distribution} shows the modality distribution of relevant pages in the benchmark. Text is the most prevalent modality, but visual elements are well represented, with substantial coverage of tables, charts, and infographics.
 
-%At the end of the process, a final query review is done by reviewers to remove remaining bad queries and relabel query types as some queries can belong to several query types. Final query distribution is shown in \Cref{fig:query_type_distribution}. Query distribution covers all query types but is dominated by extractive ones which were generally preffered by annotators and open-ended queries on which query type sampling emphasized to make sure this type is covered. Multi-hop queries were the hardest to generate because a dedicated pipeline would have to be built to get more good-quality multi-hop queries. \Cref{fig:content_type_distribution} shows the modality distribution of the relevant pages of the benchmark. The most present modality is text, but visual elements are also well covered with a big proportion of tables, charts and infographics.
+%At the end of the process, a final query review is done by reviewers to remove remaining bad queries and relabel query types as some queries can belong to several query types. Final query distribution is shown in \Cref{vidorev3:fig:query_type_distribution}. Query distribution covers all query types but is dominated by extractive ones which were generally preffered by annotators and open-ended queries on which query type sampling emphasized to make sure this type is covered. Multi-hop queries were the hardest to generate because a dedicated pipeline would have to be built to get more good-quality multi-hop queries. \Cref{vidorev3:fig:content_type_distribution} shows the modality distribution of the relevant pages of the benchmark. The most present modality is text, but visual elements are also well covered with a big proportion of tables, charts and infographics.
 
 \begin{figure}[ht]
     \centering
     \includegraphics[width=\columnwidth]{images/vidorev3_images/vidore_distribution_acl_v2.pdf}
     \caption{\textbf{Query Type Distribution per Domain}} 
-    \label{fig:query_type_distribution}
+    \label{vidorev3:fig:query_type_distribution}
 \end{figure}
 
 \begin{figure}[ht]
     \centering
     \includegraphics[width=\columnwidth]{images/vidorev3_images/content_type_distribution_acl_v2.pdf}
     \caption{\textbf{Content Type Distribution per Domain}} 
-    \label{fig:content_type_distribution}
+    \label{vidorev3:fig:content_type_distribution}
 \end{figure}
 
 % \subsection{Human Annotation}
@@ -252,7 +252,7 @@ We conducted a final human review to remove low-quality queries and resolve labe
 
 %The benchmark was constructed through a two-stage human annotation process designed to produce high-quality queries and reliable ground truth. 
 
-%\paragraph{Annotation Tasks.} The annotation pipeline consisted of two core tasks \gmor{Could you identify in the main figure what are Tasks 1 and Task 2 and reference the image here?}. In the first task, \textit{Query Writing}, annotators reviewed document content and authored queries according to a predefined taxonomy comprising 7 query types and 3 query formats, as detailed in Table~\ref{tab:query_taxonomy}. In the second task, \textit{Query-Page Linking}, annotators performed a comprehensive evaluation: they assessed query quality, rated page relevance on a three-point scale (Not Relevant, Critically Relevant, Fully Relevant), annotated content modalities (Text, Table, Chart, Infographic, Image, or Other), drew bounding boxes around relevant regions, and composed answers to each query. \anto{repeated with 2.3 but better written}
+%\paragraph{Annotation Tasks.} The annotation pipeline consisted of two core tasks \gmor{Could you identify in the main figure what are Tasks 1 and Task 2 and reference the image here?}. In the first task, \textit{Query Writing}, annotators reviewed document content and authored queries according to a predefined taxonomy comprising 7 query types and 3 query formats, as detailed in Table~\ref{vidorev3:tab:query_taxonomy}. In the second task, \textit{Query-Page Linking}, annotators performed a comprehensive evaluation: they assessed query quality, rated page relevance on a three-point scale (Not Relevant, Critically Relevant, Fully Relevant), annotated content modalities (Text, Table, Chart, Infographic, Image, or Other), drew bounding boxes around relevant regions, and composed answers to each query. \anto{repeated with 2.3 but better written}
 
 
 % \paragraph{Annotator Pool and Selection.} Annotation was conducted by a curated pool of 76 annotators who were selected based on having: (1) a bachelor's degree or higher in the relevant domain, (2) professional experience in the domain, (3) native-level language proficiency as required by task, and (4) prior experience with RAG, retrieval, or VQA annotation projects. Quality control was performed by 13 senior annotators with enhanced domain knowledge and extensive annotation experience, with project oversight provided by data leads with multiple years of experience in human data generation. \anto{summarize to one sentence and move the details to appendix}
@@ -284,28 +284,28 @@ Finally, to ensure the integrity of evaluation and mitigate data contamination (
 %     \centering
 %     \includegraphics[trim={0cm 2cm 0cm 2cm}, clip, width=\textwidth]{images/vidorev3_images/summary_generation.pdf}
 %     \caption{Summarization Process}
-%     \label{fig:lf_architecture}
+%     \label{vidorev3:fig:lf_architecture}
 % \end{figure*}
 
 % \begin{figure*}[H]
 %     \centering
 %     \includegraphics[trim={0cm 7cm 0cm 6cm}, clip, width=\textwidth]{images/vidorev3_images/human_query_generation.pdf}
 %     \caption{Human Query Generation Process}
-%     \label{fig:query_page_linking}
+%     \label{vidorev3:fig:query_page_linking}
 % \end{figure*}
 
 % \begin{figure*}[H]
 %     \centering
 %     \includegraphics[trim={0cm 7cm 0cm 7cm}, clip, width=\textwidth]{images/vidorev3_images/synthetic_query_generation.pdf}
 %     \caption{Synthetic Query Generation Process}
-%     \label{fig:query_page_linking}
+%     \label{vidorev3:fig:query_page_linking}
 % \end{figure*}
 
 % \begin{figure*}[H]
 %     \centering
 %     \includegraphics[trim={0cm 4cm 0cm 3cm}, clip, width=\textwidth]{images/vidorev3_images/query_page_linking.pdf}
 %     \caption{Query Page Linking Process}
-%     \label{fig:query_page_linking}
+%     \label{vidorev3:fig:query_page_linking}
 % \end{figure*}
 
 \section{Experiments and Results}
@@ -316,21 +316,21 @@ Using our benchmark, we conduct extensive evaluations across all 3 components of
 %     \centering
 %     \includegraphics{images/vidorev3_images/human_vs_sdg.pdf}
 %     \caption{Performance of ColQwen2.5 on human VS SDG queries generated from summaries}
-%     \label{fig:lf_architecture}
+%     \label{vidorev3:fig:lf_architecture}
 % \end{figure}
 
 % \begin{figure}[H]
 %     \centering
 %     \includegraphics{images/vidorev3_images/human_sum_vs_human_img.pdf}
 %     \caption{Performance of ColQwen2.5 on human queries from summaries VS human queries from images}
-%     \label{fig:lf_architecture}
+%     \label{vidorev3:fig:lf_architecture}
 % \end{figure}
 
 % \begin{figure}[H]
 %     \centering
 %     \includegraphics{images/vidorev3_images/custom_gretel_human.pdf}
 %     \caption{Human preference between custom pipeline, Gretel pipeline and human queries according to several criteria}
-%     \label{fig:lf_architecture}
+%     \label{vidorev3:fig:lf_architecture}
 % \end{figure}
 
 \begin{table*}[h!]
@@ -368,13 +368,13 @@ ColPali & 7 & 65.3 & 32.9 & 34.4 & 53.1 & 44.8 & 35.6 & 54.0 & 41.7 & 47.1 & 21.
 \bottomrule
 \end{tabular}
 }
-\caption{\textbf{Retrieval performance (NDCG@10) across the benchmark.} Best results per category in bold. \mbox{$\bigstar$: single-vector models}. Following MTEB conventions, the average score is a macro-average over all datasets. Full model names and references are found in Table~\ref{tab:model_metadata}.} %\boliu{FYI: I updated the full name of ColEmbed-3B-v2 in Table 9, to be consistent to ColEmbed-3B-v1} \anto{thank you}
-\label{tab:retriever_comparison_updated}
+\caption{\textbf{Retrieval performance (NDCG@10) across the benchmark.} Best results per category in bold. \mbox{$\bigstar$: single-vector models}. Following MTEB conventions, the average score is a macro-average over all datasets. Full model names and references are found in Table~\ref{vidorev3:tab:model_metadata}.} %\boliu{FYI: I updated the full name of ColEmbed-3B-v2 in Table 9, to be consistent to ColEmbed-3B-v1} \anto{thank you}
+\label{vidorev3:tab:retriever_comparison_updated}
 \end{table*}
 
-\subsection{Retrieval} \label{sec:retrieval results}
+\subsection{Retrieval} \label{vidorev3:sec:retrieval results}
 
-We evaluate a large panel of visual and textual retrievers on page-level retrieval ability. Visual retrievers are given page images, while textual retrievers process the Markdown text of each page processed by the NeMo Retriever extraction service\footnote{Chunking within pages or providing image descriptions did not improve our results. Thus, we report the results of the simplest pipeline.} \sidecite{nvidiaocr}. The results reported in Table~\ref{tab:retriever_comparison_updated} corroborate findings from existing document retrieval benchmarks \sidecite{faysse2025colpaliefficientdocumentretrieval,günther2025jinaembeddingsv4universalembeddingsmultimodal}: for a given parameter count, visual retrievers outperform textual retrievers, and late interaction methods score higher than dense methods.
+We evaluate a large panel of visual and textual retrievers on page-level retrieval ability. Visual retrievers are given page images, while textual retrievers process the Markdown text of each page processed by the NeMo Retriever extraction service\footnote{Chunking within pages or providing image descriptions did not improve our results. Thus, we report the results of the simplest pipeline.} \sidecite{nvidiaocr}. The results reported in Table~\ref{vidorev3:tab:retriever_comparison_updated} corroborate findings from existing document retrieval benchmarks \sidecite{faysse2025colpaliefficientdocumentretrieval,günther2025jinaembeddingsv4universalembeddingsmultimodal}: for a given parameter count, visual retrievers outperform textual retrievers, and late interaction methods score higher than dense methods.
 
 
 
@@ -384,37 +384,37 @@ We evaluate a large panel of visual and textual retrievers on page-level retriev
 %         \centering
 %         \includegraphics[width=\textwidth]{images/vidorev3_images/ndcg_by_type_format_transposed.pdf}
 %         \caption{NDCG@10 by query type and format.}
-%         \label{fig:ndcg_type_format}
+%         \label{vidorev3:fig:ndcg_type_format}
 %     \end{subfigure}
 %     \hfill
 %     \begin{subfigure}[t]{0.32\textwidth}
 %         \centering
 %         \includegraphics[width=\textwidth]{images/vidorev3_images/ndcg_by_language.pdf}
 %         \caption{NDCG@10 by query language.}
-%         \label{fig:ndcg_language}
+%         \label{vidorev3:fig:ndcg_language}
 %     \end{subfigure}
 %     \hfill
 %     \begin{subfigure}[t]{0.32\textwidth}
 %         \centering
 %         \includegraphics[width=\textwidth]{images/vidorev3_images/ndcg_by_content_type.pdf}
 %         \caption{NDCG@10 by content type.}
-%         \label{fig:ndcg_content}
+%         \label{vidorev3:fig:ndcg_content}
 %     \end{subfigure}
 %     \caption{\textbf{ColEmbed-3B-v2 performance analysis.}}
-%     \label{fig:ndcg_analysis}
+%     \label{vidorev3:fig:ndcg_analysis}
 % \end{figure*}
 % je te laisse faire
 %on vire the perf of? c'est anglais ? ok
-We analyze ColEmbed-3B-v2, the best-performing retriever we evaluated across query type, content modality, and query language. % detailed results are reported in Appendix~\ref{appendix:supp retrieval}.
+We analyze ColEmbed-3B-v2, the best-performing retriever we evaluated across query type, content modality, and query language. % detailed results are reported in Appendix~\ref{vidorev3:appendix:supp retrieval}.
 
 \paragraph{Performance is aligned with query complexity}
-\Cref{fig:type-format-performance} shows that performance is inversely correlated with query complexity: simple query types such as Boolean and Numerical score significantly higher than Open-ended and Multi-hop queries. Question formulations consistently outperform Instruction and Keyword formats across nearly all categories, underscoring the need for improved handling of these query structures. %, with the notable exception of the Enumerative type for which Keyword queries score 7.4 points higher.
+\Cref{vidorev3:fig:type-format-performance} shows that performance is inversely correlated with query complexity: simple query types such as Boolean and Numerical score significantly higher than Open-ended and Multi-hop queries. Question formulations consistently outperform Instruction and Keyword formats across nearly all categories, underscoring the need for improved handling of these query structures. %, with the notable exception of the Enumerative type for which Keyword queries score 7.4 points higher.
 
 \begin{figure}[ht]
     \centering
     \includegraphics[width=0.99\columnwidth]{images/vidorev3_images/ndcg_by_type_format_transposed.pdf}
     \caption{\textbf{ColEmbed-3B-v2 NDCG@10 by query type and format.}}
-    \label{fig:type-format-performance}
+    \label{vidorev3:fig:type-format-performance}
 \end{figure}
 
 % \begin{table}[h!]
@@ -435,11 +435,11 @@ We analyze ColEmbed-3B-v2, the best-performing retriever we evaluated across que
 % \end{tabular}
 % % }
 % \caption{\textbf{ColEmbed-3B-v2 NDCG@10 by number of annotated pages.}}
-% \label{tab:perf number of pages}
+% \label{vidorev3:tab:perf number of pages}
 % \end{table}
 
 \paragraph{Visual Content and multi-page queries are hardest for retrievers}
-\Cref{fig:content-type-performance} highlights that queries involving visual content like tables or images tend to be more difficult. The Mixed content type scores the lowest, which suggests that integrating information across different modalities within a single page remains a challenge. Additionally, we observe a consistent decline in performance as the number of annotated pages increases (\Cref{fig:perf number of pages}), suggesting that retriever effectiveness decreases
+\Cref{vidorev3:fig:content-type-performance} highlights that queries involving visual content like tables or images tend to be more difficult. The Mixed content type scores the lowest, which suggests that integrating information across different modalities within a single page remains a challenge. Additionally, we observe a consistent decline in performance as the number of annotated pages increases (\Cref{vidorev3:fig:perf number of pages}), suggesting that retriever effectiveness decreases
 %when queries require aggregating information from multiple diverse sources.
 when aggregating information from multiple sources is required.%\vic{think about whether this is normal for ndcg irrespective of query difficulty?} \manu{good point, not sure it's completely comparable even though ndcg is a measure of how perfect the ranking i}.
 
@@ -447,26 +447,26 @@ when aggregating information from multiple sources is required.%\vic{think about
     \centering
     \includegraphics[width=\columnwidth]{images/vidorev3_images/ndcg_by_content_type.pdf}
     \caption{\textbf{ColEmbed-3B-v2 NDCG@10 by modality.}} 
-    \label{fig:content-type-performance}
+    \label{vidorev3:fig:content-type-performance}
 \end{figure}
 
 \begin{figure}[h!]
     \centering
     \includegraphics[width=\columnwidth]{images/vidorev3_images/ndcg_by_relevant_pages.pdf}
     \caption{\textbf{ColEmbed-3B-v2 NDCG@10 by number of annotated pages.}} 
-    \label{fig:perf number of pages}
+    \label{vidorev3:fig:perf number of pages}
 \end{figure}
 
 \paragraph{Cross-language queries degrade performance}
-Retrieval performance is 2--3 points higher in mono-lingual settings (\Cref{tab: english-only retrieval} and \Cref{tab: french-only retrieval}) than cross-lingual settings (\Cref{tab:retriever_comparison_updated}), showing that models need to better adapt to these settings. %\anto{Not super interesting}
+Retrieval performance is 2--3 points higher in mono-lingual settings (\Cref{vidorev3:tab: english-only retrieval} and \Cref{vidorev3:tab: french-only retrieval}) than cross-lingual settings (\Cref{vidorev3:tab:retriever_comparison_updated}), showing that models need to better adapt to these settings. %\anto{Not super interesting}
 
-%Retrieval performance is consistent across all 6 query languages (Table~\ref{tab:perf language}), with a 2.9 point NDCG@10 difference between the best (English, 60.8) and worst (German, 57.9) performers. However, we observe a small multilingual gap: NDCG@10 scores for English and French datasets are 2--3 points higher in a monolingual setting, where queries are in the same language as the documents (Tables~\ref{tab: english-only retrieval} and~\ref{tab: french-only retrieval}).
+%Retrieval performance is consistent across all 6 query languages (Table~\ref{vidorev3:tab:perf language}), with a 2.9 point NDCG@10 difference between the best (English, 60.8) and worst (German, 57.9) performers. However, we observe a small multilingual gap: NDCG@10 scores for English and French datasets are 2--3 points higher in a monolingual setting, where queries are in the same language as the documents (Tables~\ref{vidorev3:tab: english-only retrieval} and~\ref{vidorev3:tab: french-only retrieval}).
 
 % \begin{figure}[ht]
 %     \centering
 %     \includegraphics[width=\columnwidth]{images/vidorev3_images/ndcg_by_language.pdf}
 %     \caption{ColEmbed-3B-v2 NDCG@10 by language.} 
-%     \label{fig:size-performance}
+%     \label{vidorev3:fig:size-performance}
 % \end{figure}
 
 \newcommand{\plus}[1]{\textcolor{teal}{\tiny \textbf{$\uparrow$#1}}}
@@ -519,14 +519,14 @@ Retrieval performance is 2--3 points higher in mono-lingual settings (\Cref{tab:
     \end{tabular}
     }
     \caption{\textbf{Retrieval performance (NDCG@10) of retriever + reranker pipelines.}}
-    \label{tab:reranking_scores_stacked}
+    \label{vidorev3:tab:reranking_scores_stacked}
 \end{table*}
 
-% \que{Condensed version but not a big fan} \paragraph{Textual rerankers help significantly; visual rerankers need improvement.} We test zerank-2 \sidecite{zeroentropy2025} and jina-reranker-m0 \sidecite{jinareranker2025} atop Jina-v4. Table~\ref{tab:reranking_scores_stacked} reveals a performance gap: though the visual base is stronger, the textual reranker yields substantial gains (+13.2 NDCG@10), outperforming the visual pipeline. Meanwhile, the visual reranker provides a marginal +0.2 average improvement and degrades performance across 4 datasets, necessitating better multilingual visual rerankers.
+% \que{Condensed version but not a big fan} \paragraph{Textual rerankers help significantly; visual rerankers need improvement.} We test zerank-2 \sidecite{zeroentropy2025} and jina-reranker-m0 \sidecite{jinareranker2025} atop Jina-v4. Table~\ref{vidorev3:tab:reranking_scores_stacked} reveals a performance gap: though the visual base is stronger, the textual reranker yields substantial gains (+13.2 NDCG@10), outperforming the visual pipeline. Meanwhile, the visual reranker provides a marginal +0.2 average improvement and degrades performance across 4 datasets, necessitating better multilingual visual rerankers.
 
 \paragraph{Textual rerankers outperform visual ones}
 
-We evaluate the impact of adding a reranker to the textual and visual pipelines of the Jina-v4 retriever. We select zerank-2 \sidecite{zeroentropy2025} and jina-reranker-m0 \sidecite{jinareranker2025} as two of the leading textual and visual rerankers to date. Results in Table~\ref{tab:reranking_scores_stacked} reveal a significant disparity in reranking efficacy between modalities. While the visual retriever initially outperforms the textual base, the textual reranker yields substantial gains (+13.2 NDCG@10), enabling the textual pipeline to achieve the highest overall retrieval performance. In contrast, the visual reranker provides only a marginal average improvement of +0.2 and degrades performance in 4 datasets, underscoring the need for better multilingual visual rerankers.
+We evaluate the impact of adding a reranker to the textual and visual pipelines of the Jina-v4 retriever. We select zerank-2 \sidecite{zeroentropy2025} and jina-reranker-m0 \sidecite{jinareranker2025} as two of the leading textual and visual rerankers to date. Results in Table~\ref{vidorev3:tab:reranking_scores_stacked} reveal a significant disparity in reranking efficacy between modalities. While the visual retriever initially outperforms the textual base, the textual reranker yields substantial gains (+13.2 NDCG@10), enabling the textual pipeline to achieve the highest overall retrieval performance. In contrast, the visual reranker provides only a marginal average improvement of +0.2 and degrades performance in 4 datasets, underscoring the need for better multilingual visual rerankers.
 
 %\gmor{When you evaluate with jina embedding v4 for text and image, do you use single-vector or late-interaction (as it supports both)? It is harder for cross-encoder to improve results from late interaction embedding model.}
 
@@ -561,32 +561,32 @@ We evaluate the impact of adding a reranker to the textual and visual pipelines 
 \end{tabular}
 }
 \caption{\textbf{End-to-end evaluation of final answer generation.} We report the percentage of correct final answers as determined by an LLM judge across the 8 public datasets. "Oracle" rows represent the upper-bound performance using gold-standard contexts. Average Easy and Average Hard denote performance stratified by query difficulty. For each column, the best result is \textbf{bolded} and the best non-oracle result is \underline{underlined}.} % We systematically evaluate the effect of the retrieval pipeline, context modality, and generation model on the generation performance.
-\label{tab:end_to_end_eval}
+\label{vidorev3:tab:end_to_end_eval}
 \end{table*}
 
 
-\subsection{Final Answer Generation} \label{sec:answer results}
+\subsection{Final Answer Generation} \label{vidorev3:sec:answer results}
 
-We evaluate end-to-end answer quality by providing LLMs and VLMs with queries and their corresponding retrieved pages, examining the effects of retrieval pipeline selection, context modality, and generation model choice (\Cref{tab:end_to_end_eval}). For this evaluation, we use the best-performing textual and visual retrieval pipelines. We additionally establish an upper bound using an \textit{oracle} pipeline that supplies the model with ground-truth annotated pages.
+We evaluate end-to-end answer quality by providing LLMs and VLMs with queries and their corresponding retrieved pages, examining the effects of retrieval pipeline selection, context modality, and generation model choice (\Cref{vidorev3:tab:end_to_end_eval}). For this evaluation, we use the best-performing textual and visual retrieval pipelines. We additionally establish an upper bound using an \textit{oracle} pipeline that supplies the model with ground-truth annotated pages.
 
 % For this evaluation, we use the best-performing textual and visual retrieval pipelines under 3B parameters
 % -> no more reasons to say that right?
 
-In the \textit{hybrid} configuration, we concatenate the top-5 results from the visual retriever (images) with the top-5 results from the textual retriever (text), without removing duplicates; the retrieval performance is detailed in \Cref{tab:hybrid_comparison}. We also consider a hybrid \textit{oracle} setup, which provides the model with all the ground-truth pages in both modalities.
+In the \textit{hybrid} configuration, we concatenate the top-5 results from the visual retriever (images) with the top-5 results from the textual retriever (text), without removing duplicates; the retrieval performance is detailed in \Cref{vidorev3:tab:hybrid_comparison}. We also consider a hybrid \textit{oracle} setup, which provides the model with all the ground-truth pages in both modalities.
 
-%We evaluate the quality of final answers generated by LLMs when provided with a query and its relevant retrieved pages, assessing the impact of the retrieval pipeline, context modality, and generation model (\Cref{tab:end_to_end_eval}). We use the best-performing textual (Jina-v4) and visual (ColEmbed-3B-v2) pipelines under 3B parameters for this end-to-end evaluation. An \textit{oracle} pipeline, where the model receives the ground truth annotated pages, serves as an upper bound baseline.
+%We evaluate the quality of final answers generated by LLMs when provided with a query and its relevant retrieved pages, assessing the impact of the retrieval pipeline, context modality, and generation model (\Cref{vidorev3:tab:end_to_end_eval}). We use the best-performing textual (Jina-v4) and visual (ColEmbed-3B-v2) pipelines under 3B parameters for this end-to-end evaluation. An \textit{oracle} pipeline, where the model receives the ground truth annotated pages, serves as an upper bound baseline.
 
-The correctness of generated answers is assessed against the ground truth final answer by an LLM judge (details in Appendix \ref{appendix:final answer eval}). 
-%Details on the evaluation setup are given in Appendix~\ref{appendix:final answer eval}.
+The correctness of generated answers is assessed against the ground truth final answer by an LLM judge (details in Appendix \ref{vidorev3:appendix:final answer eval}). 
+%Details on the evaluation setup are given in Appendix~\ref{vidorev3:appendix:final answer eval}.
 Private datasets are omitted 
 %from this evaluation
 to maintain their integrity.
 
-Some benchmark queries involve general knowledge manageable by LLMs without retrieval. To prevent memorization from confounding our assessment of the RAG pipeline, we stratify queries by difficulty based on parametric knowledge. A query is categorized as \textit{easy} if any model in a 6-LLM panel answers it correctly without context; otherwise, it is labeled \textit{hard}. Overall, 48.6\,\% of queries are easy (see~\Cref{tab: easy hard filtering} for details).
+Some benchmark queries involve general knowledge manageable by LLMs without retrieval. To prevent memorization from confounding our assessment of the RAG pipeline, we stratify queries by difficulty based on parametric knowledge. A query is categorized as \textit{easy} if any model in a 6-LLM panel answers it correctly without context; otherwise, it is labeled \textit{hard}. Overall, 48.6\,\% of queries are easy (see~\Cref{vidorev3:tab: easy hard filtering} for details).
 
-% A subset of queries in our benchmark can be answered by LLMs without retrieval, as they pertain to general knowledge that they already master. For these queries, high answer accuracy may reflect memorization rather than effective use of retrieved context, confounding our ability to assess the retrieval-augmented generation pipeline. To address this, we stratify queries by difficulty based on whether state-of-the-art LLMs can answer them from parametric knowledge alone. Specifically, we categorize a query as \textit{easy} if any model in a panel of 6 different LLMs answers it correctly without retrieved context; the remaining queries are labeled \textit{hard}. In total, 48.6\,\% of the queries fall into the easy category (see ~\Cref{tab: easy hard filtering} for a breakdown by dataset and panel model).
+% A subset of queries in our benchmark can be answered by LLMs without retrieval, as they pertain to general knowledge that they already master. For these queries, high answer accuracy may reflect memorization rather than effective use of retrieved context, confounding our ability to assess the retrieval-augmented generation pipeline. To address this, we stratify queries by difficulty based on whether state-of-the-art LLMs can answer them from parametric knowledge alone. Specifically, we categorize a query as \textit{easy} if any model in a panel of 6 different LLMs answers it correctly without retrieved context; the remaining queries are labeled \textit{hard}. In total, 48.6\,\% of the queries fall into the easy category (see ~\Cref{vidorev3:tab: easy hard filtering} for a breakdown by dataset and panel model).
 
-\paragraph{Visual context helps generation} With a fixed Gemini 3 Pro generator, image-based context outperforms text-based context on the hard subset by 2.4 and 2.8 percentage points for the oracle and ColEmbed-3B-v2 pipelines, respectively (\Cref{tab:end_to_end_eval}). This confirms that preserving the visual content of document pages provides better grounding for complex answer generation.
+\paragraph{Visual context helps generation} With a fixed Gemini 3 Pro generator, image-based context outperforms text-based context on the hard subset by 2.4 and 2.8 percentage points for the oracle and ColEmbed-3B-v2 pipelines, respectively (\Cref{vidorev3:tab:end_to_end_eval}). This confirms that preserving the visual content of document pages provides better grounding for complex answer generation.
 
 % \manu{check bold takeaway formatting}
 
@@ -607,7 +607,7 @@ Some benchmark queries involve general knowledge manageable by LLMs without retr
 
 % \begin{table*}[h]
 % \centering
-% \label{tab:ragchecker_metrics}
+% \label{vidorev3:tab:ragchecker_metrics}
 % \resizebox{\textwidth}{!}{%
 % \begin{tabular}{l|ccc|cc|cccccc}
 %  & \multicolumn{3}{c}{\textit{Overall}} & \multicolumn{2}{c}{\textit{Retriever}} & \multicolumn{6}{c}{\textit{Generator}} \\
@@ -633,11 +633,11 @@ Some benchmark queries involve general knowledge manageable by LLMs without retr
 % \caption{RAGChecker Metrics across Datasets, for Oracle retriever + gpt-5 \aedy{wdyt}\\ \aedy{METRICS: https://github.com/amazon-science/RAGChecker}}
 % \end{table*}
 
-\subsection{Visual Grounding} \label{sec:visual grounding results}
+\subsection{Visual Grounding} \label{vidorev3:sec:visual grounding results}
 
-Beyond generating correct answers, it is highly desirable for RAG pipelines to identify where in the source documents the answer originates, enabling users to verify the grounding of the query answer. We therefore evaluate the ability of LLMs to generate accurate bounding boxes within their final answer. Among the few LLM families with visual grounding capabilities, we select Qwen3-VL-30B-A3B-Instruct and Gemini 3 Pro for evaluation. For each query, we provide the model with the candidate pages shown to the human annotators and prompt it to answer the query while inserting inline bounding boxes in XML format \texttt{<bboxes image="N"> ... </bboxes>} to delimit relevant content (full instructions in Appendix~\ref{appendix: bbox}).
+Beyond generating correct answers, it is highly desirable for RAG pipelines to identify where in the source documents the answer originates, enabling users to verify the grounding of the query answer. We therefore evaluate the ability of LLMs to generate accurate bounding boxes within their final answer. Among the few LLM families with visual grounding capabilities, we select Qwen3-VL-30B-A3B-Instruct and Gemini 3 Pro for evaluation. For each query, we provide the model with the candidate pages shown to the human annotators and prompt it to answer the query while inserting inline bounding boxes in XML format \texttt{<bboxes image="N"> ... </bboxes>} to delimit relevant content (full instructions in Appendix~\ref{vidorev3:appendix: bbox}).
 
-We use the bounding boxes produced by the human annotators as our ground truth. Since each query may have 1--3 human annotators, we evaluate VLM predictions independently against each annotator using the same zone-based methodology as the inter-annotator consistency analysis (Section~\ref{sec: grounded qa}), and report the highest F1 score. This best-match strategy reflects the inherent subjectivity of evidence selection: annotators may legitimately highlight different regions to support the same answer, and a model should not be penalized for matching any valid interpretation.
+We use the bounding boxes produced by the human annotators as our ground truth. Since each query may have 1--3 human annotators, we evaluate VLM predictions independently against each annotator using the same zone-based methodology as the inter-annotator consistency analysis (Section~\ref{vidorev3:sec: grounded qa}), and report the highest F1 score. This best-match strategy reflects the inherent subjectivity of evidence selection: annotators may legitimately highlight different regions to support the same answer, and a model should not be penalized for matching any valid interpretation.
 
 % \begin{table}[h!]
 % \centering
@@ -654,13 +654,13 @@ We use the bounding boxes produced by the human annotators as our ground truth. 
 % \bottomrule
 % \end{tabular}
 % \caption{Average Localization F1 scores.}
-% \label{tab:bbox_f1}
+% \label{vidorev3:tab:bbox_f1}
 % \end{table}
 
 \paragraph{Visual grounding lags human performance} 
-Inter-annotator agreement on evidence localization reaches an F1 of 0.602, whereas the best-performing models achieve markedly lower scores: 0.089 for Qwen3-VL-30B-A3B-Instruct and 0.065 for Gemini 3 Pro. A page-level analysis (\Cref{tab:bbox_consistency_comparison}) reveals that on pages where humans provided bounding boxes, both models annotated the same page only 16--17\,\% of the time, while 26--27\,\% of human-annotated pages received no model annotation at all—highlighting recall as the primary bottleneck. Detailed per-domain results and qualitative analysis appear in Appendix \ref{appendix: bbox} and \ref{appendix: bbox examples}.
+Inter-annotator agreement on evidence localization reaches an F1 of 0.602, whereas the best-performing models achieve markedly lower scores: 0.089 for Qwen3-VL-30B-A3B-Instruct and 0.065 for Gemini 3 Pro. A page-level analysis (\Cref{vidorev3:tab:bbox_consistency_comparison}) reveals that on pages where humans provided bounding boxes, both models annotated the same page only 16--17\,\% of the time, while 26--27\,\% of human-annotated pages received no model annotation at all—highlighting recall as the primary bottleneck. Detailed per-domain results and qualitative analysis appear in Appendix \ref{vidorev3:appendix: bbox} and \ref{vidorev3:appendix: bbox examples}.
 
-%Table~\ref{tab:bbox_consistency_comparison} provides a page-level analysis of annotation presence: on pages where humans provided bounding boxes, both models annotated the same page only 16--17\,\% of the time, while 26--27\,\% of human-annotated pages received no model annotation at all, highlighting recall as the primary limitation. Localization F1 scores (Figure~\ref{fig:bbox evaluation}) reveal that the models score substantially below inter-annotator agreement (Table~\ref{tab:inter-annotator bbox agreement}). Qualitative analysis reveals distinct failure modes (examples in Appendix~\ref{appendix: bbox examples}). Gemini frequently produces off-by-one page indexing errors: the predicted coordinates would correctly localize the target content if applied to an adjacent page. The two models also differ in box granularity: Gemini tends to draw tight boxes around individual elements (e.g., a single table cell or text line), whereas Qwen3-VL generates larger boxes encompassing entire sections or paragraphs, more closely matching human annotation patterns \gmor{If we need to save some space for submission, these details about how Gemini and Qwen3-VL generates boxes could go to the Appendix}. This difference partially explains Qwen3-VL's higher F1 scores, as broader boxes are more likely to overlap with the ground-truth zones used in our evaluation.
+%Table~\ref{vidorev3:tab:bbox_consistency_comparison} provides a page-level analysis of annotation presence: on pages where humans provided bounding boxes, both models annotated the same page only 16--17\,\% of the time, while 26--27\,\% of human-annotated pages received no model annotation at all, highlighting recall as the primary limitation. Localization F1 scores (Figure~\ref{vidorev3:fig:bbox evaluation}) reveal that the models score substantially below inter-annotator agreement (Table~\ref{vidorev3:tab:inter-annotator bbox agreement}). Qualitative analysis reveals distinct failure modes (examples in Appendix~\ref{vidorev3:appendix: bbox examples}). Gemini frequently produces off-by-one page indexing errors: the predicted coordinates would correctly localize the target content if applied to an adjacent page. The two models also differ in box granularity: Gemini tends to draw tight boxes around individual elements (e.g., a single table cell or text line), whereas Qwen3-VL generates larger boxes encompassing entire sections or paragraphs, more closely matching human annotation patterns \gmor{If we need to save some space for submission, these details about how Gemini and Qwen3-VL generates boxes could go to the Appendix}. This difference partially explains Qwen3-VL's higher F1 scores, as broader boxes are more likely to overlap with the ground-truth zones used in our evaluation.
 
 % \paragraph{Agreement-Based Stratification}
 % To understand how VLM performance varies with annotation ambiguity, we stratify results by inter-annotator agreement level. For multi-annotator samples, we compute pairwise zone IoU between all annotator pairs and classify agreement as \textit{high} (mean pairwise IoU $\geq 0.7$), \textit{medium} ($0.3 \leq$ IoU $< 0.7$), \textit{low} (IoU $< 0.3$), or \textit{single} (one annotator only).
@@ -683,7 +683,7 @@ Inter-annotator agreement on evidence localization reaches an F1 of 0.602, where
 % \end{tabular}
 % %}
 % \caption{\textbf{Model bounding box localization performance}. Each F1 score measures the zone-based overlap between model-generated bounding boxes and human annotations, using the annotator yielding the highest F1.\vic{Transform into graph to make this more legible?}}
-% \label{tab:bbox evaluation}
+% \label{vidorev3:tab:bbox evaluation}
 % \end{table*}
 
 
@@ -705,7 +705,7 @@ Inter-annotator agreement on evidence localization reaches an F1 of 0.602, where
 \end{tabular}
 }
 \caption{\textbf{Page-level bounding box agreement between models and human annotators.} Each page is classified by whether the model and human both annotated it, both left it unannotated, or only one provided annotations.}
-\label{tab:bbox_consistency_comparison}
+\label{vidorev3:tab:bbox_consistency_comparison}
 \end{table}
 
 
@@ -726,7 +726,7 @@ Inter-annotator agreement on evidence localization reaches an F1 of 0.602, where
 % \end{tabular}
 % }
 % \caption{\textbf{Average Localization F1 score over each corpus.}}
-% \label{tab:bbox_f1}
+% \label{vidorev3:tab:bbox_f1}
 % \end{table}
 
 
