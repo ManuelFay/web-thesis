@@ -12,7 +12,7 @@ Retrieval-Augmented Generation (RAG) pipelines must address challenges beyond si
 \begin{figure*}[h]
     \centering
     \includegraphics[trim={2cm 6.5cm 2cm 3.5cm}, clip, width=0.9\textwidth]{images/vidorev3_images/vidore_sample.pdf}
-    \caption{\textbf{ViDoRe V3 sample.} Each query is annotated with the relevant pages, a document-grounded answer, bounding boxes localizing supporting evidence and modality labels for each bounding box. Documents are provided in image, text and PDF formats.} % TODO: clean this caption
+    \caption[ViDoRe V3 annotated sample]{\textbf{ViDoRe V3 annotated sample.} Each query is paired with relevant pages, a document-grounded reference answer, evidence bounding boxes, and modality labels for each box. Documents are provided in image, text, and PDF formats.} % TODO: clean this caption
     \label{vidorev3:fig:sample}
 \end{figure*}
 
@@ -26,7 +26,7 @@ Existing benchmarks leave these requirements only partially addressed. Early Vis
     \centering
     % \includegraphics[trim={0cm 2cm 0cm 2cm}, clip, width=\textwidth]{images/vidorev3_images/test-vidore-v0.png}
     \includegraphics[width=1.3\textwidth]{images/vidorev3_images/dataset-generation-vf.pdf}
-    \caption{\textbf{Overview of the benchmark creation process.} Queries are sourced from 3 streams: \textit{human extractive} (using raw pages), \textit{human blind contextual} (using summaries to mitigate extractive bias), and \textit{synthetic blind contextual}. For each query, a VLM pre-filtered subset of candidate pages is labeled by 1--3 human annotators that perform relevance scoring, bounding box localization and answer generation. A final response aggregation combines annotator answers into a single answer.} %\gmor{Could you identify in the main figure what are Tasks 1 and Task 2?}\anto{Yes, it would be great to reuse the terms Query Writing and Query Linking}}
+    \caption[ViDoRe V3 data creation workflow]{\textbf{Overview of the ViDoRe V3 data creation workflow.} Queries are collected from three streams: \textit{human extractive} (raw pages), \textit{human blind contextual} (summaries to reduce extractive bias), and \textit{synthetic blind contextual}. For each query, a VLM pre-filters candidate pages, then 1--3 human annotators perform relevance scoring, bounding-box localization, and answer writing; final responses are aggregated into a single reference answer.} %\gmor{Could you identify in the main figure what are Tasks 1 and Task 2?}\anto{Yes, it would be great to reuse the terms Query Writing and Query Linking}}
     \label{vidorev3:fig:full process}
 \end{figure*}
 
@@ -235,14 +235,14 @@ We conducted a final human review to remove low-quality queries and resolve labe
 \begin{figure}[ht]
     \centering
     \includegraphics[width=\columnwidth]{images/vidorev3_images/vidore_distribution_acl_v2.pdf}
-    \caption{\textbf{Query Type Distribution per Domain}} 
+    \caption[Query type distribution by domain]{\textbf{Query type distribution by domain.} Relative frequencies of query types are reported for each benchmark domain.} 
     \label{vidorev3:fig:query_type_distribution}
 \end{figure}
 
 \begin{figure}[ht]
     \centering
     \includegraphics[width=\columnwidth]{images/vidorev3_images/content_type_distribution_acl_v2.pdf}
-    \caption{\textbf{Content Type Distribution per Domain}} 
+    \caption[Content type distribution by domain]{\textbf{Content type distribution by domain.} Relative frequencies of evidence content types are reported for each benchmark domain.} 
     \label{vidorev3:fig:content_type_distribution}
 \end{figure}
 
@@ -368,7 +368,7 @@ ColPali & 7 & 65.3 & 32.9 & 34.4 & 53.1 & 44.8 & 35.6 & 54.0 & 41.7 & 47.1 & 21.
 \bottomrule
 \end{tabular}
 }
-\caption{\textbf{Retrieval performance (NDCG@10) across the benchmark.} Best results per category in bold. \mbox{$\bigstar$: single-vector models}. Following MTEB conventions, the average score is a macro-average over all datasets. Full model names and references are found in Table~\ref{vidorev3:tab:model_metadata}.} %\boliu{FYI: I updated the full name of ColEmbed-3B-v2 in Table 9, to be consistent to ColEmbed-3B-v1} \anto{thank you}
+\caption[Retriever performance across ViDoRe V3]{\textbf{Retrieval performance (NDCG@10) across ViDoRe V3.} Best results per category are in bold; \mbox{$\bigstar$} marks single-vector models. Following MTEB conventions, the average is a macro-average across datasets. Full model names and references are provided in Table~\ref{vidorev3:tab:model_metadata}.} %\boliu{FYI: I updated the full name of ColEmbed-3B-v2 in Table 9, to be consistent to ColEmbed-3B-v1} \anto{thank you}
 \label{vidorev3:tab:retriever_comparison_updated}
 \end{table*}
 
@@ -413,7 +413,7 @@ We analyze ColEmbed-3B-v2, the best-performing retriever we evaluated across que
 \begin{figure}[ht]
     \centering
     \includegraphics[width=0.99\textwidth]{images/vidorev3_images/ndcg_by_type_format_transposed.pdf}
-    \caption{\textbf{ColEmbed-3B-v2 NDCG@10 by query type and format.}}
+    \caption[ColEmbed-3B-v2 by query type and format]{\textbf{ColEmbed-3B-v2 NDCG@10 by query type and format.} Performance is broken down jointly by semantic query type and surface query format.}
     \label{vidorev3:fig:type-format-performance}
 \end{figure}
 
@@ -434,7 +434,7 @@ We analyze ColEmbed-3B-v2, the best-performing retriever we evaluated across que
 % \bottomrule
 % \end{tabular}
 % % }
-% \caption{\textbf{ColEmbed-3B-v2 NDCG@10 by number of annotated pages.}}
+% \caption[ColEmbed-3B-v2 by number of relevant pages]{\textbf{ColEmbed-3B-v2 NDCG@10 by number of annotated relevant pages.} Retrieval performance is shown as relevance is distributed across more pages.}
 % \label{vidorev3:tab:perf number of pages}
 % \end{table}
 
@@ -446,14 +446,14 @@ when aggregating information from multiple sources is required.%\vic{think about
 \begin{figure}[ht]
     \centering
     \includegraphics[width=0.6\textwidth]{images/vidorev3_images/ndcg_by_content_type.pdf}
-    \caption{\textbf{ColEmbed-3B-v2 NDCG@10 by modality.}} 
+    \caption[ColEmbed-3B-v2 by content modality]{\textbf{ColEmbed-3B-v2 NDCG@10 by content modality.} Scores are reported for text, table, image, and mixed evidence categories.} 
     \label{vidorev3:fig:content-type-performance}
 \end{figure}
 
 \begin{figure}[h!]
     \centering
     \includegraphics[width=0.6\textwidth]{images/vidorev3_images/ndcg_by_relevant_pages.pdf}
-    \caption{\textbf{ColEmbed-3B-v2 NDCG@10 by number of annotated pages.}} 
+    \caption[ColEmbed-3B-v2 by number of relevant pages]{\textbf{ColEmbed-3B-v2 NDCG@10 by number of annotated relevant pages.} Retrieval performance is shown as relevance is distributed across more pages.} 
     \label{vidorev3:fig:perf number of pages}
 \end{figure}
 
@@ -518,7 +518,7 @@ Retrieval performance is 2--3 points higher in mono-lingual settings (\Cref{vido
         \bottomrule
     \end{tabular}
     }
-    \caption{\textbf{Retrieval performance (NDCG@10) of retriever + reranker pipelines.}}
+    \caption[Retriever and reranker pipeline performance]{\textbf{Retrieval performance (NDCG@10) of retriever + reranker pipelines.} The table compares textual and visual reranking setups across datasets.}
     \label{vidorev3:tab:reranking_scores_stacked}
 \end{table*}
 
@@ -560,7 +560,7 @@ We evaluate the impact of adding a reranker to the textual and visual pipelines 
 \bottomrule
 \end{tabular}
 }
-\caption{\textbf{End-to-end evaluation of final answer generation.} We report the percentage of correct final answers as determined by an LLM judge across the 8 public datasets. "Oracle" rows represent the upper-bound performance using gold-standard contexts. Average Easy and Average Hard denote performance stratified by query difficulty. For each column, the best result is \textbf{bolded} and the best non-oracle result is \underline{underlined}.} % We systematically evaluate the effect of the retrieval pipeline, context modality, and generation model on the generation performance.
+\caption[End-to-end answer accuracy across retrieval setups]{\textbf{End-to-end evaluation of final answer generation.} We report the percentage of correct answers, as judged by an LLM, across the eight public datasets. "Oracle" rows denote the upper bound using gold-standard contexts. Average Easy and Average Hard are stratified by query difficulty. For each column, the best result is \textbf{bolded} and the best non-oracle result is \underline{underlined}.} % We systematically evaluate the effect of the retrieval pipeline, context modality, and generation model on the generation performance.
 \label{vidorev3:tab:end_to_end_eval}
 \end{table*}
 
@@ -704,7 +704,7 @@ Inter-annotator agreement on evidence localization reaches an F1 of 0.602, where
 \bottomrule
 \end{tabular}
 }
-\caption{\textbf{Page-level bounding box agreement between models and human annotators.} Each page is classified by whether the model and human both annotated it, both left it unannotated, or only one provided annotations.}
+\caption[Page-level grounding agreement vs. humans]{\textbf{Page-level bounding box agreement between models and human annotators.} Each page is categorized as both annotated, both unannotated, model-only, or human-only.}
 \label{vidorev3:tab:bbox_consistency_comparison}
 \end{table}
 
