@@ -25,7 +25,7 @@ Existing benchmarks leave these requirements only partially addressed. Early Vis
 \begin{figure*}[t!]
     \centering
     % \includegraphics[trim={0cm 2cm 0cm 2cm}, clip, width=\textwidth]{images/vidorev3_images/test-vidore-v0.png}
-    \includegraphics[width=\textwidth]{images/vidorev3_images/dataset-generation-vf.pdf}
+    \includegraphics[width=1.3\textwidth]{images/vidorev3_images/dataset-generation-vf.pdf}
     \caption{\textbf{Overview of the benchmark creation process.} Queries are sourced from 3 streams: \textit{human extractive} (using raw pages), \textit{human blind contextual} (using summaries to mitigate extractive bias), and \textit{synthetic blind contextual}. For each query, a VLM pre-filtered subset of candidate pages is labeled by 1--3 human annotators that perform relevance scoring, bounding box localization and answer generation. A final response aggregation combines annotator answers into a single answer.} %\gmor{Could you identify in the main figure what are Tasks 1 and Task 2?}\anto{Yes, it would be great to reuse the terms Query Writing and Query Linking}}
     \label{vidorev3:fig:full process}
 \end{figure*}
@@ -412,7 +412,7 @@ We analyze ColEmbed-3B-v2, the best-performing retriever we evaluated across que
 
 \begin{figure}[ht]
     \centering
-    \includegraphics[width=0.99\columnwidth]{images/vidorev3_images/ndcg_by_type_format_transposed.pdf}
+    \includegraphics[width=0.99\textwidth]{images/vidorev3_images/ndcg_by_type_format_transposed.pdf}
     \caption{\textbf{ColEmbed-3B-v2 NDCG@10 by query type and format.}}
     \label{vidorev3:fig:type-format-performance}
 \end{figure}
@@ -445,14 +445,14 @@ when aggregating information from multiple sources is required.%\vic{think about
 
 \begin{figure}[ht]
     \centering
-    \includegraphics[width=\columnwidth]{images/vidorev3_images/ndcg_by_content_type.pdf}
+    \includegraphics[width=0.6\textwidth]{images/vidorev3_images/ndcg_by_content_type.pdf}
     \caption{\textbf{ColEmbed-3B-v2 NDCG@10 by modality.}} 
     \label{vidorev3:fig:content-type-performance}
 \end{figure}
 
 \begin{figure}[h!]
     \centering
-    \includegraphics[width=\columnwidth]{images/vidorev3_images/ndcg_by_relevant_pages.pdf}
+    \includegraphics[width=0.6\textwidth]{images/vidorev3_images/ndcg_by_relevant_pages.pdf}
     \caption{\textbf{ColEmbed-3B-v2 NDCG@10 by number of annotated pages.}} 
     \label{vidorev3:fig:perf number of pages}
 \end{figure}
@@ -689,7 +689,7 @@ Inter-annotator agreement on evidence localization reaches an F1 of 0.602, where
 
 \begin{table}[h!]
 \centering
-\resizebox{\columnwidth}{!}{%
+\resizebox{\textwidth}{!}{%
 \begin{tabular}{llcc}
 \toprule
 \textbf{Category} & \textbf{Outcome} & \textbf{Qwen3-VL-30B-A3B} & \textbf{Gemini 3 Pro} \\
