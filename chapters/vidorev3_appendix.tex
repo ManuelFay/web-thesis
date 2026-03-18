@@ -71,9 +71,9 @@ Tables~\ref{vidorev3:tab: english-only retrieval} and \ref{vidorev3:tab: french-
 % \vspace{15cm}
 % \hfill
 
-\begin{figure*}[t!]
+\begin{figure*}[h]
     \centering
-    \includegraphics[width=\textwidth]{images/vidorev3_images/upset_plot_query_types_complete.pdf}
+    \includegraphics[width=1.2\textwidth]{images/vidorev3_images/upset_plot_query_types_complete.pdf}
     \caption[Query-type intersections in ViDoRe V3]{\textbf{UpSet plot of query-type intersections in ViDoRe V3.} Horizontal bars show total counts for each query type, and top bars show frequencies of specific type combinations indicated by the dot matrix. \textit{Extractive} is the most common type overall, while \textit{Open Ended} is the largest unique category; frequent \textit{Enumerative}--\textit{Extractive} intersections highlight list-based factual retrieval patterns.} 
     \label{vidorev3:fig:upset plot}
 \end{figure*}
@@ -396,7 +396,7 @@ ColPali	& 7 & 43.2	&50.5	&23.6 & 39.1 \\
 
 \begin{table*}[t!]
 \centering
-% \resizebox{\columnwidth}{!}{%
+% \resizebox{0.8\textwidth}{!}{%
 \small
 \begin{tabular}{l c c c c c c c c c c >{\columncolor{avgcol}}c}
 \toprule
@@ -428,7 +428,7 @@ Hybrid	&\textbf{43.0}	&\textbf{27.7}	&\textbf{30.9}	&\textbf{29.7}	&\textbf{32.6
 
 % \begin{table}[h!]
 % \centering
-% \resizebox{\columnwidth}{!}{%
+% \resizebox{0.8\textwidth}{!}{%
 % \begin{tabular}{l ccc c}
 % \toprule
 % & \multicolumn{3}{c}{\textbf{Query Format}} & \\ % Labels the columns
@@ -467,7 +467,7 @@ Results in Figure~\ref{vidorev3:fig:perf content num pages} and Table~\ref{vidor
 \begin{table}[!h]
 \small
 \centering
-%\resizebox{\columnwidth}{!}{%
+%\resizebox{0.8\textwidth}{!}{%
 \begin{tabular}{lc}
 \toprule
 \textbf{Query Language} & \textbf{NDCG@10}\\
@@ -487,14 +487,14 @@ German & 57.9 \\
 
 \begin{figure}[t]
     \centering
-    \includegraphics[width=\columnwidth]{images/vidorev3_images/annotated_pages_by_query_type.pdf}
+    \includegraphics[width=0.8\textwidth]{images/vidorev3_images/annotated_pages_by_query_type.pdf}
     \caption[Annotated pages by query type]{\textbf{Average number of annotated pages by query type.} The plot shows how evidence spread varies with query type.} 
     \label{vidorev3:fig:num pages per query type}
 \end{figure}
 
 \begin{figure}[h!]
     \centering
-    \includegraphics[width=\columnwidth]{images/vidorev3_images/ndcg_query_type_num_pages.pdf}
+    \includegraphics[width=0.8\textwidth]{images/vidorev3_images/ndcg_query_type_num_pages.pdf}
     \caption[ColEmbed-3B-v2 by pages and query type]{\textbf{ColEmbed-3B-v2 NDCG@10 by number of annotated pages and query type.} Performance trends are shown jointly by query complexity and evidence spread.} 
     \label{vidorev3:fig:perf content num pages}
 \end{figure}
@@ -527,7 +527,7 @@ NDCG@10 by content type in Table~\ref{vidorev3:tab:perf content type} show that 
 \begin{table}[h!]
 \small
 \centering
-%\resizebox{\columnwidth}{!}{%
+%\resizebox{0.8\textwidth}{!}{%
 \begin{tabular}{lcc}
 \toprule
 \textbf{Content type} & NDCG@10 & Content type count \\
@@ -548,21 +548,21 @@ Mixed & 45.1 & 1164 \\
 
 \begin{figure}[h!]
 \centering
-\includegraphics[width=\columnwidth]{images/vidorev3_images/lift_content_query_type.pdf}
+\includegraphics[width=0.8\textwidth]{images/vidorev3_images/lift_content_query_type.pdf}
 \caption[Lift of query types conditioned on content type]{\textbf{Lift of query types by content type.} Each cell reports observed frequency over baseline frequency for a content-type/query-type pair. Values above 1 indicate over-representation; values below 1 indicate under-representation.}
 \label{vidorev3:fig:lift content type}
 \end{figure}
 
 \begin{figure}[h!]
 \centering
-\includegraphics[width=\columnwidth]{images/vidorev3_images/ndcg_content_query_residuals_heatmap.pdf}
+\includegraphics[width=0.8\textwidth]{images/vidorev3_images/ndcg_content_query_residuals_heatmap.pdf}
 \caption[Residuals of additive query-type/content-type model]{\textbf{Residuals from an additive performance model.} Each cell is the difference between observed NDCG@10 and predictions from query-type and content-type main effects. Near-zero values indicate limited interaction; positive and negative values indicate better- or worse-than-expected combinations.} 
 \label{vidorev3:fig:ndcg content query residuals heatmap}
 \end{figure}
 
 % \begin{table}[h!]
 % \centering
-% \resizebox{\columnwidth}{!}{%
+% \resizebox{0.8\textwidth}{!}{%
 % \begin{tabular}{lcc}
 % \toprule
 % Query format & NDCG@10 & Query count \\
@@ -579,7 +579,7 @@ Mixed & 45.1 & 1164 \\
 
 % \begin{table}[h!]
 % \centering
-% \resizebox{\columnwidth}{!}{%
+% \resizebox{0.8\textwidth}{!}{%
 % \begin{tabular}{lcc}
 % \toprule
 % Query type & NDCG@10 & Query type count \\
@@ -600,7 +600,7 @@ Mixed & 45.1 & 1164 \\
 
 % \begin{table}[h!]
 % \centering
-% \resizebox{\columnwidth}{!}{%
+% \resizebox{0.8\textwidth}{!}{%
 % \begin{tabular}{l ccc c}
 % \toprule
 % & \multicolumn{3}{c}{\textbf{Query Format}} & \\ % Labels the columns
@@ -625,7 +625,7 @@ Mixed & 45.1 & 1164 \\
 
 % \begin{table}[h!]
 % \centering
-% \resizebox{\columnwidth}{!}{%
+% \resizebox{0.8\textwidth}{!}{%
 % \begin{tabular}{lcc}
 % \toprule
 % Content type & NDCG@10 & Content type count \\
@@ -646,7 +646,7 @@ Mixed & 45.1 & 1164 \\
 
 % \begin{table}[h!]
 % \centering
-% % \resizebox{\columnwidth}{!}{%
+% % \resizebox{0.8\textwidth}{!}{%
 % \begin{tabular}{lcc}
 % \toprule
 % Number of pages & NDCG@10 & Query count \\
@@ -669,7 +669,7 @@ Mixed & 45.1 & 1164 \\
 
 % \begin{table}[h!]
 % \centering
-% \resizebox{\columnwidth}{!}{%
+% \resizebox{0.8\textwidth}{!}{%
 % \begin{tabular}{l c c}
 % \toprule
 % Generation method & NDCG@10 & Query count \\
@@ -838,7 +838,7 @@ Qualitative analysis reveals distinct failure modes. Gemini frequently produces 
 \centering
 \small
 % Removed vertical bars (|) from the column definition
-\begin{tabularx}{\columnwidth}{clX} 
+\begin{tabularx}{0.8\textwidth}{clX} 
 \toprule
 \textbf{Score} & \textbf{Label} & \textbf{Definition} \\
 \midrule
