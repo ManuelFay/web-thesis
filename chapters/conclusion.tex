@@ -1,18 +1,125 @@
 \setchapterpreamble[u]{\margintoc}
+\chapter{Perspectives on Search}
 
-To do.
+Vannevar Bush had the vision that \emph{associative} knowledge would be the key insight unlocking retrieval capabilities \cite{bush1945aswemaythink}. Time proved him right, well aided by the advent of computing. Statistical retrieval engines transcend fixed classification systems linking queries to documents through their words, not just their general theme. Deep neural networks further broaden associative links by enabling matching across vastly different syntax, by exploiting semantical proximity which is encoded in a learned latent space. The contributions of this thesis could be seen as further efforts to improve \emph{search} by exploring the extent to which we can strenghen associative links.
+
+At a high level, in \emph{Visual Document Retrieval} \sidecite{faysse2024colpali,loison2026vidorev3comprehensiveevaluation,teiletche2025modernvbert}, we demonstrate that cross-modal associations exist and can be leveraged for efficiently matching image parts to words. In our work on contextual embeddings \sidecite{conti2025context}, we show existing links between corpus documents can and should be exploited to facilitate retrieval. With CroissantLLM \sidecite{faysse2024croissantllm, meeus2024copyright}, we explore parametric memory consolidation through LLM training, and study which type of knowledge can be surfaced (searched) from the LLM memory through prompting (associative recall). This broader view of the \emph{search} landscape may help in uncovering future impactful research directions.
+
+
+
+\section{Visualizing the memory hierarchy}
+
+Viewing search solely through the lens of document retrieval is restrictive; a broader perspective is to understand search as memory access across a hierarchy of storage mediums. Humans answer questions by relying on internal memory, attending to information currently in view, consulting notes, or searching a library. These memory systems differ in capacity, latency, reliability, update cost, and provenance. LLM systems exhibit an analogous hierarchy. Model weights act as compressed parametric memory; the current context, together with the key-value cache, provides a transient working memory; and document stores, databases, tools, or the web provide external non-parametric memory.
+
+
+\definecolor{parametric}{HTML}{E8F1FF}
+\definecolor{contextual}{HTML}{EAF7EF}
+\definecolor{external}{HTML}{FFF2DD}
+\definecolor{headergray}{HTML}{F2F2F2}
+
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+
+\begin{table*}[t]
+\centering
+\small
+\renewcommand{\arraystretch}{1.25}
+\setlength{\tabcolsep}{7pt}
+
+\caption{LLM systems can be viewed as a hierarchy of memory tiers. Each tier stores information differently and supports a different form of search or read operation.}
+\label{tab:memory-hierarchy}
+
+\begin{tabularx}{1.3\textwidth}{>{\bfseries}p{0.18\textwidth} Y Y Y}
+\toprule
+\rowcolor{headergray}
+Memory tier & LLM analogue & Store operation & Read / search operation \\
+\midrule
+
+\rowcolor{parametric}
+Parametric memory
+&
+Model weights, especially FFN/MLP layers
+&
+Pretraining, fine-tuning, or model editing consolidate information into weights.
+&
+The forward pass elicits learned associations from the model parameters.
+\\
+
+\rowcolor{contextual}
+Working memory
+&
+Current context, retrieved passages, generated tokens, and KV cache
+&
+Prompting, generation, and retrieval insertion add information to the current sequence.
+&
+Attention performs associative retrieval over prior token states in the context.
+\\
+
+\rowcolor{external}
+External memory
+&
+Document stores, vector databases, tools, files, and the web
+&
+Indexing, embedding, logging, or database updates make information externally searchable.
+&
+Sparse, dense, or hybrid retrieval promotes relevant information into the context.
+\\
+
+\bottomrule
+\end{tabularx}
+\end{table*}
+
+
+
+This analogy is strengthened by recent work interpreting Transformers themselves through the lens of associative memory. In particular, \sidecite{zhong2025understandingtransformerperspectiveassociative} argue that both attention and feed-forward networks can be understood as memory systems, but with distinct retrieval and update properties. Attention constructs a dynamic associative memory over the current sequence, whereas feed-forward layers behave more like static learned associative stores. This suggests that failures in LLM search should not be viewed only as missing information, but more generally as failures of memory access: the information may be stored in the weights, present in the context, or available externally, yet still fail to be retrieved with sufficient salience.
+
+Under this view, retrieval-augmented generation is only one memory operation: the promotion of information from external memory into working memory. Prompting elicits information from parametric memory; attention performs associative retrieval within the current context; indexing writes information into external memory; and fine-tuning, distillation, or model editing consolidate information into the weights. The central systems problem is therefore not document retrieval alone, but memory management across heterogeneous memory tiers. Bridging these memory hierarchies is a powerful avenue for future improvement, for instance by treating document-embedding retrieval more like long-context in-context retrieval, or conversely by treating long-context attention as a form of retrieval over an external memory.
+
+
+
+TALK ABOUT MY PAPERS ON THE OTHER PARTS OF THE HIERARCHY
+
+TALK ABOUT FORGETTING
+
+Finally, we argue that long-context modeling and information retrieval are closer than they may appear, and that bridging these literatures can be fruitful: both fields study how to select, compress, and condition on relevant evidence, finding needles of relevamnt information in a haystack of noise. Building conceptual and methodological links between them may be possible.
+
+
+\section{Towards Omnimodal Embeddings}
+
+
+We argue that \emph{omnimodal} search will become central as the set of exploitable sources of information widens with model capabilites (text, images, audio, video, code, structured data, 3D models).
+Recent projects such as BrowseComp illustrate the growing impact of AI agents on real-world information seeking and highlight that robust access to complex information benefits from \emph{adaptive compute}. Crucially, these systems still benefit from strong ``first-layer'' retrieval primitives such as embedding-based search for efficient candidate selection.
+
+
+We further note that not all information is equally accessible: some sources remain costly to reach, poorly indexed, private, ephemeral... Exploiting such information at scale will therefore remain challenging in the coming years. Looking forward, we anticipate a shift from explicit querying toward more \emph{implicit} information access, where systems proactively surface relevant knowledge continuously in response to context, goals, and ongoing activity.
+
+
+
+\section{Agentic Scaffolds: The low hanging fruit of search}
+
+AGENT SYSTEMS ARE THE ONES BEST ABLE TO NAVIGATE THE MEMORY HIERARCHY. AGENTS are all about combining strong parametric priors from llms with tools to be able to navigate external memories (internet, corpora) and transfer information to their working memories where they can reason on it. all of this in a loop. This is how search should be: we leverage all possible priors and tools at our disposition and need to reason about things to undertand queries,analyze documents, etc...
+
+talk about browsecomp and browsecompplus. show some grhaphics on this.
+
+
+CURRENT AGENTIC SEARCH SYSTEMS SHOW INTERESTING DYNAMICS. THE LLM MAKES A BIG DIFFERENCE. THE RETRIEVAL MODEL MAKES A BIG BUT SMALLER DIFFERENCE. THE SCAFFOLED MAKES A BIG DIFFERENCE.
+
+TALK ABOUT RECURSIVE LMS. TALK ABOUT OTHER SCAFFOLDS.
+
+SCAFFOLD ENGINEERING IS THE LOW HANGING FRUIT
+
+
+\section{Search is never the end goal}
+
+Evaluating downstream utility gives a good measure of whether searching succeeded.
+
+Seartch is hard to measure correctly, and never the goal itsefl.
 
 Mention prediction markets as a source of distributed information and as a benchmark and use case of search.
 
 
 
-Tying back to the central theme of search, the conclusion outlines what the next generation of information access may look like. We argue that \emph{omnimodal} search will become central as the set of exploitable sources of information widens with model capabilites (text, images, audio, video, code, structured data, 3D models).
-Recent projects such as BrowseComp illustrate the growing impact of AI agents on real-world information seeking and highlight that robust access to complex information benefits from \emph{adaptive compute}. Crucially, these systems still benefit from strong ``first-layer'' retrieval primitives such as embedding-based search for efficient candidate selection.
+\section{Parting Words: Search is far from solved and so important}
 
 The conclusion further reflects on the fact that verifying search correctness is not uniformly easy. Instead, search exhibits a \emph{jagged frontier} of capabilities: some tasks (e.g., factual verification grounded in accessible digital sources) are comparatively straightforward to check and should steadily improve \sidenote{Although as demonstrated by Vidore V3, complex queries remain very lengthy to verify even for human experts.}, whereas underspecified requests, open-ended synthesis, and value-laden questions remain harder both to solve and to verify. In this lens, verifier-side constraints shape what kinds of search problems will be reliably improved ``verifier's law''. (Mention the fact a lot of weak signals are provided by the user in a tyoical search system and can be exploited to understand whether a system has satisified a user request (are they asking follow ups, etc).
 
-We further note that not all information is equally accessible: some sources remain costly to reach, poorly indexed, private, ephemeral... Exploiting such information at scale will therefore remain challenging in the coming years. Looking forward, we anticipate a shift from explicit querying toward more \emph{implicit} information access, where systems proactively surface relevant knowledge continuously in response to context, goals, and ongoing activity.
 
-Finally, we argue that long-context modeling and information retrieval are closer than they may appear, and that bridging these literatures can be fruitful: both fields study how to select, compress, and condition on relevant evidence, finding needles of relevamnt information in a haystack of noise. Building conceptual and methodological links between them may be possible.
-
-Beyond the technical horizon, we close by reflecting on what truly frictionless information access would mean, and on the societal implications of delegating discovery, synthesis, and decision support to increasingly agentic systems.
