@@ -1,7 +1,14 @@
 \setchapterpreamble[u]{\margintoc}
-\chapter{Trustworthiness Through Transparency: CroissantLLM}
+\chapter{CroissantLLM: A Truly Bilingual French-English Language Model}
 % \chapter{\textit{CroissantLLM}: A Truly Bilingual French-English Language Model}
 
+\begin{sagekaobox}
+    Agentic search largely benefits from capable LLM orchestrators. More capable models are infused with better reasoning skills and better background knowledge enabling a more precise use of retrieval tools and are able to retrieve information quicker and in less turns (BrowseCompPlus). While the best LLMs have historically been proprietary models of large size, essentially pretrained on the English language, we argue smaller models trained openly and transparently are capable of strong performance and benefit the academic and industrial community. Here, we introduce CroissantLLM \cite{faysse2024croissantllm}, a compact bilingual French--English language model trained on an equal mixture of English and French data.
+    
+    Initiated in 2023, this project was among the first open efforts to highlight the benefits of training with high token-to-parameter ratios, and among the early attempts to train sub-7B models \emph{outside} of a larger scaling ladder with the explicit goal of delivering strong performance at small size for efficient inference. At release time, CroissantLLM achieved state-of-the-art results on French language benchmarks and matched the strongest English models in its size category. It also delivered particularly strong performance on English--French translation, often surpassing models that were orders of magnitude larger. Beyond the model itself, the CroissantLLM project emphasizes the importance of bilingual training corpora, establishes joint scaling laws for bilingual settings, and is accompanied by substantial data work: the release of high-quality French resources reused in many subsequent projects, as well as new French benchmarks. Models, code, datasets, and evaluation suites are released publicly, supporting continued progress toward strong local models that run efficiently on consumer hardware.
+
+    While integrating this project as part of the framework of this thesis might seem (and is) a bit \emph{post-hoc}, some results are particularly relevant to the central theme of information recall through associative links. In this setting, the memory component is parametric (model weights) rather than external (a database), but our results clearly show information recall and domain knowledge acquisition (french culture) to be impacted by the training data distribution, even in such internet scale training runs. Training and backpropagation becomes the mechanism by which associative links are created and leveraged during the forward pass. If LLMs were used as search agents, being ingrained with strong parametric priors on the search theme would yield a more efficient information retrieval process. It opens up an interesting scientific question on the importance of parametric knowledge to correctly reason about practical topics and puts into question efforts to train LLMs without any knowledge.
+\end{sagekaobox}
 
 
 \begin{kaobox}[frametitle=Paper Abstract]
@@ -144,6 +151,7 @@ A variety of sources are integrated into our corpus, including carefully filtere
 
 The scrapping and processing code are available in our code base.\sidenote{\url{https://github.com/ManuelFay/llm-data-hub}} The license information of all datasets used is given, all allowing for permissive commercial use.
 
+
 \subsection{French Data}
 
 
@@ -218,6 +226,7 @@ In total, we include 400 million parallel sentences and about 36 billion tokens.
 (2)~BiCleaner\sidenote{\url{https://github.com/bitextor/bicleaner}} is then used to filter data using heuristic and perplexity filters;
 (3)~finally, the state-of-the-art NMT quality estimator CometKiwi \sidecite{rei-etal-2022-cometkiwi} is used to keep only top quality translation pairs. 
  
+
 
 \textbf{Theses.} To incorporate versatile academic and scientific language, we augment our dataset with French theses abstracts along with their author-generated English translations. This corresponds to 95000 documents and more than 80 million high-quality tokens.\sidenote{Data licensed under Etalab open license \url{https://www.etalab.gouv.fr/wp-content/uploads/2017/04/ETALAB-Licence-Ouverte-v2.0.pdf}}
 
@@ -856,17 +865,3 @@ Users are free to download and use the model and the associated resources at the
 % Give examples !
 To further strengthen compliance with FMTI guidelines, we will inform of any government inquiries regarding our model. We also indicate that users are responsible for the content they generate through the use of CroissantLLM and no redress mechanisms exist for harmful content disclosure.
 
-
-%\clearpage
-\subsubsection*{Author Contributions and Acknowledgements}
-In our efforts of transparency, we provide a summary of contributions for all authors and persons associated to the paper. Manuel, Patrick, Nuno, and Pierre belong to the core team and have participated throughout all steps of the project, from decision-making to report writing. Manuel coordinated the project and led the data collection, design decisions, and model evaluation efforts, and strongly participated in the model training. Pierre is the senior author of the project and was instrumental through constant feedback, project coordination, securing the compute grant, and design decisions. Patrick led the scaling law efforts and spearheaded the model training on distributed compute clusters.  Nuno led the Chat and translation finetuning efforts, including constructing model finetuning pipelines and datasets, and gave constant feedback throughout the project. Pedro provided help on the development of the pre-training codebase and gave feedback on the pre-training stream of the work. João and Ricardo constructed the parallel data used for pre-training, which included efforts in both large-scale data collection and filtering. Duarte assisted with the fine-tuning efforts. António worked on base model finetuning on specific tasks and was in charge of the Chat model evaluation and the inference speed benchmark.
-Caio assisted with data collection efforts and provided high-quality, extensive feedback and notes on the report. Nicolas assisted with data collection efforts and data scrapping. Antoni adapted the model to swiftly run on mobile devices. Gautier, Céline, François, André are senior researchers who provided valuable feedback and important guidance throughout the project and were instrumental in obtaining compute grants.
-
-
-
-This work is a collaboration of academic and industrial partners. On the academic side, core authors are affiliated with CentraleSupélec (Université Paris Saclay) and Instituto Superior Técnico de Lisboa, and other contributors are linked to Sorbonne Université and Imperial College London. On the industrial side, core authors receive funding from respectively Illuin Technology (Paris), Unbabel (Lisboa), Equall (New York, Lisboa, Paris). Training compute is obtained on the Jean Zay supercomputer operated by GENCI IDRIS through compute grant 2023-AD011014668R1 as well as on Adastra through compute grant AD010614770. 
-Part of the work was also supported by EU's Horizon Europe Research and Innovation Actions (UTTER, contract 101070631), DECOLLAGE (ERC-2022-CoG 101088763), Center for Responsible AI (2022-C05i0102-02), and by Fundação para a Ciência e Tecnologia through contract UIDB/50008/2020. 
-Evaluation and finetuning experiments are done on the Ruche platform (Université Paris Saclay), as well as on privately owned compute centers.
-
-Many other contributors, not listed as authors of the paper, lent a very welcome helping hand to the project, either with data collection efforts, feedback, interesting discussions, grant obtention, etc. In no particular order, we extend our thanks to Hélène Rousset, Bruno Hays, Bilel Omrani, Sacha Muller, Elena Hinnekens and Robert Vesoul (Illuin Technology), Paul-Henry Cournède, Renaud Monnet, Géraud Faye (CentraleSupélec), Pierre-Etienne Devineau (DINUM),  Louise-Anne Charles (BnF Datalab), the Unbabel TowerLLM team.
-Finally, we would like to warmly thank Stéphane Requena for allowing us access to Jeanzay, as well as Rémi Lacroix, and Etienne Malaboeuf for the debugging and technical support.

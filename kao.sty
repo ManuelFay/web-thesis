@@ -1184,11 +1184,69 @@
 	%frametitlebackgroundcolor=LightBlue,
 }
 
+% Minimal gray-blue / very clean textbook style
+\definecolor{KaoSlate}{HTML}{EEF3F7}
+\definecolor{KaoSlateFrame}{HTML}{6E879B}
+% Sage / theorem-like green
+\definecolor{KaoSage}{HTML}{E3EEDC}
+\definecolor{KaoSageFrame}{HTML}{7A9A65}
+
+% Warm amber / warning or remark
+\definecolor{KaoAmber}{HTML}{FFF2CC}
+\definecolor{KaoAmberFrame}{HTML}{D6A84F}
+
+\newmdenv[
+    style=kaoboxstyle,
+    backgroundcolor=KaoAmber,
+    linecolor=KaoAmberFrame,
+    frametitlebackgroundcolor=KaoAmber,
+]{amberkaobox}
+
+% Lavender / examples or intuition
+\definecolor{KaoLavender}{HTML}{E9E1F5}
+\definecolor{KaoLavenderFrame}{HTML}{8E73BE}
+
+\newmdenv[
+    style=kaoboxstyle,
+    backgroundcolor=KaoLavender,
+    linecolor=KaoLavenderFrame,
+    frametitlebackgroundcolor=KaoLavender,
+]{lavenderkaobox}
+
+% Minimal gray-blue / very clean textbook style
+\definecolor{KaoSlate}{HTML}{EEF3F7}
+\definecolor{KaoSlateFrame}{HTML}{6E879B}
+
+\newmdenv[
+    style=kaoboxstyle,
+    backgroundcolor=KaoSlate,
+    linecolor=KaoSlateFrame,
+    frametitlebackgroundcolor=KaoSlate,
+]{kaobox}
+
+
 \newmdenv[
 	style=kaoboxstyle,
-	backgroundcolor=RoyalBlue!25!White,
-	frametitlebackgroundcolor=RoyalBlue!25!White,
-]{kaobox}
+	backgroundcolor=TealBlue!25!White,
+	frametitlebackgroundcolor=TealBlue!25!White,
+]{tealkaobox}
+
+
+\newmdenv[
+    style=kaoboxstyle,
+    backgroundcolor=KaoSage,
+    linecolor=KaoSageFrame,
+    frametitlebackgroundcolor=KaoSage,
+]{sagekaobox}
+
+
+% \newmdenv[
+% 	style=kaoboxstyle,
+% 	backgroundcolor=YellowGreen!25!White,
+% 	frametitlebackgroundcolor=YellowGreen!25!White,
+% ]{caobox}
+
+% royalblue
 
 %----------------------------------------------------------------------------------------
 %	ENVIRONMENT WITH A COUNTER

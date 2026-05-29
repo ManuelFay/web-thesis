@@ -32,6 +32,7 @@
 	%chapterentrydots=true, % Uncomment to output dots from the chapter name to the page number in the table of contents
 	numbers=noenddot, % Comment to output dots after chapter numbers; the most common values for this option are: enddot, noenddot and auto (see the KOMAScript documentation for an in-depth explanation)
 ]{kaobook}
+\usepackage[utf8]{inputenc}
 
 % Choose the language
 \ifxetexorluatex
@@ -46,7 +47,12 @@
 %\usepackage{showlabels} % Uncomment to output the content of \label commands to the document where they are used
 
 % Load the bibliography package
-\usepackage{kaobiblio}
+% common\usepackage{kaobiblio}
+\usepackage[
+  maxbibnames=99,
+  maxcitenames=1,
+  mincitenames=1
+]{kaobiblio}
 \addbibresource{main.bib} % Bibliography file
 
 % Load mathematical packages for theorems and related environments
@@ -335,23 +341,20 @@
 \addpart{Visual Document Retrieval}
 \pagelayout{margin} % Restore margins
 
-This is a part introduction.
 
-\include{chapters/colpali}
-% \include{chapters/vidorev2}
-\include{chapters/vidorev3}
-% \include{chapters/vidore}
-%\include{chapters/modernvbert}
+%\include{chapters/colpali}
+%% \include{chapters/vidorev2}
+%\include{chapters/vidorev3}
+% \include{chapters/modernvbert}
 
 
 \pagelayout{wide} % No margins
 \addpart{Contextualized Document Retrieval}
 \pagelayout{margin} % Restore margins
 
-This is a part introduction.
 
-%\include{chapters/conteb}
-%\include{chapters/croissant}
+% \include{chapters/conteb}
+\include{chapters/croissant}
 
 
 \pagelayout{wide} % No margins
@@ -359,6 +362,11 @@ This is a part introduction.
 \pagelayout{margin} % Restore margins
 
 \include{chapters/conclusion}
+
+\pagelayout{wide} % No margins
+\addpart{Acknowledgments}
+\pagelayout{margin} 
+\include{chapters/acknowledgments}
 
 % \pagelayout{wide} % No margins
 % \addpart{Latex Guide}
@@ -384,10 +392,10 @@ This is a part introduction.
 % \include{chapters/reranking_short}
 % \include{chapters/learning_dynamics}
 % \include{chapters/colpali_appendix}
-\include{chapters/vidorev3_appendix}
+% \include{chapters/vidorev3_appendix}
 % \include{chapters/modernvbert_appendix}
 % \include{chapters/conteb_appendix}
-% \include{chapters/croissant_appendix}
+\include{chapters/croissant_appendix}
 % \include{chapters/learning_dynamics_appendix}
 \chapter{Introduction Appendix}
 
@@ -490,5 +498,6 @@ This is a part introduction.
 %\includepdf{cover-back.pdf}
 
 %----------------------------------------------------------------------------------------
+
 
 \end{document}
