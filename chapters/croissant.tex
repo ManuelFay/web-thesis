@@ -218,6 +218,7 @@ Lastly, following the success of learning from textbooks \sidecite{li2023textboo
 Following previous work \sidecite{anil2023palm},
 we incorporate vast quantities of parallel data, in our case high-quality English-French translation pairs, in order to improve the multilingual capabilities of the model \sidecite{briakou-etal-2023-searching}.
 
+
 \textbf{Opus.}
 We extract subsets of sentence pairs spanning multiple domains from the OPUS corpus \sidecite{opuscorpus}.\sidenote{Free license \url{https://opus.nlpl.eu/}}
 Statistics are described in Table~\ref{fig:opus}.
@@ -229,6 +230,8 @@ In total, we include 400 million parallel sentences and about 36 billion tokens.
 
 
 \textbf{Theses.} To incorporate versatile academic and scientific language, we augment our dataset with French theses abstracts along with their author-generated English translations. This corresponds to 95000 documents and more than 80 million high-quality tokens.\sidenote{Data licensed under Etalab open license \url{https://www.etalab.gouv.fr/wp-content/uploads/2017/04/ETALAB-Licence-Ouverte-v2.0.pdf}}
+
+
 
 \textbf{Song Lyrics.}
 Our dataset integrates song lyrics in both French and English, scrapped from a specialized community-driven lyrics translation website.\sidenote{\url{https://www.lacoccinelle.net}, with opt-out options for data owners and community-contributed translations under free-use license.}
@@ -274,6 +277,7 @@ We construct 4 different model sizes by jointly scaling the number of attention 
 Most LLM tokenizers are fitted on English-centric corpora with an information-theoretic optimization objective, for example, Byte-Pair encoding \sidecite{sennrich2016neural} or Unigram \sidecite{kudo2018subword}, leading to good fertility\sidenote{See \autoref{sec:terminology} for a definition.} values (low token per word ratio) on English text, but high fertility in other languages. These phenomena make processing in other languages slower and more costly \sidecite{rust2021good}. Furthermore, subword splits in non-English languages mechanically carry less semantical meaning, potentially being a factor in the degraded performance of models on non-English languages \cite{rust2021good}.
 
 \textbf{Tokenizer training.} We fit our CroissantLLM tokenizer on a corpus of 100B high-quality tokens, with splits of English, French, and code data. We use SentencePiece\sidenote{\url{https://github.com/google/sentencepiece}} to train a Byte-Pair Encoding tokenizer with a vocabulary size of 32000 tokens,  100 special placeholder tokens, whitespace separation, and byte fallback, inspired by \cite{touvron2023llama, jiang2023mistral}. The data corpus used to fit the tokenizer is made available,\sidenote{\url{https://huggingface.co/datasets/manu/tok-corpus-shuffled}} and notably contains large amounts of French data to skew the vocabulary construction process towards optimizing for French as well.
+
 
 \textbf{Improved fertility rates.} The focus on English, French, and Code enables the CroissantLLM tokenizer to display smaller fertility rates on French texts than the Mistral and Llama models with similar vocabulary sizes, all the while also displaying slightly smaller rates than both in English and Code (Figure \ref{fig:tok_fertility}). This is due to the multilingual support of both Llama and Mistral tokenizers which need to allocate some vocabulary tokens to frequent character patterns from other languages.
 Roughly, the Llama tokenizer is 17\,\% less token efficient at encoding French internet data, and up to 40\,\% less efficient on clean encyclopedia French texts, implying that the 303B unique French tokens in our data training set correspond to more than 360B tokens with the Llama tokenizer. This enables us to pack more data in fewer tokens, leading to improvements in training and inference efficiency.
@@ -379,8 +383,7 @@ The model was exclusively trained on a supercomputer operating on low-carbon nuc
 Interestingly, the model we trained is not ``compute-optimal'' according to Chinchilla laws \sidecite{hoffmann2022training}, meaning that less computing could have been used to train a larger model with the same performance. However, our model aims to be used for inference purposes at industrial scales. Our training paradigm is thus to absorb the downstream inference costs, by training a smaller model on a lot more tokens to obtain an inference-optimized model equivalent in performance to a bigger compute-optimal model \sidecite{sardana2023chinchillaoptimal}. Each inference of the final model is thus vastly more energy-efficient than a Chinchilla optimal model of equivalent performance ($>$ 3B parameters), and can even run on CPU or mobile devices. Relying on estimates of \sidecite{scaling-laws-lm}, at inference, CroissantLLM represents roughly 2.6 GFLOPS per token.
 
 % Detailed calculations, graph with the inference costs
-We hope to extend base model evaluation past English benchmarking alone and assess model capabilities in French, aiming for broad coverage across orthogonal capabilities to observe the effect of truly bilingual pre-training. Our evaluation efforts are rooted in transparency, and all results reported in the main technical report are reproducible through code that is open-sourced and public data.We hope to extend base model evaluation past English benchmarking alone and assess model capabilities in French, aiming for broad coverage across orthogonal capabilities to observe the effect of truly bilingual pre-training. Our evaluation efforts are rooted in transparency, and all results reported in the main technical report are reproducible through code that is open-sourced and public data.We hope to extend base model evaluation past English benchmarking alone and assess model capabilities in French, aiming for broad coverage across orthogonal capabilities to observe the effect of truly bilingual pre-training. Our evaluation efforts are rooted in transparency, and all results reported in the main technical report are reproducible through code that is open-sourced and public data.
-
+We hope to extend base model evaluation past English benchmarking alone and assess model capabilities in French, aiming for broad coverage across orthogonal capabilities to observe the effect of truly bilingual pre-training. Our evaluation efforts are rooted in transparency, and all results reported in the main technical report are reproducible through code that is open-sourced and public data. 
 
 \section{Evaluation Benchmarks}
 
@@ -864,4 +867,3 @@ Users are free to download and use the model and the associated resources at the
 \textbf{Risk Assessment.} Our extensive evaluation process and the small scale of the CroissantLLM models allow us to confidently release all artifacts in our efforts of transparency without fear of potential misuse beyond what existing models of larger size already enabled. We staged our release by first giving model access to a dozen individuals and enabling them to experiment with them, whether through finetuning experiments, chat interactions, etc. Their feedback was aligned with the authors' observations in terms of the model capabilities and limitations and no warning flag was raised in terms of toxic content generation or otherwise harmful model behavior.  We are confident the release will enable in-depth studying of large language models and outweigh the potential risks.
 % Give examples !
 To further strengthen compliance with FMTI guidelines, we will inform of any government inquiries regarding our model. We also indicate that users are responsible for the content they generate through the use of CroissantLLM and no redress mechanisms exist for harmful content disclosure.
-
