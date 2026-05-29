@@ -63,7 +63,7 @@ The ability to rapidly process and query large-scale textual corpora is a corner
 \end{figure*}
 
 %\noindent\textbf{Industry Gap.} 
-While long context encoders have been recently developed \sidecite{zhang2024mgte, modernbert, boizard2025eurobertscalingmultilingualencoders} along with long context embedding models \sidecite{zhu2024longembedextendingembeddingmodels}, modern document retrieval pipelines typically segment lengthy documents into smaller chunks to optimize the granularity for efficient retrieval and readability of the retrieved content \sidecite{xu2024retrievalmeetslongcontext, jiang2024longragenhancingretrievalaugmentedgeneration}. Traditionally, these chunks are then \emph{independently} fed to an embedding model, and stored in a vector database for efficient future query matching. By doing so, these systems remove strong semantic and conceptual links between the split passages, directly affecting the resulting representations. An example is illustrated in \autoref{fig:contextualized_exemple}: embedding the sentence \textit{"He became emperor in 1804."} without leveraging information about the person at hand (\emph{Napoléon}) given in previous paragraphs will make matching queries related to \emph{Napoléon} difficult.
+While long context encoders have been recently developed \sidecite{zhang2024mgte, modernbert, boizard2025eurobert} along with long context embedding models \sidecite{zhu2024longembedextendingembeddingmodels}, modern document retrieval pipelines typically segment lengthy documents into smaller chunks to optimize the granularity for efficient retrieval and readability of the retrieved content \sidecite{xu2024retrievalmeetslongcontext, jiang2024longragenhancingretrievalaugmentedgeneration}. Traditionally, these chunks are then \emph{independently} fed to an embedding model, and stored in a vector database for efficient future query matching. By doing so, these systems remove strong semantic and conceptual links between the split passages, directly affecting the resulting representations. An example is illustrated in \autoref{fig:contextualized_exemple}: embedding the sentence \textit{"He became emperor in 1804."} without leveraging information about the person at hand (\emph{Napoléon}) given in previous paragraphs will make matching queries related to \emph{Napoléon} difficult.
 
 Recognizing the significant business value of incorporating broader contextual information into retrieval, major companies have explored leveraging large generative language models (LLMs) to mitigate this limitation. Some approaches attempt to circumvent retrieval altogether by feeding millions of tokens into the model's context window at runtime \sidecite{geminiteam2024gemini15unlockingmultimodal}, while others reformulate individual passages by concatenating them with document-level summaries and context \sidecite{contextual_anthropic}. However, these methods are prohibitively expensive at scale when dealing with corpora comprising thousands of documents.
 
@@ -135,7 +135,7 @@ We open-source all project artifacts, including the benchmark, models and traini
 % In our setting, a retrieval system scores how relevant a document $d$ from corpus 
 % \manu{add math}
 
-% Neural embedding models to represent texts at a passage level were introduced by \sidecite{reimers_sentence-bert_2019} \manu{little history recap}. \manu{mention synthetic data, infonce, late interaction}. Long context models.
+% Neural embedding models to represent texts at a passage level were introduced by \sidecite{reimers2019sbert} \manu{little history recap}. \manu{mention synthetic data, infonce, late interaction}. Long context models.
 
 % To evaluate such models \manu{beir, mteb}.In practice, much more priors exist on the data distribution within the corpus. \manu{add math to show we have knowledge of D in its entirety often times, and metadata that enables us to have a stucture on D.} Long context evaluation.
 
@@ -221,7 +221,7 @@ In the \emph{standard retrieval} setting, the score is computed solely based on 
 
 
 \subsection{Integrating Contextual Information} \label{related_work_contextual}
-Neural embedding models for passage-level text representation, popularized by SentenceBERT \sidecite{reimers_sentence-bert_2019}, have enabled retrieval systems to move beyond lexical matching \sidecite{robertson_okapi_1994}. To include contextual information in these retrievers, previous works proposed methods that either operate \textit{offline} during \emph{indexing}, or online during \emph{querying} when faced with a user request.
+Neural embedding models for passage-level text representation, popularized by SentenceBERT \sidecite{reimers2019sbert}, have enabled retrieval systems to move beyond lexical matching \sidecite{robertson_okapi_1994}. To include contextual information in these retrievers, previous works proposed methods that either operate \textit{offline} during \emph{indexing}, or online during \emph{querying} when faced with a user request.
 
 \noindent\textbf{Indexing.} The chunking strategy is a crucial design choice and often aims to optimize chunk self-containment. Fixed-size approaches with overlaps preserve continuity, while structure-aware chunking respects natural text boundaries, such as paragraphs or sentences. Semantic chunking, by contrast, splits text into topic-aligned segments. These methods appear in frameworks such as LlamaIndex \sidecite{Liu_LlamaIndex_2022} and LangChain \sidecite{chase_langchain_2022}, but different queries may need different chunk sizes. Thus, dynamic chunking techniques have emerged to adapt segmentation on the fly \sidecite{mixofgranularity, qian2024groundinglanguagemodelchunkingfree}. Beyond optimizing chunking, some indexing approaches enrich chunks with broader context by preprending LLM-generated document summaries, contextual information or metadata \sidecite{contextual_anthropic, multimetarag}. Similarly, \sidecite{morris2024contextualdocumentembeddings} demonstrate that appending learned "corpus" embeddings to queries and documents can further improve retrieval. Other indexing-time techniques involve organizing chunks into higher-level data structures. For example, \sidecite{graphrag} and \sidecite{raptor} cluster related chunks into semantic graphs or tree hierarchies.
 
@@ -237,7 +237,7 @@ Neural embedding models for passage-level text representation, popularized by Se
 
 
 % \manu{here restructure}
-% Neural embedding models for passage-level text representation were popularized with SentenceBert \sidecite{reimers_sentence-bert_2019}, enabling semantic search beyond traditional lexical matching \sidecite{robertson_okapi_1994} have been widely adopted to train embedding models in retrieval tasks. 
+% Neural embedding models for passage-level text representation were popularized with SentenceBert \sidecite{reimers2019sbert}, enabling semantic search beyond traditional lexical matching \sidecite{robertson_okapi_1994} have been widely adopted to train embedding models in retrieval tasks. 
 
 % \subsection{Integrating contextual information.}
 % \label{related_work_contextual}
@@ -525,10 +525,10 @@ The full dataset contains 9881 unique long documents (3698 tokens on average), c
 \subsection{Baselines}
 % In addition to raptor, cde, contextual, 0-shot sentence transformers, we train sentence transformers with the same data (same batch) than whazt we train CDE on.
 
-%\pc{Pour moi faut se positionner et dire pourquoi on pool au niveau de la sentnece.} More recently, approaches such as late interaction models \sidecite{khattab_colbert_2020, chen_bge_2024} and  gained in popularity, setting new performance standards for encoder-based models. \pc{cokokok}
+%\pc{Pour moi faut se positionner et dire pourquoi on pool au niveau de la sentnece.} More recently, approaches such as late interaction models \sidecite{khattab2020colbert, chen_bge_2024} and  gained in popularity, setting new performance standards for encoder-based models. \pc{cokokok}
 
 
-\noindent\textbf{Training-Free.} We evaluate a selection of off-the-shelf methods that are strong in their size categories such as a standard single-vector embedding model based on ModernBERT (\texttt{modernbert-embed-large} \cite{modernbert, ModernBERT-embed-large}), its multi-vector ColBERT equivalent \sidecite{khattab_colbert_2020, GTE-ModernColBERT} and \emph{Okapi BM25} \sidecite{robertson_okapi_1994}, a strong lexical matching method. 
+\noindent\textbf{Training-Free.} We evaluate a selection of off-the-shelf methods that are strong in their size categories such as a standard single-vector embedding model based on ModernBERT (\texttt{modernbert-embed-large} \cite{modernbert, ModernBERT-embed-large}), its multi-vector ColBERT equivalent \sidecite{khattab2020colbert, GTE-ModernColBERT} and \emph{Okapi BM25} \sidecite{robertson_okapi_1994}, a strong lexical matching method. 
 Additionally, we compare against various contextualization approaches. Specifically, we include Anthropic’s contextual retrieval approach~\sidecite{contextual_anthropic}\sidenote{We use \texttt{Qwen-2.5-7B-Instruct} as the generative model which we serve on a 80GB A100 GPU with vLLM and \texttt{modernbert-embed-large} as the embedding model}, and evaluate Late Chunking \sidecite{LateChunking} without specific fine-tuning using \texttt{modernbert-embed-large}. These methods cover standard practices with varying level of complexities and indexing budgets.\sidenote{We also evaluate RAPTOR \cite{raptor} with \texttt{Qwen-2.5-7B-Instruct} and \texttt{cde-small-v2}~\cite{morris2024contextualdocumentembeddings} but find them to be poorly adapted to our problem settings.}
 
 \noindent\textbf{Training-Based.} For fair evaluation, we also fine-tune the sentence embedding method \texttt{modernbert-embed-large} on the training dataset with the same batch construction strategy as when training our main method, ensuring performance differences only stem from methodological design.
@@ -580,7 +580,7 @@ This allows each chunk representation to benefit from contextualization over the
 
 
 \noindent\textbf{Late Interaction.} 
-Late Interaction (LI) models \sidecite{khattab_colbert_2020, chen_bge_2024} are retrieval methods that do not pool token representations and instead store all token embeddings of each document. This approach boosts performance, especially on long-context retrieval tasks \sidecite{modernbert, zhu2024longembedextendingembeddingmodels}, at the expense of storage cost. In this work, we propose extending Late Chunking approaches to LI models by applying standard LC but simply forgoing the final pooling and storing token embeddings depending on their original chunk memberships.
+Late Interaction (LI) models \sidecite{khattab2020colbert, chen_bge_2024} are retrieval methods that do not pool token representations and instead store all token embeddings of each document. This approach boosts performance, especially on long-context retrieval tasks \sidecite{modernbert, zhu2024longembedextendingembeddingmodels}, at the expense of storage cost. In this work, we propose extending Late Chunking approaches to LI models by applying standard LC but simply forgoing the final pooling and storing token embeddings depending on their original chunk memberships.
 \begin{equation}
 \phi_{LI}(c_i) \;=\; \{\,h_t : t \in c_i\}, 
 \quad \forall\,i \in \{1, \dots, N_d\}
@@ -608,7 +608,7 @@ Respectively, we leverage \texttt{GTE-ModernColBERT} \sidecite{GTE-ModernColBERT
 Late Chunking enables information "leakage" between chunks of the same document. While this training-free method showed promises, we construct a learning objective to explicitly optimize contextual embedding models for this setting.
 Our aim is twofold: optimizing chunk representations to integrate relevant document-level information, all while ensuring they retain their specificity with respect to other same-document chunks, in order to prevent embedding collapse.
 
-Previous works \sidecite{karpukhin_dense_2020, ni2021largedualencodersgeneralizable, izacard_unsupervised_2021, li2023generaltextembeddingsmultistage, wang_text_2022, nussbaum2024nomic} have relied on various learning objectives inspired by the contrastive learning literature \sidecite{schroff_facenet_2015}. A natural choice is the InfoNCE objective \sidecite{oord_representation_2018}, which samples "negative" embeddings from other documents of the same batch. 
+Previous works \sidecite{karpukhin2020dpr, ni2021largedualencodersgeneralizable, izacard_unsupervised_2021, li2023generaltextembeddingsmultistage, wang_text_2022, nussbaum2024nomic} have relied on various learning objectives inspired by the contrastive learning literature \sidecite{schroff_facenet_2015}. A natural choice is the InfoNCE objective \sidecite{oord_representation_2018}, which samples "negative" embeddings from other documents of the same batch. 
 
 % \textcolor{red}{In the original Late Chunking work, \sidecite{LateChunking} also propose a training objective following the same technique, yielding small improvement gains on standard retrieval datasets, hinting at chunk contextualization potential.}
 
@@ -972,7 +972,7 @@ These insights build towards the broader development of the \textit{Late Chunkin
 % Our findings highlight the importance of contextual embeddings in enhancing retrieval accuracy, particularly in scenarios where document structure plays a crucial role.
 
 \noindent\textbf{Future Work.} Scaling our approach with recent decoder models with extended context lengths (e.g., 1M+ tokens \sidecite{yang2025qwen251mtechnicalreport}) would enable embedding entire books or lengthy documents in a single forward pass, potentially unlocking new capabilities for large-scale document retrieval. It would also be interesting to observe the impact of our method on retrieval confidence \sidecite{gisserotboukhlef2024trustworthyrerankingsimpleeffective}. Finally, adapting our method to multi-modal embedding pipelines that have less control over the chunking strategy could further enhance retrieval systems in industrial applications with visually rich contextual documents \sidecite{faysse2025colpaliefficientdocumentretrieval, ma2024unifyingmultimodalretrievaldocument}. 
-%Exploring new synthetic data generation strategies, and applying our training method with late interaction models \sidecite{khattab_colbert_2020} would also be an interesting avenue for future work.
+%Exploring new synthetic data generation strategies, and applying our training method with late interaction models \sidecite{khattab2020colbert} would also be an interesting avenue for future work.
 % We hope our benchmark and findings serve as a foundation for future work in advancing context-aware retrieval systems.
 
 

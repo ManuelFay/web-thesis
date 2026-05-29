@@ -70,7 +70,7 @@ ESG Reports            & En & Fr  & 30 &  57 & 1,538 & 222 & 3.9 & Natively cros
 
 
 \section{Results}
-We provide some nDCG@5 results for visual retrieval models on the ViDoRe Benchmark v2 \sidecite{faysse2025colpaliefficientdocumentretrieval,  ma2024unifyingmultimodalretrievaldocument, zhang2024gme, yu2024visragvisionbasedretrievalaugmentedgeneration, nomicembedmultimodal2025}.\footnote{We adapted the evaluation procedure for the voyageAI API, resulting in slightly lower performance on the ViDoRe benchmark v1 compared to the values reported by voyageAI. This discrepancy likely arises from our resizing of input images to a maximum image height of 1200 pixels to facilitate efficient benchmarking, a preprocessing step presumably not applied in voyageAI's original benchmarking setup.}
+We provide some nDCG@5 results for visual retrieval models on the ViDoRe Benchmark v2 \sidecite{faysse2025colpaliefficientdocumentretrieval, ma2024unifyingmultimodalretrievaldocument, zhang2025gmeimprovinguniversalmultimodal, yu2024visragvisionbasedretrievalaugmentedgeneration, nomicembedmultimodal2025}.\footnote{We adapted the evaluation procedure for the voyageAI API, resulting in slightly lower performance on the ViDoRe benchmark v1 compared to the values reported by voyageAI. This discrepancy likely arises from our resizing of input images to a maximum image height of 1200 pixels to facilitate efficient benchmarking, a preprocessing step presumably not applied in voyageAI's original benchmarking setup.}
 
 
 
@@ -164,4 +164,4 @@ Analyzing the results, we can extract a few general takeaways:
 \section{Moving Forward}
 Our goal is for ViDoRe V2 to become a dynamic, "living benchmark" that regularly grows with new tasks and datasets. To achieve this, we welcome and encourage the community to contribute datasets and evaluation tasks. This collaborative approach helps ensure that the benchmark stays relevant, useful, and reflective of real-world challenges.
 
-We are also open on integrating new retrieval metrics such as confidence estimation measures \sidecite{gisserotboukhlef2024trustworthyrerankingsimpleeffective}, increasing multilingual coverage allowed by ever better base models \sidecite{yang2025qwen251mtechnicalreport, boizard2025eurobertscalingmultilingualencoders}, and extending the leaderboard to new modalities (audio, image querying, etc...)
+We are also open on integrating new retrieval metrics such as confidence estimation measures \sidecite{gisserotboukhlef2024trustworthyrerankingsimpleeffective}, increasing multilingual coverage allowed by ever better base models \sidecite{yang2025qwen251mtechnicalreport, boizard2025eurobert}, and extending the leaderboard to new modalities (audio, image querying, etc...)
