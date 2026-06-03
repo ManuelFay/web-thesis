@@ -404,17 +404,48 @@
 % abstract.
 
 % Cite commands (assuming biblatex is loaded)
+\newcommand{\kaobiblio@iffaysse}[2]{%
+	\IfBeginWith{\namepartfamily}{Faysse}{%
+		\IfStrEq{\namepartgiven}{Manuel}{#1}{#2}%
+	}{#2}%
+}
+
+\newcommand{\kaobiblio@linkedtitle}[1]{%
+	\iffieldundef{url}{%
+		\iffieldundef{doi}{%
+			\mkbibemph{#1\isdot}%
+		}{%
+			\href{https://doi.org/\thefield{doi}}{\mkbibemph{#1\isdot}}%
+		}%
+	}{%
+		\href{\thefield{url}}{\mkbibemph{#1\isdot}}%
+	}%
+}
+
+\DeclareNameFormat{kaobiblio:boldfaysse}{%
+	\nameparts{#1}%
+	\kaobiblio@iffaysse{%
+		\mkbibbold{\usebibmacro{name:given-family}{\namepartfamily}{\namepartgiven}{\namepartprefix}{\namepartsuffix}}%
+	}{%
+		\usebibmacro{name:given-family}{\namepartfamily}{\namepartgiven}{\namepartprefix}{\namepartsuffix}%
+	}%
+	\usebibmacro{name:andothers}%
+}
+
 \DeclareCiteCommand{\fullcite}{%
 	\defcounter{maxnames}{99}%
 	\usebibmacro{prenote}}
-	{\clearfield{url}%
+	{\DeclareNameAlias{default}{kaobiblio:boldfaysse}%
+	\DeclareNameAlias{sortname}{kaobiblio:boldfaysse}%
+	\DeclareFieldFormat{title}{\kaobiblio@linkedtitle{##1}}%
+	\DeclareFieldFormat{url}{}%
+	\DeclareFieldFormat{doi}{}%
 	\clearfield{pages}%
 	\clearfield{pagetotal}%
 	\clearfield{edition}%
 	\clearfield{issn}%
-	\clearfield{doi}%
 	\usedriver
-	{\DeclareNameAlias{sortname}{default}}
+	{}
 	{\thefield{entrytype}}
 }
 {\multicitedelim}
