@@ -90,19 +90,12 @@ Breaking down artificial preconceptions and unifying the document retrieval fiel
 
 \section{Towards Omnimodal Embeddings}
 
+Retrieval is moving from a predominantly text-centric paradigm toward an \emph{omnimodal} one, in which useful evidence may be distributed across text, images, audio, video, code, structured data, and eventually even 3D assets. A first step in this direction was the rise of visual document retrieval: methods such as Document Screenshot Embedding (DSE) and ColPali showed that documents need not always be decomposed into OCR text and layout heuristics, but can instead be embedded directly from page images, preserving visual cues such as tables, figures, typography, and spatial organization \sidecite{ma2024unifyingmultimodalretrievaldocument,faysse2025colpaliefficientdocumentretrieval}. This line of work has since broadened from visual documents to richer forms of media. For instance, ColQwen-Omni \sidecite{faysse2025colqwenomni} extends the ColPali-style late-interaction retrieval paradigm toward audio and video on top of Qwen2.5-Omni \sidecite{xu2025qwen25omni}, while models such as Omni-Embed-Nemotron, e5-omni, BiDirLM, and Gemini Embedding 2 explicitly target unified embedding spaces for heterogeneous modalities including text, image, audio, and video \sidecite{xu2025omniembednemotron,chen2026e5omni, boizard2026bidirlm, shanbhogue2026geminiembedding2}. 
+% At the same time, the retrieval stack itself is diversifying: efficient late-interaction and small-model approaches, such as recent Mixedbread retrievers, suggest that strong first-stage retrieval primitives will remain essential even as larger agents and long-context models become more capable \sidecite{takehi2025mxbai}. In other words, omnimodal retrieval is not only a matter of adding more input types; it also requires deciding how different modalities should be represented, aligned, indexed, compressed, and compared.
 
-MENTION DSE OMNI, COLQWEN OMNI, BIDIRLM, GEMMA EMBEDDINGS
+A particularly important implication is that transfer across modalities can be positive rather than merely a source of interference. ModernVBERT provides an example in the visual-document setting: adding text-only query--document pairs to contrastive training improves visual document retrieval, suggesting that domain-specific supervision can sometimes be shared across modalities when the model has learned a sufficiently aligned representation space \sidecite{teiletche2025modernvbert}. This points toward a more general principle for omnimodal search: useful retrieval behavior may be learned from one modality and reused in another, provided that the embedding geometry supports reliable cross-modal comparison.
 
-MENTION POSITIVE TRANSFER IN modernvbert
-
-We argue that \emph{omnimodal} search will become central as the set of exploitable sources of information widens with model capabilites (text, images, audio, video, code, structured data, 3D models).
-Recent projects such as BrowseComp illustrate the growing impact of AI agents on real-world information seeking and highlight that robust access to complex information benefits from \emph{adaptive compute}. Crucially, these systems still benefit from strong ``first-layer'' retrieval primitives such as embedding-based search for efficient candidate selection.
-
-
-We further note that not all information is equally accessible: some sources remain costly to reach, poorly indexed, private, ephemeral... Exploiting such information at scale will therefore remain challenging in the coming years. Looking forward, we anticipate a shift from explicit querying toward more \emph{implicit} information access, where systems proactively surface relevant knowledge continuously in response to context, goals, and ongoing activity.
-
-
-
+As AI-powered search becomes more agentic, the competitive edge of a system will increasingly depend on its ability to access and exploit heterogeneous sources of evidence. Benchmarks such as BrowseComp and BrowseCompPlus already highlight the importance of persistence, iterative search, and variable test-time compute for finding hard-to-locate information on the web or in a corpus \sidecite{wei2025browsecompsimplechallengingbenchmark, chen2025browsecompplusfairtransparentevaluation}. However, such agentic procedures still benefit from strong ``first-layer'' retrieval primitives, which can cheaply select candidate evidence before more expensive reasoning or tool use is applied. Not all information is equally reachable: some sources remain costly to access, poorly indexed, private, ephemeral, or expressed in unfamiliar modalities. Exploiting such information at scale will therefore remain a central challenge and a quality differentiator.
 
 
 
