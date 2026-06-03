@@ -53,12 +53,14 @@
   maxcitenames=1,
   mincitenames=1
 ]{kaobiblio}
-\DeclareFieldFormat{citetitle}{\mkbibemph{#1\isdot}}
-\DeclareFieldFormat[article]{citetitle}{\mkbibemph{#1\isdot}}
-\DeclareFieldFormat[inproceedings]{citetitle}{\mkbibemph{#1\isdot}}
-\DeclareFieldFormat[incollection]{citetitle}{\mkbibemph{#1\isdot}}
-\DeclareFieldFormat[misc]{citetitle}{\mkbibemph{#1\isdot}}
-\DeclareFieldFormat[online]{citetitle}{\mkbibemph{#1\isdot}}
+\DeclareFieldFormat{italictitle}{\mkbibemph{#1\isdot}}
+\DeclareFieldAlias{title}{italictitle}
+\DeclareFieldAlias{citetitle}{italictitle}
+\newcommand{\DeclareItalicTitleAliasesForType}[1]{%
+	\DeclareFieldAlias[#1]{title}{italictitle}%
+	\DeclareFieldAlias[#1]{citetitle}{italictitle}%
+}
+\forcsvlist{\DeclareItalicTitleAliasesForType}{article,inproceedings,incollection,misc,online}
 \addbibresource{main.bib} % Bibliography file
 
 % Load mathematical packages for theorems and related environments

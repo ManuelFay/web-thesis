@@ -141,8 +141,20 @@
 %----------------------------------------------------------------------------------------
 
 % Command to format the marginnote created for cited items
+\newcommand{\kaobiblio@marginlabel}[1]{%
+	\iffieldequalstr{entrykey}{conti2025context}{%
+		Conti\ensuremath{^{*}}, Faysse\ensuremath{^{*}} et al.%
+	}{%
+		\iffieldequalstr{entrykey}{szilvasy2026selfprunedkeyvalueattentionlearning}{%
+			Szilvasy\ensuremath{^{*}}, Faysse\ensuremath{^{*}} et al.%
+		}{%
+			\citeauthor*{#1}%
+		}%
+	}%
+}
+
 \NewDocumentCommand{\formatmargincitation}{m}{% The parameter is a single citation key
-	\parencite{#1}: \citeauthor*{#1} (\citeyear{#1}), \citetitle{#1}%
+	\parencite{#1}: \kaobiblio@marginlabel{#1} (\citeyear{#1}), \citetitle{#1}%
 }
 
 % Command to format the marginnote created for supercited items
@@ -427,7 +439,13 @@
 \DeclareNameFormat{kaobiblio:boldfaysse}{%
 	\nameparts{#1}%
 	\kaobiblio@iffaysse{%
-		\mkbibbold{\usebibmacro{name:given-family}{\namepartfamily}{\namepartgiven}{\namepartprefix}{\namepartsuffix}}%
+		\begingroup
+		\renewcommand*{\mkbibnamegiven}[1]{\mkbibbold{##1}}%
+		\renewcommand*{\mkbibnamefamily}[1]{\mkbibbold{##1}}%
+		\renewcommand*{\mkbibnameprefix}[1]{\mkbibbold{##1}}%
+		\renewcommand*{\mkbibnamesuffix}[1]{\mkbibbold{##1}}%
+		\usebibmacro{name:given-family}{\namepartfamily}{\namepartgiven}{\namepartprefix}{\namepartsuffix}%
+		\endgroup
 	}{%
 		\usebibmacro{name:given-family}{\namepartfamily}{\namepartgiven}{\namepartprefix}{\namepartsuffix}%
 	}%
@@ -440,8 +458,14 @@
 	{\DeclareNameAlias{default}{kaobiblio:boldfaysse}%
 	\DeclareNameAlias{sortname}{kaobiblio:boldfaysse}%
 	\DeclareFieldAlias{title}{kaobiblio:linkedtitle}%
+	\DeclareFieldAlias[article]{title}{kaobiblio:linkedtitle}%
+	\DeclareFieldAlias[inproceedings]{title}{kaobiblio:linkedtitle}%
+	\DeclareFieldAlias[incollection]{title}{kaobiblio:linkedtitle}%
+	\DeclareFieldAlias[misc]{title}{kaobiblio:linkedtitle}%
+	\DeclareFieldAlias[online]{title}{kaobiblio:linkedtitle}%
 	\DeclareFieldFormat{url}{}%
 	\DeclareFieldFormat{doi}{}%
+	\renewbibmacro{in:}{}%
 	\clearfield{pages}%
 	\clearfield{pagetotal}%
 	\clearfield{edition}%
