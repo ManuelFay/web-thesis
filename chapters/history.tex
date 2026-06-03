@@ -1,0 +1,188 @@
+
+\chapter{A Brief History of Information Retrieval}
+
+While this thesis does not aim to provide an extensive overview of past or modern Information Retrieval techniques, the following section will provide a rapid overview of the field in order to contextualize the contributions of this thesis.\sidenote{If the reader finds this overview incomplete or yearns for more contextual depth, I invite them to search for further information within external sources. If the search is successful, great! If not, it only is further proof that modern search tools remain imperfect and that their improvement is a valid research motivation for this thesis.}
+%\sidenote{As a disclaimer, this chapter is the only chapter of this thesis in which generative AI tools were used to assist redaction. All content is thoroughly verified.}. 
+Further finely scoped relevant related work are also introduced in each individual chapters.
+
+
+\section{Early Pre-Digital Cataloging}
+
+\begin{marginfigure}
+    \centering
+    \includegraphics{images/misc/Ancientlibraryalex.jpg}
+    \caption[Artistic Depiction of the Library of Alexandria based on historical evidence]{Artistic Depiction of the Library of Alexandria based on historical evidence. O. Von Corven -  "The Great Library of Alexandria"}
+
+    % Latencies indicated in the figure are computed on the same machine \texttt{g2-standard-16} with a NVIDIA-L4 GPU, and averaged over 100 pages. Further details in \autoref{subsection:latency}.The computed score is the average of from all datasets in \textit{ViDoRe} for PDF Parser + Captioning and ColPali respectively. Further details in \autoref{section:results}.} 
+    \label{fig:alexandria}
+\end{marginfigure}
+
+Long before computers, humans developed methods to organize and retrieve information. One of the earliest examples is the Pinakes of Callimachus around the 3rd century BCE, often considered the first library catalog in the Western world. The Pinakes systematically listed authors and their works in the Library of Alexandria, grouping works by subject and alphabetizing authors – a bibliographic approach that laid the groundwork for later library catalogs. This ancient effort demonstrated the enduring principles of indexing and categorization (such as alphabetical order and subject grouping) that remain fundamental in information retrieval (IR).
+
+
+Through the centuries, librarians and scholars continued to develop catalogs and classification systems (e.g. medieval manuscript indexes 
+% https://bookhistory.yale.edu/blog/medieval-indices-unlikely-leisurely-reading
+and Melvil Dewey’s Decimal Classification in 1876 \sidecite{dewey1876classification}). These pre-digital innovations weren’t "IR systems" in the modern sense, but they addressed the same core challenge: how to store, organize, and find relevant information efficiently. By the early 20th century, visionaries like Paul Otlet and Henri La Fontaine dreamed of organizing the world’s knowledge (Mundaneum project \sidecite{otlet1928mundaneum}), notably through the Universal Bibliographic Repertory using index cards. In 1945, Vannevar Bush articulated a futuristic vision of personal information devices in \emph{As We May Think} \sidecite{bush1945aswemaythink}, in which he describes the inadequacy of indexing based systems to navigate the deluge of information:
+
+
+\begin{lavenderkaobox}
+"The real heart of the matter of selection, however, goes deeper than a lag in the adoption of mechanisms by libraries, or a lack of development of devices for their use. Our ineptitude in getting at the record is largely caused by the artificiality of systems of indexing. When data of any sort are placed in storage, they are filed alphabetically or numerically, and information is found (when it is) by tracing it down from subclass to subclass. It can be in only one place, unless duplicates are used; one has to have rules as to which path will locate it, and the rules are cumbersome."
+\flushright -- Vannevar Bush, As We May Think (1945)
+\end{lavenderkaobox}
+
+
+Bush's vision was that new technology would enable moving away from this system. He proposes the Memex, a hypothetical electromechanical desk that could instantly retrieve microfilmed documents via associative links. 
+% Bush’s essay inspired later developments by suggesting that managing the “growing mountain of information” would require new mechanized solutions.
+
+\section{Founding of Information Retrieval (1950s–1960s)}
+IR as a distinct field took shape in the 1950s and 1960s, alongside the advent of digital computers. In 1950, Calvin Mooers coined the term "information retrieval" \sidecite{mooers1950information}, heralding the idea of using machines to search document collections. Early experiments followed quickly: in 1951, a master’s thesis at MIT by Philip Bagley \sidecite{bagley1951electronic} demonstrated one of the first computerized document retrieval experiments. Pioneers like Hans Peter Luhn at IBM began applying computers to automate indexing; for example, Luhn developed methods for auto-encoding documents and keyword-in-context indexing. By 1959 he published an influential paper on “Auto-encoding of documents for information retrieval” \sidecite{luhn1959autoencoding} showing how computers could encode text and allow electronic searching of content. This period also saw growing support for IR research as the U.S. government recognized an information explosion funding projects on mechanized literature searching and the creation of citation indexes.
+
+
+A key milestone was the Cranfield experiments led by C. W. “Pete” Cleverdon in the late 1950s and early 1960s \sidecite{cleverdon1967cranfield}. The Cranfield studies introduced a rigorous experimental methodology for IR: assembling a test collection of documents, queries, and relevance judgments, and evaluating retrieval performance using metrics like precision and recall. Cleverdon’s 1962 report on Cranfield showed how different indexing techniques could be objectively compared. This methodology – the use of standardized test collections and metrics – became a cornerstone of IR research, establishing a scientific approach to evaluate how “relevant” the results returned by an IR system are, laying the foundation for future benchmarks.
+% The Cranfield approach was hard work (manually judging relevance for many query-document pairs), but it laid the foundation for future benchmarks.
+
+
+During the same era, Gerard Salton formed the first major IR research group (at Harvard, later Cornell). Researchers began formulating the first theoretical models of IR. In 1960, Maron and Kuhns proposed a probabilistic indexing model \sidecite{maron1960relevance}, foreshadowing later probabilistic retrieval approaches. Salton and others started developing what became the vector space model: by the late 1960s, Salton’s team had created the SMART system, representing documents and queries as vectors in a term-weighted space. In 1968 Salton published “Automatic Information Organization and Retrieval” \sidecite{salton1968automatic} and by 1975 he fully articulated the vector space framework and term-weighting schemes \sidecite{salton1975vector_space}. Another 1960s contribution came from Karen Spärck Jones, who introduced the concept of inverse document frequency (IDF) \cite{sparck_jones_statistical_1972} to statistically downweight common terms and boost rare, informative terms – a principle that soon became central to ranking algorithms.
+
+\section{The Statistical Revolution in IR (1970s--1990s)}
+
+With the fundamentals laid, subsequent decades saw rapid improvement in statistical text retrieval methods. The 1970s refined the vector space and probabilistic models. Term frequency--inverse document frequency (TF--IDF) weighting became a standard technique: terms are scored higher if they appear frequently in a document (term frequency) but are rare across the collection (high IDF)\sidecite{sparck_jones_statistical_1972}\sidenote{
+\textbf{TF-IDF:}
+Let $\mathcal{D}=\{d_1,\dots,d_N\}$ be a corpus of $N$ documents and let $t$ be a term (token).
+The TF--IDF weight of term $t$ in document $d$ is
+\[
+\mathrm{tfidf}(t,d,\mathcal{D}) \;=\; \mathrm{tf}(t,d)\cdot \mathrm{idf}(t,\mathcal{D}).
+\]
+A common choice is
+\[
+\mathrm{tf}(t,d)=\frac{f_{t,d}}{\sum_{t'} f_{t',d}}
+\]
+and
+\[
+\mathrm{idf}(t,\mathcal{D})=\log\!\left(\frac{N}{\mathrm{df}(t)}\right),
+\]
+where $f_{t,d}$ is the raw count of occurrences of $t$ in $d$, $\sum_{t'} f_{t',d}$ is the total number of term occurrences in $d$ (so $\mathrm{tf}$ is a normalized frequency),
+and $\mathrm{df}(t)=\bigl|\{d_i\in\mathcal{D}: t\in d_i\}\bigr|$ is the document frequency (the number of documents containing $t$ at least once).
+Intuitively, $\mathrm{tf}$ upweights terms frequent in a given document, while $\mathrm{idf}$ downweights terms that appear in many documents.
+(Variants often use $\mathrm{tf}(t,d)=1+\log f_{t,d}$ and/or smoothing $\log\!\left(\frac{N+1}{\mathrm{df}(t)+1}\right)+1$ to avoid division by zero.)
+}.  On the probabilistic side, Stephen Robertson and colleagues extended early ideas into the Probabilistic Relevance Framework in the 1970s and 1980s, leading to the development of ranking functions that estimate the probability a document is relevant to a query \sidecite{robertson1976relevance_weighting, robertson1977prp, robertson_probabilistic_2009}. These efforts culminated in the 1990s with Okapi BM25, a ranking formula born from Robertson and Sp{\"a}rck Jones' work \sidecite{robertson1994bm25}\sidenote{\textbf{BM25:}
+Let $\mathcal{D}$ be a corpus, $d\in\mathcal{D}$ a document, and $t$ a term. The BM25 score of $d$ for a query $q$ is
+\[
+\mathrm{BM25}(q,d)=
+\]
+\[
+\sum_{t\in q} \mathrm{idf}(t)\;
+\frac{f_{t,d}(k_1+1)}{f_{t,d}+k_1\!\left(1-b+b\,\frac{|d|}{\mathrm{avgdl}}\right)}
+\]
+Here $f_{t,d}$ is the count of $t$ in $d$, $|d|$ is the document length (in tokens), and $\mathrm{avgdl}$ is the average document length in the corpus. $k_1>0$ controls term-frequency saturation, and $b\in[0,1]$ controls how strongly length normalization is applied. A common IDF is
+\[
+\mathrm{idf}(t)=\log\!\left(\frac{N-\mathrm{df}(t)+0.5}{\mathrm{df}(t)+0.5}\right),
+\]
+where $N=|\mathcal{D}|$ and $\mathrm{df}(t)$ is the number of documents containing $t$.
+}. 
+By incorporating TF--IDF-like features into a probabilistic model, BM25 became one of the dominant ranking algorithms in search and remains widely used as a strong baseline in modern information retrieval systems \sidecite{robertson_probabilistic_2009, manning2008introduction_ir}.
+
+Alongside algorithm advances, IR systems grew in scale and importance. The first online search systems appeared in the early 1970s as databases of bibliographic records: for example, MEDLINE (1971) provided biomedical literature search, and DIALOG offered commercial online search over multiple databases \sidecite{nlm2024medline_history, dialog2019milestone}. These systems predated personal computers---users accessed them via terminals---but they demonstrated that searching thousands of documents via text queries was feasible and valuable. In 1978, the IR community established its premier conference, ACM SIGIR, reflecting the field's maturation \sidecite{sigir1978proceedings}.
+
+By the 1980s, personal computing and CD-ROMs enabled standalone IR systems (like library catalog CDs), and researchers explored new ideas such as relevance feedback (the Rocchio algorithm from the 1970s allowed a system to adjust a query based on documents a user marked relevant) \sidecite{rocchio1971relevance_feedback} and clustering (the "cluster hypothesis": relevant documents tend to cluster together).\sidecite{jardine1971hierarchic_clustering, vanrijsbergen1979information_retrieval} The inverted index (storing, for each term, a list of documents containing it) became a core data structure, enabling fast keyword lookup even as collections grew to tens of thousands of documents \sidecite{manning2008introduction_ir}. This era also saw experiments with user interfaces and visualization (e.g.\ plotting document similarity or using hypertext systems).
+
+Evaluation at scale took a leap in 1992 with the start of the Text Retrieval Conference (TREC). TREC built large standard test collections and yearly competitions for state-of-the-art retrieval methods \sidecite{harman1993trec_overview}. TREC not only pushed research towards scalable methods but also fostered the development of specialized tasks. Many techniques that became important, such as query expansion and relevance feedback, were evaluated and refined through TREC workshops.
+
+\section{Enter The Web (1990s--2010s)}
+
+Web search emerged in the mid-1990s as a new frontier that dramatically expanded IR's scale and impact. Early web search systems and directories (for example, Yahoo!'s directory in 1994 and AltaVista in 1995) helped users navigate the growing World Wide Web, but they struggled to rank results in a way that consistently satisfied users at web scale.\sidecite{brin1998anatomy} The breakthrough came in 1998 when Google introduced the PageRank algorithm for ranking web pages.\sidecite{page1998pagerank, brin1998anatomy} PageRank treated the web as a graph, using the pattern of hyperlinks as an additional signal: a page linked from many other pages, especially if those were themselves authoritative, received a higher ``importance'' score.\sidecite{page1998pagerank} By combining link analysis with content relevance, Google achieved much more useful rankings than purely content-based engines.\sidecite{brin1998anatomy, page1998pagerank} This represented a metadata-based retrieval innovation---leveraging network topology (citations) as a relevance signal, analogous to how academic citations indicate influence. PageRank, along with anchor text indexing and other web-specific features, pushed IR beyond just term statistics into using the context of documents (links, click data, etc.) to inform ranking.\sidecite{brin1998anatomy}
+
+In the 2000s, machine learning techniques became increasingly central to IR. Search engines began using learning-to-rank algorithms, which take a large number of features (e.g.\ BM25 scores, document click-through rates, anchor text matches, etc.) and learn how to combine them into a single ranking function.\sidecite{burges2005ranknet, burges2006lambdarank, burges2010lambdamart} For example, researchers at Microsoft developed RankNet and LambdaRank/LambdaMART in the mid-2000s, applying neural networks and boosted decision trees to optimize ranking using labeled training data.\sidecite{burges2005ranknet, burges2006lambdarank, burges2010lambdamart} Commercial engines such as Bing and Google quickly adopted learning-to-rank ideas to tune their search results. By analyzing user behavior signals (e.g.\ which results users click or skip), search engines could implicitly learn relevance.\sidecite{joachims2005clickthrough, radlinski2005query_chains} As a result, 2000s web search saw integration of user click data, query logs, and behavioral analytics to continuously improve results.\sidecite{joachims2005clickthrough, radlinski2005query_chains}
+
+Another 2000s-and-2010s trend was the use of semantic information and knowledge bases. For instance, Bing publicly described its Satori knowledge system in 2013 to recognize entities and relationships in queries.\sidecite{bing2013satori} Both academic and industry efforts moved toward understanding the intent behind queries, not just matching keywords. By 2013, Google's Hummingbird update incorporated more natural language processing to handle conversational queries, marking a shift from pure keyword matching toward semantic context understanding.\sidecite{google2025ranking_systems}
+
+% \section{The Statistical Revolution in IR (1970s–1990s)}
+
+% With the fundamentals laid, subsequent decades saw rapid improvement in statistical text retrieval methods. The 1970s refined the vector space and probabilistic models. Term frequency–inverse document frequency (TF–IDF) weighting became a standard technique: terms are scored higher if they appear frequently in a document (term frequency) but are rare across the collection (high IDF)\sidenote{
+% \textbf{TF-IDF:}
+% Let $\mathcal{D}=\{d_1,\dots,d_N\}$ be a corpus of $N$ documents and let $t$ be a term (token).
+% The TF--IDF weight of term $t$ in document $d$ is
+% \[
+% \mathrm{tfidf}(t,d,\mathcal{D}) \;=\; \mathrm{tf}(t,d)\cdot \mathrm{idf}(t,\mathcal{D}).
+% \]
+% A common choice is
+% \[
+% \mathrm{tf}(t,d)=\frac{f_{t,d}}{\sum_{t'} f_{t',d}}
+% \]
+% and
+% \[
+% \mathrm{idf}(t,\mathcal{D})=\log\!\left(\frac{N}{\mathrm{df}(t)}\right),
+% \]
+% where $f_{t,d}$ is the raw count of occurrences of $t$ in $d$, $\sum_{t'} f_{t',d}$ is the total number of term occurrences in $d$ (so $\mathrm{tf}$ is a normalized frequency),
+% and $\mathrm{df}(t)=\bigl|\{d_i\in\mathcal{D}: t\in d_i\}\bigr|$ is the document frequency (the number of documents containing $t$ at least once).
+% Intuitively, $\mathrm{tf}$ upweights terms frequent in a given document, while $\mathrm{idf}$ downweights terms that appear in many documents.
+% (Variants often use $\mathrm{tf}(t,d)=1+\log f_{t,d}$ and/or smoothing $\log\!\left(\frac{N+1}{\mathrm{df}(t)+1}\right)+1$ to avoid division by zero.)
+% }. Salton’s publications in 1975 detailed how weighting schemes like TF–IDF could significantly improve retrieval effectiveness[. On the probabilistic side, Stephen Robertson and colleagues extended early ideas into the Probabilistic Relevance Framework (1970s–80s), leading to the development of ranking functions that estimate the probability a document is relevant to a query. These efforts culminated in the 1990s with Okapi BM25, a ranking formula born from Robertson and Spärck Jones’ work
+% \sidenote{\textbf{BM25:}
+% Let $\mathcal{D}$ be a corpus, $d\in\mathcal{D}$ a document, and $t$ a term. The BM25 score of $d$ for a query $q$ is
+% \[
+% \mathrm{BM25}(q,d)=
+% \]
+% \[
+% \sum_{t\in q} \mathrm{idf}(t)\;
+% \frac{f_{t,d}(k_1+1)}{f_{t,d}+k_1\!\left(1-b+b\,\frac{|d|}{\mathrm{avgdl}}\right)}
+% \]
+% Here $f_{t,d}$ is the count of $t$ in $d$, $|d|$ is the document length (in tokens), and $\mathrm{avgdl}$ is the average document length in the corpus. $k_1>0$ controls term-frequency saturation, and $b\in[0,1]$ controls how strongly length normalization is applied. A common IDF is
+% \[
+% \mathrm{idf}(t)=\log\!\left(\frac{N-\mathrm{df}(t)+0.5}{\mathrm{df}(t)+0.5}\right),
+% \]
+% where $N=|\mathcal{D}|$ and $\mathrm{df}(t)$ is the number of documents containing $t$.
+% }. 
+% BM25 operationalized probabilistic retrieval in a simple yet powerful way: it computes a relevance score based on term frequencies and document length normalization, along with an IDF component. By incorporating TF–IDF-like features into a probabilistic model, BM25 became the de facto ranking algorithm in many search engines by the late 1990s. In fact, BM25 (and variants) remain widely used as a strong baseline – it’s “the base of modern information retrieval” in many applications.
+
+
+% Alongside algorithm advances, IR systems grew in scale and importance. The first online search systems appeared in the early 1970s as databases of bibliographic records: for example, MEDLINE (1971) provided biomedical literature search, and Dialog (1972, by Lockheed) offered commercial online search over multiple databases. These systems predated personal computers – users accessed them via terminals – but they demonstrated that searching thousands of documents via text queries was feasible and valuable. In 1978, the IR community established its premier conference, ACM SIGIR, reflecting the field’s maturation.
+
+
+% By the 1980s, personal computing and CD-ROMs enabled standalone IR systems (like library catalog CDs), and researchers explored new ideas such as relevance feedback (the Rocchio algorithm from the 1970s allowed a system to adjust a query based on documents a user marked relevant) and clustering (“cluster hypothesis”: relevant documents tend to cluster together). The inverted index (storing, for each term, a list of documents containing it) became a core data structure, enabling fast keyword lookup even as collections grew to tens of thousands of documents. This era also saw experiments with user interfaces and visualization (e.g. plotting document similarity or using hypertext systems).
+% Evaluation at scale took a leap in 1992 with the start of the Text Retrieval Conference (TREC). TREC, organized by NIST and Dept. of Defense, built large standard test collections (hundreds of thousands of documents) and yearly competitions for state-of-the-art retrieval methods. TREC not only pushed research towards scalable methods but also fostered the development of specialized tasks (e.g. web, QA, filtering). Many techniques that became important (like query expansion, using thesauri or relevance feedback to add related terms to a query) were evaluated and refined through TREC workshops.
+
+
+% Web search emerged in the mid-1990s as a new frontier that dramatically expanded IR’s scale and impact. Early web search engines (e.g. Yahoo! in 1994, AltaVista in 1995) primarily used traditional keyword matching (similar to vector space or Boolean models), but they struggled to rank results in a way that satisfied users on the vast World Wide Web. The breakthrough came in 1998 when Google introduced the PageRank algorithm for ranking web pages. PageRank treated the web as a graph, using the pattern of hyperlinks as an additional signal: a page linked from many other pages, especially if those were themselves authoritative, received a higher “importance” score. By combining link analysis with content relevance, Google achieved much more useful rankings than purely content-based engines. This represented a metadata-based retrieval innovation – leveraging network topology (citations) as a relevance signal, analogous to how academic citations indicate influence. PageRank, along with anchor text indexing and other web-specific features, pushed IR beyond just term statistics into using the context of documents (links, click data, etc.) to inform ranking.
+
+
+% In the 2000s, machine learning techniques became increasingly central to IR. Search engines began using learning-to-rank algorithms, which take a large number of features (e.g. BM25 scores, document click-through rates, anchor text matches, etc.) and learn how to combine them into a single ranking function. For example, researchers at Microsoft developed RankNet and LambdaRank/MART in the mid-2000s, applying neural networks and boosted decision trees to optimize ranking using labeled training data. Commercial engines like Bing and Google quickly adopted these to tune their search results. By analyzing user behavior signals (e.g. which results users click or skip), search engines could implicitly learn relevance. As a result, 2000s web search saw integration of user click data, query logs, and behavioral analytics to continuously improve results.
+% Another 2000s trend was the use of semantic information and knowledge bases. For instance, in 2009 Bing introduced the Satori knowledge base to recognize entities and relationships in queries. Both academic and industry efforts moved toward understanding the intent behind queries, not just matching keywords. By 2013, Google’s “Hummingbird” update incorporated more natural language processing to handle conversational queries, marking a shift from pure keyword matching toward semantic context understanding.
+
+\section{The Deep Learning Era of IR (2010s--2020s)}
+
+The 2010s brought a revolution in information retrieval through neural networks and deep learning. Early in the decade, as deep learning succeeded in speech and vision, researchers began applying neural models to search tasks. Initial approaches like DSSM (Deep Structured Semantic Model) in 2013 used neural networks to map queries and documents into vectors so that relevant pairs had higher similarity.\sidecite{huang2013dssm} These first neural IR models were relatively simple---for example, feed-forward networks over bag-of-word-style or character-trigram representations---but they demonstrated the promise of semantic matching: the ability to retrieve relevant documents even when exact keyword overlap is low.\sidecite{huang2013dssm} For example, a neural model might learn to match ``USA president birthplace'' with documents about ``birthplace of American presidents''---a feat difficult for purely lexical methods.
+
+A major leap came in 2018 when transformer-based language models entered the scene. In 2018, Google researchers introduced BERT (Bidirectional Encoder Representations from Transformers), a language model that captured rich contextual information about text.\sidecite{devlin2019bert} In October 2019, Google announced that it was applying BERT models to Search for ranking and featured snippets---an early and highly visible deployment of deep neural language models in large-scale web search.\sidecite{google2019bert_search} BERT's ability to model the context of words bidirectionally significantly improved Google's handling of complex queries. Google stated that BERT would help Search better understand about one in ten searches in U.S.\ English, especially longer and more conversational queries where small function words and context matter.\sidecite{google2019bert_search} This deployment helped establish transformer-based NLP as a central component of modern search.\sidecite{yates2021transformers_ranking}
+
+However, BERT was initially used mainly in a re-ranking capacity: the search system would first retrieve a set of candidate documents using traditional methods such as BM25, and then a BERT-based model would score each query--document pair jointly and rerank the candidates with much higher precision.\sidecite{nogueira_passage_2019, yates2021transformers_ranking} These cross-encoder models are highly effective because they allow full interaction between the query and document during transformer inference, but they are also computationally expensive---running such a model over every document in a large collection is infeasible for first-stage retrieval.\sidecite{nogueira_passage_2019, yates2021transformers_ranking} As a result, a two-stage architecture became common: fast initial retrieval followed by a powerful neural re-ranker for the top $N$ results.\sidecite{yates2021transformers_ranking} Related work such as ColBERT then explored \emph{late interaction} architectures that preserved richer token-level matching than standard bi-encoders while still enabling efficient indexing and retrieval.\sidecite{khattab2020colbert}
+
+Meanwhile, researchers sought ways to make neural retrieval scalable without relying entirely on a two-stage compromise. This gave rise to bi-encoder or dual-encoder models, in which queries and documents are encoded independently into fixed-length embeddings such that relevant pairs have high vector similarity.\sidecite{yates2021transformers_ranking, karpukhin2020dpr} Semantic vector embeddings enable efficient retrieval through nearest-neighbor search in embedding space, using approximate nearest-neighbor (ANN) indexes such as HNSW and systems such as FAISS even for very large collections.\sidecite{malkov2020hnsw, johnson2017faiss} A seminal work in this direction was Sentence-BERT (SBERT) in 2019. SBERT fine-tuned BERT in a siamese architecture, using siamese and triplet-network training objectives to produce semantically meaningful sentence embeddings that can be compared directly with cosine similarity.\sidecite{reimers2019sbert} This approach drastically improved the practicality of text embeddings for semantic search: instead of applying expensive cross-attention to every sentence pair, an IR system could pre-compute document embeddings and answer queries through fast vector similarity search.\sidecite{reimers2019sbert} The authors reported a dramatic speedup on a 10,000-sentence similarity search task---from roughly 65 hours with vanilla BERT / RoBERTa pairwise inference to about 5 seconds with SBERT.\sidecite{reimers2019sbert}
+
+SBERT helped trigger an explosion of dense retrieval research. In 2020, Facebook AI introduced DPR (Dense Passage Retrieval) for open-domain question answering, training dual BERT encoders for questions and passages such that relevant pairs had higher dot-product similarity than irrelevant ones.\sidecite{karpukhin2020dpr} DPR and related models showed that dense retrieval could outperform strong BM25 baselines on several passage retrieval benchmarks while remaining practical at scale.\sidecite{karpukhin2020dpr} Early sentence-embedding work often used siamese or triplet-style objectives, as in SBERT,\sidecite{reimers2019sbert} but by 2020--2021 many influential dense retrieval and embedding methods were using contrastive softmax objectives with in-batch negatives, closely related to the InfoNCE family of losses.\sidecite{karpukhin2020dpr, oord_representation_2018, gao2021simcse} By 2021, SimCSE showed that even unsupervised contrastive learning---using different dropout realizations of the same sentence as positive pairs---could produce powerful sentence embeddings that rivaled earlier supervised approaches.\sidecite{gao2021simcse} This trend helped solidify contrastive learning as a central training paradigm for modern text embeddings and dense retrieval.\sidecite{karpukhin2020dpr, gao2021simcse}
+
+% \section{The Deep Learning Era of IR (2010s–2020s)}
+% The 2010s brought a revolution in information retrieval through neural networks and deep learning. Early in the decade, as deep learning succeeded in speech and vision, researchers began applying neural models to search tasks. Initial approaches like DSSM (Deep Structured Semantic Model) in 2013 used neural networks to map queries and documents into vectors so that relevant pairs had higher similarity. These first neural IR models were relatively simple (e.g. feed-forward networks on bag-of-word or character-trigram inputs), but they demonstrated the promise of semantic matching: the ability to retrieve relevant documents even when exact keyword overlap is low. For example, a neural model might learn to match “USA president birthplace” with documents about “birthplace of American presidents” – a feat difficult for purely lexical methods.
+% A major leap came in 2018 when transformer models entered the scene. In late 2018, Google researchers released BERT (Bidirectional Encoder Representations from Transformers), a language model that captured rich contextual understanding of text. Shortly after, Google deployed BERT in its search engine – one of the first instances of a deep neural language model used at scale in real-world retrieval. BERT’s ability to understand natural language queries (by considering the context of words bidirectionally) significantly improved Google’s handling of complex queries. For example, BERT helped the engine grasp nuances like stop-words or word sense in queries (“train to Chicago” vs “train a model”), improving relevance for about 10\% of searches by Google’s estimate. This deployment proved that neural networks could outperform hand-tuned ranking formulas for certain query types, especially on conversational or natural language queries. It also heralded a broader adoption of NLP models in search.
+
+
+% However, BERT was initially used in a re-ranking capacity: the search system would first retrieve a set of candidate documents using traditional methods (keywords/BM25), then a BERT-based cross-encoder would analyze each query–document pair and produce a relevance score, reranking the candidates with much improved precision. Cross-encoders (so-called “full interaction” models) examine the query and document together with the full attention mechanism of transformers, yielding very accurate relevance judgments. The downside is computational cost – running BERT for every document in a large collection is infeasible for first-round retrieval. Thus, a two-stage approach became common: a fast initial retrieval (e.g. BM25) followed by a powerful neural re-ranker like BERT for the top N results.
+
+
+% Meanwhile, researchers sought ways to make neural retrieval scalable without the two-stage compromise. This gave rise to bi-encoder or dual-encoder models, where queries and documents are each encoded independently into a fixed-length embedding, such that relevant pairs have high vector similarity. Semantic vector embeddings enable efficient retrieval via nearest neighbor search in embedding space, which can be done with specialized indexes (like ANN – Approximate Nearest Neighbors algorithms) even for millions of vectors. A seminal work in this direction was Sentence-BERT (SBERT) in 2019. SBERT fine-tuned BERT in a siamese network architecture to directly produce meaningful sentence embeddings, using paired sentences labeled by semantic similarity for training. This approach – essentially training BERT to output a single vector for a sentence such that similar sentences map to nearby vectors – drastically improved the quality of text embeddings. SBERT’s embeddings were far more semantically meaningful than averaging BERT’s word vectors, and importantly, made it practical to compare sentences via cosine similarity instead of expensive cross-attention. The authors demonstrated massive speedups for semantic search: finding the closest matches among 10,000 sentences took seconds with SBERT, versus hours if one had to run BERT on each pair. In essence, SBERT allowed IR systems to pre-compute embeddings for all documents and then handle queries by a quick vector lookup, enabling real-time semantic search on sizable corpora.
+
+% SBERT kicked off an explosion of dense retrieval research. In 2020, Facebook AI applied a similar idea for open-domain question answering with DPR (Dense Passage Retrieval): they trained dual BERT encoders for questions and passages such that correct Q–A pairs had higher dot-product than irrelevant pairs. DPR (and its contemporaries) used contrastive learning: given a query, the model was trained to output an embedding closer to its true relevant passage than to various negative passages. Initially, many used triplet loss or hinge loss (as SBERT did) on these triplets of (query, positive, negative). Soon, the field shifted to the now-standard InfoNCE loss (a form of cross-entropy over a batch that treats one positive pair vs. all other negatives), which effectively enables in-batch negatives and better gradient signal. By 2021, methods like SimCSE demonstrated that even unsupervised contrastive learning (using different dropout versions of the same sentence as positive pairs) could yield powerful sentence embeddings, rivaling supervised ones. This trend solidified contrastive objectives as the go-to training method for text embeddings, replacing earlier triplet formulations with a simpler and more robust approach (Noise-Contrastive Estimation).
+
+
+
+\section{The Modern Stack}
+% LLMs reconverted
+% GTE, nemo-retriever, e5, etc
+% vision embedding models
+
+\section{Engineering}
+% FAISS, SPLADE
+
+\section{Industrial Applications}
+
+RAG, word extraction

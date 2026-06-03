@@ -1,15 +1,17 @@
 \setchapterpreamble[u]{\margintoc}
 \chapter{Perspectives on Search}
 
-Vannevar Bush had the vision that \emph{associative} knowledge would be the key insight unlocking retrieval capabilities \cite{bush1945aswemaythink}. Time proved him right, well aided by the advent of computing. Statistical retrieval engines transcend fixed classification systems linking queries to documents through their words, not just their general theme. Deep neural networks further broaden associative links by enabling matching across vastly different syntax, by exploiting semantical proximity which is encoded in a learned latent space. The contributions of this thesis could be seen as further efforts to improve \emph{search} by exploring the extent to which we can strenghen associative links.
+\label{ch:conclusion}
 
-At a high level, in \emph{Visual Document Retrieval} \sidecite{faysse2025colpaliefficientdocumentretrieval, loison2026vidorev3comprehensiveevaluation, teiletche2025modernvbert}, we demonstrate that cross-modal associations exist and can be leveraged for efficiently matching image parts to words. In our work on contextual embeddings \sidecite{conti2025context}, we show existing links between corpus documents can and should be exploited to facilitate retrieval. With CroissantLLM \sidecite{faysse_croissantllm_2024, meeus2024copyright}, we explore parametric memory consolidation through LLM training, and study which type of knowledge can be surfaced (searched) from the LLM memory through prompting (associative recall). This broader view of the \emph{search} landscape may help in uncovering future impactful research directions.
+Vannevar Bush had the vision that \emph{associative} knowledge would be the key insight unlocking retrieval capabilities \cite{bush1945aswemaythink}. Time proved him right, well aided by the advent of computing. Statistical retrieval engines revolutionized fixed classification systems by linking information queries to documents through their words, not just their general topic. Deep neural networks further strengthened these associative links by moving beyond surface-level syntax and instead exploiting semantic proximity. The contributions of this thesis could be seen as further efforts to improve \emph{search} by exploring the extent to which we can create associative links.
+
+At a high level, in \emph{Visual Document Retrieval} \sidecite{faysse2025colpaliefficientdocumentretrieval, loison2026vidorev3comprehensiveevaluation, teiletche2025modernvbert}, we demonstrate that cross-modal associations exist and can be leveraged for efficiently matching image patches to words. In our work on contextual embeddings \sidecite{conti2025context}, we show existing links \emph{between} corpus documents can and should be exploited to facilitate retrieval. Through Large Language Model pretraining \sidecite{faysse_croissantllm_2024, meeus2024copyright}, we explore parametric memory consolidation, and study which type of knowledge can be surfaced (searched) from the LLM memory through prompting (associative recall). This broader view of the \emph{search} landscape may help in uncovering future impactful research directions.
 
 
 
-\section{Visualizing the memory hierarchy}
+\section{The Memory Hierarchy Perspective}
 
-Viewing search solely through the lens of document retrieval is restrictive; a broader perspective is to understand search as memory access across a hierarchy of storage mediums. Humans answer questions by relying on internal memory, attending to information currently in view, consulting notes, or searching a library. These memory systems differ in capacity, latency, reliability, update cost, and provenance. LLM systems exhibit an analogous hierarchy. Model weights act as compressed parametric memory; the current context, together with the key-value cache, provides a transient working memory; and document stores, databases, tools, or the web provide external non-parametric memory.
+Viewing search solely through the lens of document retrieval is restrictive; a broader perspective is to understand search as memory access across a hierarchy of storage mediums. Humans answer questions by relying on internal memory, attending to information currently in view, consulting notes, or searching a library. These memory systems differ in capacity, latency, reliability, update cost, and provenance. LLM systems exhibit an analogous hierarchy. Model weights act as compressed parametric memory; the current context, together with the key-value cache, provides a transient working memory; and document stores, databases, tools, or the web provide external non-parametric memory (Table \ref{tab:mem-hiera}).
 
 
 \definecolor{parametric}{HTML}{E8F1FF}
@@ -26,6 +28,7 @@ Viewing search solely through the lens of document retrieval is restrictive; a b
 \setlength{\tabcolsep}{7pt}
 
 \caption{LLM systems can be viewed as a hierarchy of memory tiers. Each tier stores information differently and supports a different form of search or read operation.}
+\label{tab:mem-hiera}
 \label{tab:memory-hierarchy}
 
 \begin{tabularx}{1.3\textwidth}{>{\bfseries}p{0.18\textwidth} Y Y Y}
@@ -70,9 +73,9 @@ Sparse, dense, or hybrid retrieval promotes relevant information into the contex
 
 
 
-This analogy is strengthened by recent work interpreting Transformers themselves through the lens of associative memory. In particular, \sidecite{zhong2025understandingtransformerperspectiveassociative} argue that both attention and feed-forward networks can be understood as memory systems, but with distinct retrieval and update properties. Attention constructs a dynamic associative memory over the current sequence, whereas feed-forward layers behave more like static learned associative stores. This suggests that failures in LLM search should not be viewed only as missing information, but more generally as failures of memory access: the information may be stored in the weights, present in the context, or available externally, yet still fail to be retrieved with sufficient salience.
+This analogy is strengthened by recent work interpreting Transformers themselves through the lens of associative memory. In particular, \sidecite{zhong2025understandingtransformerperspectiveassociative} argues that both attention and feed-forward networks can be understood as memory systems, but with distinct retrieval and update properties. Attention constructs a dynamic associative memory over the current sequence, whereas feed-forward layers behave more like static learned associative stores. 
 
-Under this view, retrieval-augmented generation is only one memory operation: the promotion of information from external memory into working memory. Prompting elicits information from parametric memory; attention performs associative retrieval within the current context; indexing writes information into external memory; and fine-tuning, distillation, or model editing consolidate information into the weights. The central systems problem is therefore not document retrieval alone, but memory management across heterogeneous memory tiers. Bridging these memory hierarchies is a powerful avenue for future improvement, for instance by treating document-embedding retrieval more like long-context in-context retrieval, or conversely by treating long-context attention as a form of retrieval over an external memory.
+Under this view, retrieval-augmented generation is simply the promotion of information from external memory into working memory. Prompting elicits information movement from parametric memory to working memory; attention performs associative retrieval within the current context; indexing writes information into external memory; and fine-tuning, distillation, or model editing consolidate information into the weights. The central systems problem is therefore not document retrieval alone, but memory management across heterogeneous memory tiers. Bridging these memory hierarchies is a powerful avenue for future improvement, for instance by treating document-embedding retrieval more like long-context in-context retrieval, or conversely by treating long-context attention as a form of retrieval over an external memory.
 
 
 
@@ -80,11 +83,17 @@ TALK ABOUT MY PAPERS ON THE OTHER PARTS OF THE HIERARCHY
 
 TALK ABOUT FORGETTING
 
+
 Finally, we argue that long-context modeling and information retrieval are closer than they may appear, and that bridging these literatures can be fruitful: both fields study how to select, compress, and condition on relevant evidence, finding needles of relevamnt information in a haystack of noise. Building conceptual and methodological links between them may be possible.
 
+TALK ABOUT MY IDEAS OF UNSUPERVISED EMBEDDING LEARNING
 
 \section{Towards Omnimodal Embeddings}
 
+
+MENTION DSE OMNI, COLQWEN OMNI, BIDIRLM, GEMMA EMBEDDINGS
+
+MENTION POSITIVE TRANSFER IN modernvbert
 
 We argue that \emph{omnimodal} search will become central as the set of exploitable sources of information widens with model capabilites (text, images, audio, video, code, structured data, 3D models).
 Recent projects such as BrowseComp illustrate the growing impact of AI agents on real-world information seeking and highlight that robust access to complex information benefits from \emph{adaptive compute}. Crucially, these systems still benefit from strong ``first-layer'' retrieval primitives such as embedding-based search for efficient candidate selection.
@@ -94,7 +103,23 @@ We further note that not all information is equally accessible: some sources rem
 
 
 
-\section{Agentic Scaffolds: The low hanging fruit of search}
+
+
+
+\section{Measuring Search Performance}
+
+Search has a benchmarking problem.
+(1) benchmarks such as mteb are extremely hard to create. they  are not realistic, are very biased by design, have tons of false positives, and are simply a proxy of downstream document relevance.
+(2) search performance is not alaways very verificable. Some queries based on factual verification grounded in accessible digital sources are comparatively straightforward to check, but often,  requests are underspecifird,  very open-ended, and value-laden questions remain difficult both to solve and to evaluate. 
+efforts to scale such datasets like our work in vidore v3 are possible and make for benchmarks well appreciated by the community but these are extremely costly to make and don't adress the real issue: we search because we need info to do something - has search helped or not with this task ? beyond this, these benchmarks are essentially embedding benchmarks and hardly reflect the changing nature f the field, where we want to benchmark systems more than models.
+
+New benchmarks in the form of end to end evaliation (browsecomp, browsecomp-plus) are a great way to evaluate end to end utility and reflect modern agentiv patterns. However they corrzlate many performance factors: backbone llm, embedding-based retrieval tools; scaffold. They remain hard to create, and are quite artifial by design in their creation (questions are artifically multi-hop), not always reflecting real usage patterns.
+
+SCAFFOLDING ENGINEERING AND OVERFITIINGG ON BENVHMARKS
+
+To improve systems, we need to have measurable progress and be able to verify search system performance at scale  (``verifier's law.'') At large scale, actors such as Google and OpenAi can use weak supervision signals to evaluate and improve their systems---such as reformulations, follow-up queries, dwell time, and abandonment---which provide implicit evidence of whether the user's need has actually been satisfied.  In academaia and for small actors, other ways are needed to obtain evaluation signal at scale.
+
+As model intelligence becomes increasingly commoditized, the model performance bottleneck shifts from leveraging known information through reasoning and generation, to simply obtaining and accessing relevant information to condition the model, ie. \emph{context engineering}. This bottleneck is already visible in retrieval-augmented generation, where system performance is often limited less by the generator than by the quality of the retrieved context. Extrapolating forward, one can imagine models becoming near-optimal decision-makers in many domains, provided they are given sufficiently rich, relevant, and reliable evidence. On this view, the core challenge is no longer merely to generate well, but to construct the right informational substrate on which generation and reasoning can operate. Prediction markets offer a particularly useful testbed for these ideas because they combine downstream utility with eventual verifiability. They reward agents that can exploit information asymmetries when market prices diverge from well-calibrated beliefs, whether this advantage comes from better reasoning, better calibration, or better access to relevant information. Because outcomes ultimately resolve, performance can be measured in an actionable and externally grounded way. For this reason, prediction markets may become a valuable proxy for progress in agentic search: they test not only whether a system can retrieve information, but whether it can turn retrieval into decisions that demonstrably create value. In such a future, AI agents may act both as market participants and as mechanisms for rapidly incorporating public information into calibrated probabilities, thereby increasing the premium on private information and on search systems able to go deeper or move faster than the market.
 
 AGENT SYSTEMS ARE THE ONES BEST ABLE TO NAVIGATE THE MEMORY HIERARCHY. AGENTS are all about combining strong parametric priors from llms with tools to be able to navigate external memories (internet, corpora) and transfer information to their working memories where they can reason on it. all of this in a loop. This is how search should be: we leverage all possible priors and tools at our disposition and need to reason about things to undertand queries,analyze documents, etc...
 
@@ -108,18 +133,32 @@ TALK ABOUT RECURSIVE LMS. TALK ABOUT OTHER SCAFFOLDS.
 SCAFFOLD ENGINEERING IS THE LOW HANGING FRUIT
 
 
-\section{Search is never the end goal}
+% \section{Breaking The Illusion of Privacy}
 
-Evaluating downstream utility gives a good measure of whether searching succeeded.
+% Great search breaks the illusion of privacy. In a not so distant society in which intelligence is cheap and search tools are great, information that is hardly thought of as public today will become very much so.
+% An army of agents, tasked to harvest weak public signals, may find it trivial to predict the things we once trusted obscurity to protect: health status, political beliefs, behaviors. Privacy used to rely on friction; a fact could be technically public yet practically hidden because no one had the time, incentive, or tooling to connect it. Going forward, we should assume this friction is gone and take measures to protect our privacy.
 
-Seartch is hard to measure correctly, and never the goal itsefl.
+% NEEDS AN EXAMPLE
 
-Mention prediction markets as a source of distributed information and as a benchmark and use case of search.
+\clearpage
+\section*{Search On}
+
+Intelligence is becoming a commodity, sold to consumers by trillion-dollar companies. Blindly trusting state-of-the-art LLM outputs is becoming an almost rational decision: as we improve modeling and search tooling, model responses are most often going to be correct and well grounded in verifiable sources.
+
+\emph{Searching} however, goes beyond just getting an answer to a specific question; it requires understanding it. To do so, one must often first build  an understanding of several prerequisite topics. One must explore, reason, backtrack, synthesize. We search by exploring the maze of human knowledge, but the path is beautiful and interesting; it leads through side quests and down rabbit holes. The search for a good outdoors camera leads to discovering the competitive birdwatching community. Questions about why the brick road is yellow in the \emph{Wizard of Oz}, are a surprisingly few amounts of logical clicks away from reading all about the Opium wars.
+
+Searching is the gateway to knowledge, but the path stimulates curiosity and bootstraps creativity. Shiny search tools are invaluable to progress as a society, and search agents are clearly the future. Sometimes however, aimlessly digging through the disorganized pile of parchments in the library of Alexandria is still the best option.
 
 
+ \begin{lavenderkaobox}
+ "For mature thought there is no mechanical substitute"
+	\flushright -- Vannevar Bush, As We May Think (1945)
+ \end{lavenderkaobox}
 
-\section{Parting Words: Search is far from solved and so important}
 
-The conclusion further reflects on the fact that verifying search correctness is not uniformly easy. Instead, search exhibits a \emph{jagged frontier} of capabilities: some tasks (e.g., factual verification grounded in accessible digital sources) are comparatively straightforward to check and should steadily improve \sidenote{Although as demonstrated by Vidore V3, complex queries remain very lengthy to verify even for human experts.}, whereas underspecified requests, open-ended synthesis, and value-laden questions remain harder both to solve and to verify. In this lens, verifier-side constraints shape what kinds of search problems will be reliably improved ``verifier's law''. (Mention the fact a lot of weak signals are provided by the user in a tyoical search system and can be exploited to understand whether a system has satisified a user request (are they asking follow ups, etc).
+ % \begin{lavenderkaobox}
+ % “ Mendel's concept of the laws of genetics was lost to the world for a generation because his publication did not reach the few who were capable of grasping and extending it; and this sort of catastrophe is undoubtedly being repeated all about us, as truly significant attainments become lost in the mass of the inconsequential.” 
+	% \flushright -- Vannevar Bush, As We May Think
+ % \end{lavenderkaobox}
 
 

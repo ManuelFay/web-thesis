@@ -19,26 +19,29 @@ Information is plentiful and information is more than ever made widely available
 Over time, tools have been developed to make sense of the information deluge. Around 240 BC, Callimachus of Cyrene, a Greek poet, attempted to catalog the library of Alexandria in his now lost \textit{Pinakes}, the first knowledge index known to man. Millennia later, the largest information repository is now the internet, and the even more daunting task of its indexation has led to the rise and fall of certain modern day empires: large corporations\sidenote{Over 5 trillion Google searches were made in 2025. \cite{blogPersonalizationFuture}}. In between both of these herculean enterprises, the advent of computing has been the largest catalyst of progress to enable efficiently searching through large quantities of data.
 
 
-Vannevar Bush describes \emph{search} at a time before computing:
+Vannevar Bush\sidenote{Vannevar Bush (1890–1974) was an American engineer and science administrator who led U.S. wartime R\&D through the U.S. Office of Scientific Research and Development. As World War 2 ended, he turned to a peacetime problem: how science could keep advancing amid an exploding record of knowledge. In “As We May Think” (1945), his proposed memex anticipated associative information retrieval.}, a visionnary scientist who headed  the U.S. Office of Scientific Research and Development during the second world war, describes \emph{search} at a time before widespread computing:
 
 \begin{lavenderkaobox}
-    When data of any sort are placed in storage, they are filed alphabetically or numerically, and information is found (when it is) by tracing it down from subclass to subclass. [...] The human mind does not work that way. It operates by association.
+    "When data of any sort are placed in storage, they are filed alphabetically or numerically, and information is found (when it is) by tracing it down from subclass to subclass. [...] The human mind does not work that way. It operates by association."
+    
+    \flushright -- Vannevar Bush, As We May Think (1945)
 \end{lavenderkaobox}
 
-Crucially, computing has since enabled transitioning away from fixed document classification systems designed to accommodate all future searches (catalogs) and allowed for the creation of more dynamic systems that adapt to individual queries (eg. keyword search systems). True to Bush's vision, such systems enable richer associative linking between queries and documents, and were only made possible due to technological advances. As demonstrated in the 1960s by the Cranfield experiments \sidecite{cleverdon1967cranfield} \sidenote{The Cranfield experiments were a series of experimental studies in information retrieval conducted by Cyril W. Cleverdon at the College of Aeronautics, today known as Cranfield University, in the 1960s to evaluate the efficiency of indexing systems. Source: Wikipedia}, these systems in fact yield better results and are drastically easier to implement.
+Crucially, computing has since enabled transitioning away from fixed document classification systems designed to accommodate all future searches (catalogs) and allowed for the creation of more dynamic systems that adapt to individual queries (eg. keyword search systems). True to Bush's vision, such systems enable richer associative linking between queries and documents, and were only made possible due to technological advances. Later demonstrated in the 1960s by the Cranfield experiments \sidecite{cleverdon1967cranfield} \sidenote{The Cranfield experiments were a series of experimental studies in information retrieval conducted by Cyril W. Cleverdon at the College of Aeronautics, today known as Cranfield University, in the 1960s to evaluate the efficiency of indexing systems.}, these word frequency based systems both yield better results and are drastically easier to implement.
 
 
-This thesis focuses on an even more recent development of modern search systems: the use of deep neural networks applied to \textit{search}; the latest search tool evolution enabling humans (and AIs) to augment their capacities by leveraging external memories. %\sidenote{One could argue that search systems are early instantiations of \textit{transhumanism}; the philosophical and intellectual movement that advocates the enhancement of the human condition by developing and making widely available technologies that can greatly enhance longevity, cognition, and well-being}. 
+This thesis focuses on an even more recent development of modern search systems: the use of deep neural networks applied to \textit{search} and document retrieval. Leveraging semantic associative links, neural search is today our best tool to enable humans (and AIs) to augment their capacities by leveraging external memories. 
 
 
 
 
 \section{This Thesis in a Glance} 
 
+Information retrieval (IR)\sidenote{IR is used interchangeably with \emph{Search} in this thesis.} \emph{is the process of finding material (usually documents) of an unstructured nature (usually text) that satisfies an information need from within large collections (nowadays, usually stored on computers)}.\sidenote{This definition is largely inspired by \cite{manning2008introduction_ir}.} In simpler terms, it is the process of using a query to find and rank information resources (broadly called \emph{documents}\sidenote{A \textbf{document} is an information unit of limited size, typically small enough for a human reader to assess its relevance to a query, such as a page, paragraph, or passage. Although documents are ideally self-contained, they often depend on surrounding context; for example, a page in a textbook may contain the sought-after formula while requiring preceding pages for proper interpretation.}) that are relevant to a user’s information need.
 
-The deep neural networks used to index and query information rely on a \emph{semantic understanding} of the content to retrieve documents\sidenote{A \textbf{document} is an information unit of limited size, typically small enough for a human reader to assess its relevance to a query, such as a page, paragraph, or passage. Although documents are ideally self-contained, they often depend on surrounding context; for example, a page in a textbook may contain the sought-after formula while requiring preceding pages for proper interpretation.} at large scales. This contrasts with previous methods that leveraged meta-information (title, author, tags, document visits), or relied on statistical heuristics to match content to a user query (keyword matching). 
+Today, the deep neural networks used to index and query information mostly rely on a \emph{semantic understanding} of the content to retrieve documents at large scales. This contrasts with previous methods that leveraged meta-information (title, author, tags, document visits), or relied on statistical heuristics to match content to a user query (keyword matching). 
 
-More precisely, efforts in deep semantic search have to this day mostly focused on creating meaningful latent representation spaces to map short text passages to their equivalent latent representations (\emph{embeddings}) in a manifold that aligns semantic proximity with geometric distance. This thesis argues that in practice, solely viewing AI search through this prism is quite restrictive: search systems should move beyond standard text embeddings to perform document retrieval. The thesis explores two main improvement directions which share one common principle: leveraging easily available yet often overlooked information (\emph{priors}) to strengthen associative links between queries and relevant documents. An important design principle is that the technical propositions reduce inductive bias and are well compatible with model and data scaling such that they should remain relevant with respect to future improvements in the field \sidecite{sutton2019bitter}. 
+More precisely, efforts in deep semantic search have to this day mostly focused on creating meaningful latent representation spaces to map short text passages to their equivalent latent representations (\emph{embeddings}) in a manifold that aligns semantic proximity with geometric distance. This thesis argues that in practice, solely viewing AI search through this prism is quite restrictive: search systems should move beyond standard text embeddings to perform document retrieval. The thesis explores two main improvement directions which share one common principle: leveraging easily available yet often overlooked information (\emph{priors}) to strengthen associative links between queries and relevant documents. An important design principle is that the technical propositions aim to reduce inductive bias and be compatible with model and data scaling such that they should remain relevant with respect to future improvements in the field \sidecite{sutton2019bitter}. 
 
 
 % This thesis argues AI-powered search systems should move beyond standard text embeddings to perform document retrieval, and proposes several improvement directions, which share a common principle of  leveraging easily available yet often overlooked information (priors) that can aid information retrieval objectives. 
@@ -53,14 +56,11 @@ More precisely, efforts in deep semantic search have to this day mostly focused 
 
 Historically, AI search engines have treated documents primarily as text. This thesis introduces the concept of \textit{Visual Document Retrieval} (VDR) through the publication ``ColPali: Efficient Document Retrieval with Vision Language Models'' \sidecite{faysse2025colpaliefficientdocumentretrieval}. This work proposes performing document retrieval without relying on text extracted from document pages. Instead, pages are indexed directly from their images, allowing the retrieval system to capture the semantic content expressed through pixels, including text, layout, tables, figures, and other visual elements.
 
-We show that this approach substantially simplifies and accelerates document indexing pipelines, while also improving retrieval performance, particularly for visually complex documents with rich layouts, tables, figures, or other non-linear structures.
+We show that this approach substantially simplifies and accelerates document indexing pipelines, while also improving retrieval performance, particularly for visually complex documents with rich layouts, tables, figures, or other non-linear structures (Chapter \autoref{ch:colpali}).
 
-The success of VDR has led since the original publication to many follow up works by academic and industrial actors. As a result, model performances rapidly improved, saturating the original Visual Document Retrieval benchmark \textit{ViDoRe} introduced in the ColPali paper, and leading to subsequent benchmarking efforts mentioned rapidly in this thesis in chapter XXX. In ViDoRe V2 \sidecite{macé2025vidorebenchmarkv2raising}, we construct complex and realistic pairs of queries and documents to assess retrieval performance on open-ended questions spanning up to multiple pages and rely on complex AI pipelines to simulate realistic interactions between users and information corpora. In ViDoRe V3 \sidecite{loison2026vidorev3comprehensiveevaluation}, we collaborate with Nvidia, to further scale annotation efforts on varied domains reflecting real world use of industrial search systems and develop an annotation pipeline that combines AI agents with over 12,000 hours of expert human annotators.
+The success of VDR has led since the original publication to many follow up works by academic and industrial actors. As a result, model performances rapidly improved, saturating the original Visual Document Retrieval benchmark \textit{ViDoRe} introduced in the ColPali paper, and leading to subsequent benchmarking efforts. In ViDoRe V2 \sidecite{macé2025vidorebenchmarkv2raising}, we construct complex and realistic pairs of queries and documents to assess retrieval performance on open-ended questions spanning up to multiple pages and rely on complex AI pipelines to simulate realistic interactions between users and information corpora. In ViDoRe V3 \sidecite{loison2026vidorev3comprehensiveevaluation}, we collaborate with Nvidia, to further scale annotation efforts on varied domains reflecting real world use of industrial search systems and develop an annotation pipeline that combines AI agents with over 12,000 hours of expert human annotators. These contributions are detailed in Chapter \autoref{ch:vidorev3}.
 
-A year after the publication of the ColPali paper, we released \emph{ModernVBert}, a visual document retrieval model that commoditizes VDR performance by showcasing similar performances than the original ColPali model while being 10x smaller and running on CPU \sidecite{teiletche2025modernvbert}. This was made possible by through ablations of all performance factors behind vision language retrieval models and many critical insights were uncovered and detailed in chapter XX.
-
-The contributions of this thesis go beyond a series of peer reviewed publications. Significant efforts were devoted to continuously improve the performance, to extend the capabilities and to advocate for the use of Visual Document Retrieval models. We can notably mention the release of the ColQwen model series\sidenote{We published the models openly and integrated the code on HuggingFace \url{https://huggingface.co/docs/transformers/main/model_doc/colqwen2}}, a series of SOTA visual retrievers, downloaded over 5 million times on HuggingFace at the time of writing. We also extended retrieval to other modalities such as video and audio through ColQwen-Omni \sidenote{We published the model openly on the HuggingFace platform and released a blog post at \url{https://huggingface.co/blog/manu/colqwen-omni-omnimodal-retrieval}.} and maintained the ColPali GitHub library at \url{https://github.com/illuin-tech/colpali}. The field of Visual Document Retrieval is now well established and thriving.
-
+A year after the publication of the ColPali paper, we released \emph{ModernVBert}, a visual document retrieval model that commoditizes VDR performance by showcasing similar performances than the original ColPali model while being 10x smaller and running on CPU \sidecite{teiletche2025modernvbert}. This was made possible by through ablations of all performance factors behind vision language retrieval models and many critical insights were uncovered and detailed in Chapter \autoref{ch:modernvbert}.
 
 
 \subsection{Part 2: Contextual Document Retrieval}
@@ -68,7 +68,7 @@ The contributions of this thesis go beyond a series of peer reviewed publication
 Another limitation of standard embedding-based search systems is that queries and documents are usually processed and embedded in isolation, without relying on external context which is in practice usually available and often crucial. 
 
 \noindent\textbf{Document Retrieval Requires Context.} Book pages are not meant to be read in isolation. In practice however, this is what standard indexing pipelines do: they split long documents into independent chunks and embed them individually. 
-This shortcoming is visible in current visual retrievers, but is also a major weakness of the more common textual embedding models which embed long documents as a series of independent passages, without exploiting the fact to a reader, certain passages might be key to understand others. In "Context is Gold", we quantify the impact of context aware retrieval and propose technical solutions based on late-chunking aware training to infuse contextual information into chunk embeddings \sidecite{conti2025context}. While this work is instantiated on textual retrievers for ease of experimentation, it is directly applicable to our work on improving visual retrievers.
+This shortcoming is visible in current visual retrievers, but is also a major weakness of the more common textual embedding models which embed long documents as a series of independent passages, without exploiting the fact to a reader, certain passages might be key to understand others. In Chapter \autoref{ch:conteb}, we quantify the impact of context aware retrieval and propose technical solutions based on late-chunking aware training to infuse contextual information into chunk embeddings \sidecite{conti2025context}. While this work is instantiated on textual retrievers for ease of experimentation, it is directly applicable to our work on improving visual retrievers.
 
 
 \noindent\textbf{Query Understanding Requires Context.}
@@ -79,13 +79,13 @@ Agents leverage knowledge (priors) encoded in their parametric knowledge ("weigh
 % Recent efforts such as BrowseComp highlight the growing importance of AI agents for real-world information seeking, and suggest that robust access to practically useful information increasingly benefits from \emph{adaptive compute}. Importantly, these systems continue to depend on strong first-layer retrieval primitives---notably embedding-based search---to identify promising candidates before deeper reasoning, verification, or tool use can take place, and should be seen as a complementary abstraction.
 
 
-\noindent\textbf{Improving LLMs is Improving Search.} Agentic search largely benefits from capable LLM orchestrators. More capable models are infused with better reasoning skills and better background knowledge enabling a more precise use of retrieval tools and are able to retrieve information quicker and in less turns (BrowseCompPlus). While the best LLMs have historically been proprietary models of large size, essentially pretrained on the English language, we argue smaller models trained openly and transparently are capable of strong performance and benefit the academic and industrial community. In Chapter~X, we introduce CroissantLLM \sidecite{faysse_croissantllm_2024}, a compact bilingual French--English language model trained on an equal mixture of English and French data, achieving state of the art performance for LLMs of the size at the time of release.
+\noindent\textbf{Improving LLMs is Improving Search.} Agentic search largely benefits from capable LLM orchestrators. More capable models are infused with better reasoning skills and better background knowledge enabling a more precise use of retrieval tools and are able to retrieve information quicker and in less turns (BrowseCompPlus). While the best LLMs have historically been proprietary models of large size, essentially pretrained on the English language, we argue smaller models trained openly and transparently are capable of strong performance and benefit the academic and industrial community. In Chapter \autoref{ch:croissant}, we introduce CroissantLLM \sidecite{faysse_croissantllm_2024}, a compact bilingual French--English language model trained on an equal mixture of English and French data, achieving state of the art performance for LLMs of the size at the time of release.
 
 
 % Finally, a line of work conducted as part of this thesis addresses the transparency problem from a more adversarial perspective. Led primarily by the Computational Privacy Group at Imperial College London, the two papers are discussed only briefly in Chapter~X. They focus on \emph{training-data memorization} and \emph{membership inference} in large language models: to what extent are individual training examples memorized, and how can one provide evidence that a given text was included in an LLM's training corpus? These questions have direct relevance to ongoing legal disputes and raise broad policy implications, notably around copyright and data governance. In \sidecite{meeus2024copyright}, we propose inserting a small fraction of controlled ``canaries'' into the training data in order to reliably characterize the regimes in which memorization occurs and to quantify the associated risk of information leakage. This work is done through the CroissantLLM training project. Complementarily, \sidecite{meeus2024sok} provides a systematic  overview of membership inference attacks against LLM training data, organizing existing methods, clarifying threat models and assumptions, and highlighting open problems. Together, these contributions move toward more rigorous and auditable assessments of modern LLM behavior, and offer practical tools to reason about privacy and provenance in large-scale training pipelines.
 
 
-\subsection{Parting Perspectives: On the future of search}
+\subsection{Conclusion: Perspectives On Search}
 
 What does the next generation of search systems look like? Is Retrieval Augmented Generation (RAG) a thing of the past, buried by the newest shiny model or technique?
 
@@ -102,70 +102,9 @@ What does the next generation of search systems look like? Is Retrieval Augmente
 
 
 
-At its core, indexing and retrieving information from external sources in a working "memory" is likely to remain one of the key challenges of AI systems in the future. Scientific advances will unlock better recall from broader sources and more personalized answers, so the form factor will change (agentic scaffold, memory), but the need to condition a generative process (our decision making, a generative LLM for RAG) on verifiable non-parametric sources will remain essential to ground and interpret practical decisions with tractable resources.  
+At its core, indexing and retrieving information from external sources in a working "memory" is likely to remain one of the key challenges of AI systems in the future. Scientific advances will unlock better recall from broader sources and more personalized answers and the form factor will change, but the need to rely on external verifiable non-parametric resources to supplement our memory, and the need to \emph{navigate the maze} and separate information from noise will remain key.  
 
-The conclusion offers some personal perspectives into what I believe to be the future impactful research directions of the field. Notably, I detail my beliefs on three topics.
-
-
-\noindent\textbf{Omni-modality.} We are moving from predominantly text-based retrieval toward a more \emph{omnimodal} regime, in which useful evidence may reside in text, images, audio, video, code, structured data, and potentially even 3D assets. This shift was bootstrapped by systems such as ColPali, but since reflects a broader evolution of the field (Gemini Embeddings, MixedBread).
-As AI-powered search becomes more capable, the competitive edge of a system will increasingly depend on its ability to access and exploit heterogeneous sources. Not all information, however, is equally reachable: some content will remain costly to access, poorly indexed, private, ephemeral, or expressed in unfamiliar modalities. The ability to retrieve and operationalize such information at scale may therefore become one of the main factors separating merely good systems from truly exceptional ones. 
-
-\noindent\textbf{A unified perspective on associative memories.} My belief is that the current fields of information retrieval and long context language modeling are closer than they appear. Both fields are fundamentally concerned with how to represent, compress, index, select, and leverage past information with respect to a current need. In other words, how to find useful signals within overwhelming amounts of noise. In my view, both fields are simply facets of associative memory mechanisms working at various levels of granularity and with different tradeoffs. Bridging between these various forms of retrieval has shown success in the past \sidecite{khattab2020colbert} and could transcend the limited ways document retrieval is done to this day.
-
-% Late Interaction, Memory, Agentic Scaffolds, RLMs. Memories
-
-
-
-\noindent\textbf{Measuring Progress End to End.} A central constraint on future progress is that search quality is not uniformly easy to measure and verify. Search appears to follow a \emph{jagged frontier} of capabilities: some tasks, such as factual verification grounded in accessible digital sources, are comparatively straightforward to check and should improve steadily,\sidenote{However, as demonstrated by Vidore V3, even ostensibly well-defined retrieval tasks can remain extremely time-consuming to verify for human experts.} whereas underspecified requests, open-ended synthesis, and value-laden questions remain difficult both to solve and to evaluate. 
-% furthemore, benhcmarks are quite artificial and biased (vidore v3 shows how hard it is not to do that)
-
-Under this lens, verifier-side constraints help determine which classes of search problems can be improved reliably under something like ``verifier's law.'' Strong benchmarks therefore remain essential for hill-climbing in the near term, but ultimately downstream utility is the more meaningful measure. In practice, modern systems also benefit from abundant weak supervision signals---such as reformulations, follow-up queries, dwell time, and abandonment---which provide implicit evidence of whether the user's need has actually been satisfied.  As model intelligence becomes increasingly commoditized, the model performance bottleneck shifts from leveraging known information through reasoning and generation, to simply obtaining and accessing relevant information to condition the model, ie. \emph{context engineering}. This bottleneck is already visible in retrieval-augmented generation, where system performance is often limited less by the generator than by the quality of the retrieved context. Extrapolating forward, one can imagine models becoming near-optimal decision-makers in many domains, provided they are given sufficiently rich, relevant, and reliable evidence. On this view, the core challenge is no longer merely to generate well, but to construct the right informational substrate on which generation and reasoning can operate. Prediction markets offer a particularly useful testbed for these ideas because they combine downstream utility with eventual verifiability. They reward agents that can exploit information asymmetries when market prices diverge from well-calibrated beliefs, whether this advantage comes from better reasoning, better calibration, or better access to relevant information. Because outcomes ultimately resolve, performance can be measured in an actionable and externally grounded way. For this reason, prediction markets may become a valuable proxy for progress in agentic search: they test not only whether a system can retrieve information, but whether it can turn retrieval into decisions that demonstrably create value. In such a future, AI agents may act both as market participants and as mechanisms for rapidly incorporating public information into calibrated probabilities, thereby increasing the premium on private information and on search systems able to go deeper or move faster than the market.
-
-% Returning to the central theme of search, we question what the next generation of information access may look like.
-
-% # first of all retrieval is here to stay and remains a central problematic
-
-% Recent efforts such as BrowseComp illustrate the growing impact of AI agents on real-world information seeking, and demonstrate that robust access to practically useful information  benefits from \emph{adaptive compute}.
-% At the same time, these systems continue to rely on strong ``first-layer'' retrieval primitives---notably embedding-based search---to efficiently select candidates for deeper reasoning and verification. 
-
-% # we are seeing the transition from text based search to multimodal search, in part stemmed by colpali but now followed by everyone.
-
-% As AI-powered web search becomes widely available, \emph{omnimodal} search is likely to become increasingly central as the set of exploitable sources broadens with model capabilities (text, images, audio, video, code, structured data, and potentially 3D assets). Not all information is equally accessible: some sources will remain costly to reach, poorly indexed, private, ephemeral, or expressed in unfamiliar modalities.
-% Exploiting such information at scale will therefore remain challenging in the coming years, but may constitute the decisive edge that separates a merely good system from a truly great one.
-
-
-
-
-% # progress comes from verifiability. strong benchmarks are needed to hillclimb (vidore, browsecomp etc) but eventually downstream utility is what matters. I expect prediction markets to be a good proxy for performance as it is directly actionable and provably demonstrates the edge.
-
-% A key constraint is that verifying the correctness of search results is not uniformly easy, and this asymmetry may shape where progress is fastest.
-% Search appears to follow a \emph{jagged frontier} of capabilities: some tasks (e.g., factual verification grounded in accessible digital sources) are comparatively straightforward to check and should improve steadily,\sidenote{However, as demonstrated by Vidore V3, complex queries can remain extremely time-consuming to verify even for human experts.}
-% whereas underspecified requests, open-ended synthesis, and value-laden questions remain hard both to solve and to evaluate.
-% Under this lens, verifier-side constraints determine which classes of search problems will be reliably improved under ``verifier's law''.
-% Importantly, modern search systems also receive many weak signals from users---such as reformulations, follow-up queries, dwell time, and abandonment---that can be exploited as implicit feedback about whether the system has satisfied the request.
-
-% As intelligence becomes commoditized, the bottleneck shifts toward context engineering.
-% Already, in retrieval-augmented generation (RAG), the limiting factor is often retrieval quality rather than generation quality.
-% Extrapolating forward, one can envision that, given sufficiently rich and reliable context, models will make near-optimal decisions in many settings---but constructing that context remains the difficult part.
-
-% Prediction markets provide a useful playground for these ideas.
-% They incentivize rational actors to exploit information asymmetries by arbitraging market odds when those odds diverge from their internal beliefs.
-% Such divergences may arise from superior analysis, better calibration, or access to better prior information, whether public or private.
-% Crucially, predictions are ultimately verifiable once events resolve.
-% Today, some projects use prediction markets to assess model calibration; more broadly, these markets could serve as testbeds for agentic search capabilities, measuring how effectively agents acquire and integrate relevant information.
-% In the limit, AI agents may become ubiquitous participants in prediction markets, acting both as market rectifiers and as information distributors.
-% This possibility suggests a future where public information is rapidly shared and rationally incorporated into well-calibrated probabilities---while the value of private information, and of strong search systems that can go deeper or move faster than the market, becomes evermore crucial.
-
-
-% % Looking forward, we anticipate a shift from explicit querying toward more \emph{implicit} information access, where systems proactively surface relevant knowledge continuously in response to context, goals, and ongoing activity.
-
-
-% # opening up towards the future of bridging fields
-
-% Finally, we argue that long-context modeling and information retrieval are closer than they may appear, and that bridging these literatures can be fruitful: both fields study how to select, compress, and condition generation on relevant prior evidence, finding needles of useful information in a haystack of noise. Building conceptual and methodological links between them may be possible.
-
-% % Beyond the technical horizon, we close by reflecting on what truly frictionless information access would mean, and on the societal implications of delegating discovery, synthesis, and decision support to increasingly agentic systems.
-
+The parting words in Chapter \autoref{ch:conclusion} offer some personal perspectives into what I believe to be impactful future research directions in the retrieval field. In line with the rest of this thesis, I preach efforts into omni-modal universal embeddings, scaffolding engineering, reflect on ways to push benchmarking efforts forward, and detail why I believe bridging efforts with other NLP fields such as long context modeling research might enable scaling the training of embedding models multiple orders of compute magnitude. To anyone reading this thesis and wishing to discuss these ideas with me, my mail is open.
 
 
 \section{List of Publications and Impact} 
@@ -183,11 +122,17 @@ This thesis is recollection of a focused selection of first-author\sidenote{I am
 \sidecite{macé2025vidorebenchmarkv2raising, loison2026vidorev3comprehensiveevaluation}, accepted at ACL 2026\sidenote{Although I initiated the project and was the original senior author, my role became more advisory towards the end as I joined the team at Meta FAIR working on unrelated topics for the last 6 months of my PhD.}. 
 
 
+The contributions of this thesis go beyond a series of peer reviewed publications. Significant efforts were devoted to continuously improve the performance, to extend the capabilities and to advocate for the use of Visual Document Retrieval models. We can notably mention the release of the ColQwen model series\sidenote{We published the models openly and integrated the code on HuggingFace \url{https://huggingface.co/docs/transformers/main/model_doc/colqwen2}}, a series of SOTA visual retrievers, downloaded over 5 million times on HuggingFace at the time of writing. We also extended retrieval to other modalities such as video and audio through ColQwen-Omni \sidenote{We published the model openly on the HuggingFace platform and released a blog post at \url{https://huggingface.co/blog/manu/colqwen-omni-omnimodal-retrieval}.} and maintained the ColPali GitHub library at \url{https://github.com/illuin-tech/colpali}. The field of Visual Document Retrieval is now well established and thriving.
+
+
+
 \noindent\textbf{Contextual Document Retrieval.} The second part focuses on leveraging contextual information to improve retrieval. It covers 
 \emph{Context is Gold to find the Gold Passage: Evaluating and Training Contextual Document Embeddings} 
 \sidecite{conti2025context}, accepted as an Oral at EMNLP 2025, and 
 \emph{CroissantLLM: A Truly Bilingual French-English Language Model} 
 \sidecite{faysse_croissantllm_2024}, published at TMLR 2025.
+
+A FEW IMPACT METRICS ?
 
 % exclude from thesis 
 
@@ -197,195 +142,10 @@ This thesis is recollection of a focused selection of first-author\sidenote{I am
 
 \noindent\textbf{Other Papers.}  During this thesis, I also contributed as an active but secondary author to many other publications. Notably, in \sidecite{gisserotboukhlef2024trustworthyrerankingsimpleeffective} (TMLR 2024) we study whether the distribution of retrieval score can be leveraged to construct confidence estimations of retrieval performance. This idea of exploiting often unused information to improve retrieval is very related to the main body of this thesis's work. The confidence metrics have notably been integrated within the MTEB framework, as part of the MMTEB release which I am also a contributor of \sidecite{enevoldsen2025mmteb} (ICLR 2025). This thesis came at a time where open initiatives towards building multilingual LLMs were important and I participated in multiple such large projects following the success of CroissantLLM. Notably, with a team in Portugal, I worked on the EuroLLM series \sidecite{martins2024eurollmmultilinguallanguagemodels, martins2025eurollm} to train high performing open multilingual models with a special focus set on machine translation. I also contributed to an initiative to train improved multilingual bidirectional encoders which culminated in EuroBert \sidecite{boizard2025eurobert} (COLM 2025). With the EuroBert team, we further studied the differences between the training dynamics of encoder and decoder models in controlled setups, leading to \sidecite{gisserotboukhlef2025pretrainencodersmaskedlanguage}, under submission at ICLR 2026.
 
-\noindent\textbf{ML Privacy Papers.} I also suggested to old colleagues at Imperial College London that we could leverage the unique opportunity of the CroissantLLM training project for LLM privacy research with huge training budgets. This led to the Copyright Trap project \sidecite{meeus2024copyright} accepted at ICML 2024 in which we study model memorization of training data.  A subsequent paper, \sidecite{meeus2024sok} provides a systematic  overview of membership inference attacks against LLM training data, organizing existing methods, clarifying threat models and assumptions, and highlighting open problems. It was awarded best paper award at IEEE SatML 2025. This line of research is also very coherent with the objectives of the second part of this thesis to build more trustworthy generative systems.
+\noindent\textbf{ML Privacy Papers.} My early days of academic research were in the field of Computational Privacy. While I preferred focusing on LLMs and Information Retrieval during my thesis, privacy is a topic that stayed close to my heart. While working on CroissantLLM, I suggested to former colleagues that we could leverage this unique opportunity to also run LLM privacy research with huge LLM pretraining budgets. This led to a series of works, notably the Copyright Trap project \sidecite{meeus2024copyright} accepted at ICML 2024 in which we study model memorization of training data and draw conclusions into the risk of personal information leakage. A subsequent paper, \sidecite{meeus2024sok} provides a systematic  overview of membership inference attacks against LLM training data, organizing existing methods, clarifying threat models and assumptions, and highlighting open problems. It was awarded best paper award at IEEE SatML 2025. 
 
+\noindent\textbf{Press \& Talks.}
 Mention Press and Talks
 
+\noindent\textbf{Ressource Releases.}
 All models released as part of this thesis are openly released under open licenses.
-
-\chapter{A Brief History of Information Retrieval}
-
-While this thesis does not aim to provide an extensive overview of past or modern Information Retrieval techniques, the following section will provide a rapid overview of the field in order to contextualize the contributions of this thesis.\sidenote{If the reader finds this overview incomplete or yearns for more contextual depth, I invite them to search for further information within external sources. If the search is successful, great! If not, it only is further proof that modern search tools remain imperfect and that their improvement is a valid research motivation for this thesis.}
-%\sidenote{As a disclaimer, this chapter is the only chapter of this thesis in which generative AI tools were used to assist redaction. All content is thoroughly verified.}. 
-Further finely scoped relevant related work are also introduced in each individual chapters.
-
-
-\section{Early Pre-Digital Cataloging}
-
-\begin{marginfigure}
-    \centering
-    \includegraphics{images/misc/Ancientlibraryalex.jpg}
-    \caption[Artistic Depiction of the Library of Alexandria based on historical evidence]{Artistic Depiction of the Library of Alexandria based on historical evidence. O. Von Corven -  "The Great Library of Alexandria"}
-
-    % Latencies indicated in the figure are computed on the same machine \texttt{g2-standard-16} with a NVIDIA-L4 GPU, and averaged over 100 pages. Further details in \autoref{subsection:latency}.The computed score is the average of from all datasets in \textit{ViDoRe} for PDF Parser + Captioning and ColPali respectively. Further details in \autoref{section:results}.} 
-    \label{fig:alexandria}
-\end{marginfigure}
-
-Long before computers, humans developed methods to organize and retrieve information. One of the earliest examples is the Pinakes of Callimachus around the 3rd century BCE, often considered the first library catalog in the Western world. The Pinakes systematically listed authors and their works in the Library of Alexandria, grouping works by subject and alphabetizing authors – a bibliographic approach that laid the groundwork for later library catalogs. This ancient effort demonstrated the enduring principles of indexing and categorization (such as alphabetical order and subject grouping) that remain fundamental in information retrieval (IR).
-
-
-Through the centuries, librarians and scholars continued to develop catalogs and classification systems (e.g. medieval manuscript indexes 
-% https://bookhistory.yale.edu/blog/medieval-indices-unlikely-leisurely-reading
-and Melvil Dewey’s Decimal Classification in 1876 \sidecite{dewey1876classification}). These pre-digital innovations weren’t "IR systems" in the modern sense, but they addressed the same core challenge: how to store, organize, and find relevant information efficiently. By the early 20th century, visionaries like Paul Otlet and Henri La Fontaine dreamed of organizing the world’s knowledge (Mundaneum project \sidecite{otlet1928mundaneum}), notably through the Universal Bibliographic Repertory using index cards. In 1945, Vannevar Bush articulated a futuristic vision of personal information devices in \emph{As We May Think} \sidecite{bush1945aswemaythink}, in which he describes the inadequacy of indexing based systems to navigate the deluge of information:
-
-
-\begin{lavenderkaobox}
-\emph{"The real heart of the matter of selection, however, goes deeper than a lag in the adoption of mechanisms by libraries, or a lack of development of devices for their use. Our ineptitude in getting at the record is largely caused by the artificiality of systems of indexing. When data of any sort are placed in storage, they are filed alphabetically or numerically, and information is found (when it is) by tracing it down from subclass to subclass. It can be in only one place, unless duplicates are used; one has to have rules as to which path will locate it, and the rules are cumbersome."}
-\end{lavenderkaobox}
-
-
-Bush's vision was that new technology would enable moving away from this system. He proposes the Memex, a hypothetical electromechanical desk that could instantly retrieve microfilmed documents via associative links. 
-% Bush’s essay inspired later developments by suggesting that managing the “growing mountain of information” would require new mechanized solutions.
-
-\section{Founding of Information Retrieval (1950s–1960s)}
-IR as a distinct field took shape in the 1950s and 1960s, alongside the advent of digital computers. In 1950, Calvin Mooers coined the term "information retrieval" \sidecite{mooers1950information}, heralding the idea of using machines to search document collections. Early experiments followed quickly: in 1951, a master’s thesis at MIT by Philip Bagley \sidecite{bagley1951electronic} demonstrated one of the first computerized document retrieval experiments. Pioneers like Hans Peter Luhn at IBM began applying computers to automate indexing; for example, Luhn developed methods for auto-encoding documents and keyword-in-context indexing. By 1959 he published an influential paper on “Auto-encoding of documents for information retrieval” \sidecite{luhn1959autoencoding} showing how computers could encode text and allow electronic searching of content. This period also saw growing support for IR research as the U.S. government recognized an information explosion funding projects on mechanized literature searching and the creation of citation indexes.
-
-
-A key milestone was the Cranfield experiments led by C. W. “Pete” Cleverdon in the late 1950s and early 1960s \sidecite{cleverdon1967cranfield}. The Cranfield studies introduced a rigorous experimental methodology for IR: assembling a test collection of documents, queries, and relevance judgments, and evaluating retrieval performance using metrics like precision and recall. Cleverdon’s 1962 report on Cranfield showed how different indexing techniques could be objectively compared. This methodology – the use of standardized test collections and metrics – became a cornerstone of IR research, establishing a scientific approach to evaluate how “relevant” the results returned by an IR system are, laying the foundation for future benchmarks.
-% The Cranfield approach was hard work (manually judging relevance for many query-document pairs), but it laid the foundation for future benchmarks.
-
-
-During the same era, Gerard Salton formed the first major IR research group (at Harvard, later Cornell). Researchers began formulating the first theoretical models of IR. In 1960, Maron and Kuhns proposed a probabilistic indexing model \sidecite{maron1960relevance}, foreshadowing later probabilistic retrieval approaches. Salton and others started developing what became the vector space model: by the late 1960s, Salton’s team had created the SMART system, representing documents and queries as vectors in a term-weighted space. In 1968 Salton published “Automatic Information Organization and Retrieval” \sidecite{salton1968automatic} and by 1975 he fully articulated the vector space framework and term-weighting schemes \sidecite{salton1975vector_space}. Another 1960s contribution came from Karen Spärck Jones, who introduced the concept of inverse document frequency (IDF) \cite{sparck_jones_statistical_1972} to statistically downweight common terms and boost rare, informative terms – a principle that soon became central to ranking algorithms.
-
-\section{The Statistical Revolution in IR (1970s--1990s)}
-
-With the fundamentals laid, subsequent decades saw rapid improvement in statistical text retrieval methods. The 1970s refined the vector space and probabilistic models. Term frequency--inverse document frequency (TF--IDF) weighting became a standard technique: terms are scored higher if they appear frequently in a document (term frequency) but are rare across the collection (high IDF)\sidecite{sparck_jones_statistical_1972}\sidenote{
-\textbf{TF-IDF:}
-Let $\mathcal{D}=\{d_1,\dots,d_N\}$ be a corpus of $N$ documents and let $t$ be a term (token).
-The TF--IDF weight of term $t$ in document $d$ is
-\[
-\mathrm{tfidf}(t,d,\mathcal{D}) \;=\; \mathrm{tf}(t,d)\cdot \mathrm{idf}(t,\mathcal{D}).
-\]
-A common choice is
-\[
-\mathrm{tf}(t,d)=\frac{f_{t,d}}{\sum_{t'} f_{t',d}}
-\]
-and
-\[
-\mathrm{idf}(t,\mathcal{D})=\log\!\left(\frac{N}{\mathrm{df}(t)}\right),
-\]
-where $f_{t,d}$ is the raw count of occurrences of $t$ in $d$, $\sum_{t'} f_{t',d}$ is the total number of term occurrences in $d$ (so $\mathrm{tf}$ is a normalized frequency),
-and $\mathrm{df}(t)=\bigl|\{d_i\in\mathcal{D}: t\in d_i\}\bigr|$ is the document frequency (the number of documents containing $t$ at least once).
-Intuitively, $\mathrm{tf}$ upweights terms frequent in a given document, while $\mathrm{idf}$ downweights terms that appear in many documents.
-(Variants often use $\mathrm{tf}(t,d)=1+\log f_{t,d}$ and/or smoothing $\log\!\left(\frac{N+1}{\mathrm{df}(t)+1}\right)+1$ to avoid division by zero.)
-}.  On the probabilistic side, Stephen Robertson and colleagues extended early ideas into the Probabilistic Relevance Framework in the 1970s and 1980s, leading to the development of ranking functions that estimate the probability a document is relevant to a query \sidecite{robertson1976relevance_weighting, robertson1977prp, robertson_probabilistic_2009}. These efforts culminated in the 1990s with Okapi BM25, a ranking formula born from Robertson and Sp{\"a}rck Jones' work \sidecite{robertson1994bm25}\sidenote{\textbf{BM25:}
-Let $\mathcal{D}$ be a corpus, $d\in\mathcal{D}$ a document, and $t$ a term. The BM25 score of $d$ for a query $q$ is
-\[
-\mathrm{BM25}(q,d)=
-\]
-\[
-\sum_{t\in q} \mathrm{idf}(t)\;
-\frac{f_{t,d}(k_1+1)}{f_{t,d}+k_1\!\left(1-b+b\,\frac{|d|}{\mathrm{avgdl}}\right)}
-\]
-Here $f_{t,d}$ is the count of $t$ in $d$, $|d|$ is the document length (in tokens), and $\mathrm{avgdl}$ is the average document length in the corpus. $k_1>0$ controls term-frequency saturation, and $b\in[0,1]$ controls how strongly length normalization is applied. A common IDF is
-\[
-\mathrm{idf}(t)=\log\!\left(\frac{N-\mathrm{df}(t)+0.5}{\mathrm{df}(t)+0.5}\right),
-\]
-where $N=|\mathcal{D}|$ and $\mathrm{df}(t)$ is the number of documents containing $t$.
-}. 
-By incorporating TF--IDF-like features into a probabilistic model, BM25 became one of the dominant ranking algorithms in search and remains widely used as a strong baseline in modern information retrieval systems \sidecite{robertson_probabilistic_2009, manning2008introduction_ir}.
-
-Alongside algorithm advances, IR systems grew in scale and importance. The first online search systems appeared in the early 1970s as databases of bibliographic records: for example, MEDLINE (1971) provided biomedical literature search, and DIALOG offered commercial online search over multiple databases \sidecite{nlm2024medline_history, dialog2019milestone}. These systems predated personal computers---users accessed them via terminals---but they demonstrated that searching thousands of documents via text queries was feasible and valuable. In 1978, the IR community established its premier conference, ACM SIGIR, reflecting the field's maturation \sidecite{sigir1978proceedings}.
-
-By the 1980s, personal computing and CD-ROMs enabled standalone IR systems (like library catalog CDs), and researchers explored new ideas such as relevance feedback (the Rocchio algorithm from the 1970s allowed a system to adjust a query based on documents a user marked relevant) \sidecite{rocchio1971relevance_feedback} and clustering (the "cluster hypothesis": relevant documents tend to cluster together).\sidecite{jardine1971hierarchic_clustering, vanrijsbergen1979information_retrieval} The inverted index (storing, for each term, a list of documents containing it) became a core data structure, enabling fast keyword lookup even as collections grew to tens of thousands of documents \sidecite{manning2008introduction_ir}. This era also saw experiments with user interfaces and visualization (e.g.\ plotting document similarity or using hypertext systems).
-
-Evaluation at scale took a leap in 1992 with the start of the Text Retrieval Conference (TREC). TREC built large standard test collections and yearly competitions for state-of-the-art retrieval methods \sidecite{harman1993trec_overview}. TREC not only pushed research towards scalable methods but also fostered the development of specialized tasks. Many techniques that became important, such as query expansion and relevance feedback, were evaluated and refined through TREC workshops.
-
-\section{Enter The Web (1990s--2010s)}
-
-Web search emerged in the mid-1990s as a new frontier that dramatically expanded IR's scale and impact. Early web search systems and directories (for example, Yahoo!'s directory in 1994 and AltaVista in 1995) helped users navigate the growing World Wide Web, but they struggled to rank results in a way that consistently satisfied users at web scale.\sidecite{brin1998anatomy} The breakthrough came in 1998 when Google introduced the PageRank algorithm for ranking web pages.\sidecite{page1998pagerank, brin1998anatomy} PageRank treated the web as a graph, using the pattern of hyperlinks as an additional signal: a page linked from many other pages, especially if those were themselves authoritative, received a higher ``importance'' score.\sidecite{page1998pagerank} By combining link analysis with content relevance, Google achieved much more useful rankings than purely content-based engines.\sidecite{brin1998anatomy, page1998pagerank} This represented a metadata-based retrieval innovation---leveraging network topology (citations) as a relevance signal, analogous to how academic citations indicate influence. PageRank, along with anchor text indexing and other web-specific features, pushed IR beyond just term statistics into using the context of documents (links, click data, etc.) to inform ranking.\sidecite{brin1998anatomy}
-
-In the 2000s, machine learning techniques became increasingly central to IR. Search engines began using learning-to-rank algorithms, which take a large number of features (e.g.\ BM25 scores, document click-through rates, anchor text matches, etc.) and learn how to combine them into a single ranking function.\sidecite{burges2005ranknet, burges2006lambdarank, burges2010lambdamart} For example, researchers at Microsoft developed RankNet and LambdaRank/LambdaMART in the mid-2000s, applying neural networks and boosted decision trees to optimize ranking using labeled training data.\sidecite{burges2005ranknet, burges2006lambdarank, burges2010lambdamart} Commercial engines such as Bing and Google quickly adopted learning-to-rank ideas to tune their search results. By analyzing user behavior signals (e.g.\ which results users click or skip), search engines could implicitly learn relevance.\sidecite{joachims2005clickthrough, radlinski2005query_chains} As a result, 2000s web search saw integration of user click data, query logs, and behavioral analytics to continuously improve results.\sidecite{joachims2005clickthrough, radlinski2005query_chains}
-
-Another 2000s-and-2010s trend was the use of semantic information and knowledge bases. For instance, Bing publicly described its Satori knowledge system in 2013 to recognize entities and relationships in queries.\sidecite{bing2013satori} Both academic and industry efforts moved toward understanding the intent behind queries, not just matching keywords. By 2013, Google's Hummingbird update incorporated more natural language processing to handle conversational queries, marking a shift from pure keyword matching toward semantic context understanding.\sidecite{google2025ranking_systems}
-
-% \section{The Statistical Revolution in IR (1970s–1990s)}
-
-% With the fundamentals laid, subsequent decades saw rapid improvement in statistical text retrieval methods. The 1970s refined the vector space and probabilistic models. Term frequency–inverse document frequency (TF–IDF) weighting became a standard technique: terms are scored higher if they appear frequently in a document (term frequency) but are rare across the collection (high IDF)\sidenote{
-% \textbf{TF-IDF:}
-% Let $\mathcal{D}=\{d_1,\dots,d_N\}$ be a corpus of $N$ documents and let $t$ be a term (token).
-% The TF--IDF weight of term $t$ in document $d$ is
-% \[
-% \mathrm{tfidf}(t,d,\mathcal{D}) \;=\; \mathrm{tf}(t,d)\cdot \mathrm{idf}(t,\mathcal{D}).
-% \]
-% A common choice is
-% \[
-% \mathrm{tf}(t,d)=\frac{f_{t,d}}{\sum_{t'} f_{t',d}}
-% \]
-% and
-% \[
-% \mathrm{idf}(t,\mathcal{D})=\log\!\left(\frac{N}{\mathrm{df}(t)}\right),
-% \]
-% where $f_{t,d}$ is the raw count of occurrences of $t$ in $d$, $\sum_{t'} f_{t',d}$ is the total number of term occurrences in $d$ (so $\mathrm{tf}$ is a normalized frequency),
-% and $\mathrm{df}(t)=\bigl|\{d_i\in\mathcal{D}: t\in d_i\}\bigr|$ is the document frequency (the number of documents containing $t$ at least once).
-% Intuitively, $\mathrm{tf}$ upweights terms frequent in a given document, while $\mathrm{idf}$ downweights terms that appear in many documents.
-% (Variants often use $\mathrm{tf}(t,d)=1+\log f_{t,d}$ and/or smoothing $\log\!\left(\frac{N+1}{\mathrm{df}(t)+1}\right)+1$ to avoid division by zero.)
-% }. Salton’s publications in 1975 detailed how weighting schemes like TF–IDF could significantly improve retrieval effectiveness[. On the probabilistic side, Stephen Robertson and colleagues extended early ideas into the Probabilistic Relevance Framework (1970s–80s), leading to the development of ranking functions that estimate the probability a document is relevant to a query. These efforts culminated in the 1990s with Okapi BM25, a ranking formula born from Robertson and Spärck Jones’ work
-% \sidenote{\textbf{BM25:}
-% Let $\mathcal{D}$ be a corpus, $d\in\mathcal{D}$ a document, and $t$ a term. The BM25 score of $d$ for a query $q$ is
-% \[
-% \mathrm{BM25}(q,d)=
-% \]
-% \[
-% \sum_{t\in q} \mathrm{idf}(t)\;
-% \frac{f_{t,d}(k_1+1)}{f_{t,d}+k_1\!\left(1-b+b\,\frac{|d|}{\mathrm{avgdl}}\right)}
-% \]
-% Here $f_{t,d}$ is the count of $t$ in $d$, $|d|$ is the document length (in tokens), and $\mathrm{avgdl}$ is the average document length in the corpus. $k_1>0$ controls term-frequency saturation, and $b\in[0,1]$ controls how strongly length normalization is applied. A common IDF is
-% \[
-% \mathrm{idf}(t)=\log\!\left(\frac{N-\mathrm{df}(t)+0.5}{\mathrm{df}(t)+0.5}\right),
-% \]
-% where $N=|\mathcal{D}|$ and $\mathrm{df}(t)$ is the number of documents containing $t$.
-% }. 
-% BM25 operationalized probabilistic retrieval in a simple yet powerful way: it computes a relevance score based on term frequencies and document length normalization, along with an IDF component. By incorporating TF–IDF-like features into a probabilistic model, BM25 became the de facto ranking algorithm in many search engines by the late 1990s. In fact, BM25 (and variants) remain widely used as a strong baseline – it’s “the base of modern information retrieval” in many applications.
-
-
-% Alongside algorithm advances, IR systems grew in scale and importance. The first online search systems appeared in the early 1970s as databases of bibliographic records: for example, MEDLINE (1971) provided biomedical literature search, and Dialog (1972, by Lockheed) offered commercial online search over multiple databases. These systems predated personal computers – users accessed them via terminals – but they demonstrated that searching thousands of documents via text queries was feasible and valuable. In 1978, the IR community established its premier conference, ACM SIGIR, reflecting the field’s maturation.
-
-
-% By the 1980s, personal computing and CD-ROMs enabled standalone IR systems (like library catalog CDs), and researchers explored new ideas such as relevance feedback (the Rocchio algorithm from the 1970s allowed a system to adjust a query based on documents a user marked relevant) and clustering (“cluster hypothesis”: relevant documents tend to cluster together). The inverted index (storing, for each term, a list of documents containing it) became a core data structure, enabling fast keyword lookup even as collections grew to tens of thousands of documents. This era also saw experiments with user interfaces and visualization (e.g. plotting document similarity or using hypertext systems).
-% Evaluation at scale took a leap in 1992 with the start of the Text Retrieval Conference (TREC). TREC, organized by NIST and Dept. of Defense, built large standard test collections (hundreds of thousands of documents) and yearly competitions for state-of-the-art retrieval methods. TREC not only pushed research towards scalable methods but also fostered the development of specialized tasks (e.g. web, QA, filtering). Many techniques that became important (like query expansion, using thesauri or relevance feedback to add related terms to a query) were evaluated and refined through TREC workshops.
-
-
-% Web search emerged in the mid-1990s as a new frontier that dramatically expanded IR’s scale and impact. Early web search engines (e.g. Yahoo! in 1994, AltaVista in 1995) primarily used traditional keyword matching (similar to vector space or Boolean models), but they struggled to rank results in a way that satisfied users on the vast World Wide Web. The breakthrough came in 1998 when Google introduced the PageRank algorithm for ranking web pages. PageRank treated the web as a graph, using the pattern of hyperlinks as an additional signal: a page linked from many other pages, especially if those were themselves authoritative, received a higher “importance” score. By combining link analysis with content relevance, Google achieved much more useful rankings than purely content-based engines. This represented a metadata-based retrieval innovation – leveraging network topology (citations) as a relevance signal, analogous to how academic citations indicate influence. PageRank, along with anchor text indexing and other web-specific features, pushed IR beyond just term statistics into using the context of documents (links, click data, etc.) to inform ranking.
-
-
-% In the 2000s, machine learning techniques became increasingly central to IR. Search engines began using learning-to-rank algorithms, which take a large number of features (e.g. BM25 scores, document click-through rates, anchor text matches, etc.) and learn how to combine them into a single ranking function. For example, researchers at Microsoft developed RankNet and LambdaRank/MART in the mid-2000s, applying neural networks and boosted decision trees to optimize ranking using labeled training data. Commercial engines like Bing and Google quickly adopted these to tune their search results. By analyzing user behavior signals (e.g. which results users click or skip), search engines could implicitly learn relevance. As a result, 2000s web search saw integration of user click data, query logs, and behavioral analytics to continuously improve results.
-% Another 2000s trend was the use of semantic information and knowledge bases. For instance, in 2009 Bing introduced the Satori knowledge base to recognize entities and relationships in queries. Both academic and industry efforts moved toward understanding the intent behind queries, not just matching keywords. By 2013, Google’s “Hummingbird” update incorporated more natural language processing to handle conversational queries, marking a shift from pure keyword matching toward semantic context understanding.
-
-\section{The Deep Learning Era of IR (2010s--2020s)}
-
-The 2010s brought a revolution in information retrieval through neural networks and deep learning. Early in the decade, as deep learning succeeded in speech and vision, researchers began applying neural models to search tasks. Initial approaches like DSSM (Deep Structured Semantic Model) in 2013 used neural networks to map queries and documents into vectors so that relevant pairs had higher similarity.\sidecite{huang2013dssm} These first neural IR models were relatively simple---for example, feed-forward networks over bag-of-word-style or character-trigram representations---but they demonstrated the promise of semantic matching: the ability to retrieve relevant documents even when exact keyword overlap is low.\sidecite{huang2013dssm} For example, a neural model might learn to match ``USA president birthplace'' with documents about ``birthplace of American presidents''---a feat difficult for purely lexical methods.
-
-A major leap came in 2018 when transformer-based language models entered the scene. In 2018, Google researchers introduced BERT (Bidirectional Encoder Representations from Transformers), a language model that captured rich contextual information about text.\sidecite{devlin2019bert} In October 2019, Google announced that it was applying BERT models to Search for ranking and featured snippets---an early and highly visible deployment of deep neural language models in large-scale web search.\sidecite{google2019bert_search} BERT's ability to model the context of words bidirectionally significantly improved Google's handling of complex queries. Google stated that BERT would help Search better understand about one in ten searches in U.S.\ English, especially longer and more conversational queries where small function words and context matter.\sidecite{google2019bert_search} This deployment helped establish transformer-based NLP as a central component of modern search.\sidecite{yates2021transformers_ranking}
-
-However, BERT was initially used mainly in a re-ranking capacity: the search system would first retrieve a set of candidate documents using traditional methods such as BM25, and then a BERT-based model would score each query--document pair jointly and rerank the candidates with much higher precision.\sidecite{nogueira_passage_2019, yates2021transformers_ranking} These cross-encoder models are highly effective because they allow full interaction between the query and document during transformer inference, but they are also computationally expensive---running such a model over every document in a large collection is infeasible for first-stage retrieval.\sidecite{nogueira_passage_2019, yates2021transformers_ranking} As a result, a two-stage architecture became common: fast initial retrieval followed by a powerful neural re-ranker for the top $N$ results.\sidecite{yates2021transformers_ranking} Related work such as ColBERT then explored \emph{late interaction} architectures that preserved richer token-level matching than standard bi-encoders while still enabling efficient indexing and retrieval.\sidecite{khattab2020colbert}
-
-Meanwhile, researchers sought ways to make neural retrieval scalable without relying entirely on a two-stage compromise. This gave rise to bi-encoder or dual-encoder models, in which queries and documents are encoded independently into fixed-length embeddings such that relevant pairs have high vector similarity.\sidecite{yates2021transformers_ranking, karpukhin2020dpr} Semantic vector embeddings enable efficient retrieval through nearest-neighbor search in embedding space, using approximate nearest-neighbor (ANN) indexes such as HNSW and systems such as FAISS even for very large collections.\sidecite{malkov2020hnsw, johnson2017faiss} A seminal work in this direction was Sentence-BERT (SBERT) in 2019. SBERT fine-tuned BERT in a siamese architecture, using siamese and triplet-network training objectives to produce semantically meaningful sentence embeddings that can be compared directly with cosine similarity.\sidecite{reimers2019sbert} This approach drastically improved the practicality of text embeddings for semantic search: instead of applying expensive cross-attention to every sentence pair, an IR system could pre-compute document embeddings and answer queries through fast vector similarity search.\sidecite{reimers2019sbert} The authors reported a dramatic speedup on a 10,000-sentence similarity search task---from roughly 65 hours with vanilla BERT / RoBERTa pairwise inference to about 5 seconds with SBERT.\sidecite{reimers2019sbert}
-
-SBERT helped trigger an explosion of dense retrieval research. In 2020, Facebook AI introduced DPR (Dense Passage Retrieval) for open-domain question answering, training dual BERT encoders for questions and passages such that relevant pairs had higher dot-product similarity than irrelevant ones.\sidecite{karpukhin2020dpr} DPR and related models showed that dense retrieval could outperform strong BM25 baselines on several passage retrieval benchmarks while remaining practical at scale.\sidecite{karpukhin2020dpr} Early sentence-embedding work often used siamese or triplet-style objectives, as in SBERT,\sidecite{reimers2019sbert} but by 2020--2021 many influential dense retrieval and embedding methods were using contrastive softmax objectives with in-batch negatives, closely related to the InfoNCE family of losses.\sidecite{karpukhin2020dpr, oord_representation_2018, gao2021simcse} By 2021, SimCSE showed that even unsupervised contrastive learning---using different dropout realizations of the same sentence as positive pairs---could produce powerful sentence embeddings that rivaled earlier supervised approaches.\sidecite{gao2021simcse} This trend helped solidify contrastive learning as a central training paradigm for modern text embeddings and dense retrieval.\sidecite{karpukhin2020dpr, gao2021simcse}
-
-% \section{The Deep Learning Era of IR (2010s–2020s)}
-% The 2010s brought a revolution in information retrieval through neural networks and deep learning. Early in the decade, as deep learning succeeded in speech and vision, researchers began applying neural models to search tasks. Initial approaches like DSSM (Deep Structured Semantic Model) in 2013 used neural networks to map queries and documents into vectors so that relevant pairs had higher similarity. These first neural IR models were relatively simple (e.g. feed-forward networks on bag-of-word or character-trigram inputs), but they demonstrated the promise of semantic matching: the ability to retrieve relevant documents even when exact keyword overlap is low. For example, a neural model might learn to match “USA president birthplace” with documents about “birthplace of American presidents” – a feat difficult for purely lexical methods.
-% A major leap came in 2018 when transformer models entered the scene. In late 2018, Google researchers released BERT (Bidirectional Encoder Representations from Transformers), a language model that captured rich contextual understanding of text. Shortly after, Google deployed BERT in its search engine – one of the first instances of a deep neural language model used at scale in real-world retrieval. BERT’s ability to understand natural language queries (by considering the context of words bidirectionally) significantly improved Google’s handling of complex queries. For example, BERT helped the engine grasp nuances like stop-words or word sense in queries (“train to Chicago” vs “train a model”), improving relevance for about 10\% of searches by Google’s estimate. This deployment proved that neural networks could outperform hand-tuned ranking formulas for certain query types, especially on conversational or natural language queries. It also heralded a broader adoption of NLP models in search.
-
-
-% However, BERT was initially used in a re-ranking capacity: the search system would first retrieve a set of candidate documents using traditional methods (keywords/BM25), then a BERT-based cross-encoder would analyze each query–document pair and produce a relevance score, reranking the candidates with much improved precision. Cross-encoders (so-called “full interaction” models) examine the query and document together with the full attention mechanism of transformers, yielding very accurate relevance judgments. The downside is computational cost – running BERT for every document in a large collection is infeasible for first-round retrieval. Thus, a two-stage approach became common: a fast initial retrieval (e.g. BM25) followed by a powerful neural re-ranker like BERT for the top N results.
-
-
-% Meanwhile, researchers sought ways to make neural retrieval scalable without the two-stage compromise. This gave rise to bi-encoder or dual-encoder models, where queries and documents are each encoded independently into a fixed-length embedding, such that relevant pairs have high vector similarity. Semantic vector embeddings enable efficient retrieval via nearest neighbor search in embedding space, which can be done with specialized indexes (like ANN – Approximate Nearest Neighbors algorithms) even for millions of vectors. A seminal work in this direction was Sentence-BERT (SBERT) in 2019. SBERT fine-tuned BERT in a siamese network architecture to directly produce meaningful sentence embeddings, using paired sentences labeled by semantic similarity for training. This approach – essentially training BERT to output a single vector for a sentence such that similar sentences map to nearby vectors – drastically improved the quality of text embeddings. SBERT’s embeddings were far more semantically meaningful than averaging BERT’s word vectors, and importantly, made it practical to compare sentences via cosine similarity instead of expensive cross-attention. The authors demonstrated massive speedups for semantic search: finding the closest matches among 10,000 sentences took seconds with SBERT, versus hours if one had to run BERT on each pair. In essence, SBERT allowed IR systems to pre-compute embeddings for all documents and then handle queries by a quick vector lookup, enabling real-time semantic search on sizable corpora.
-
-% SBERT kicked off an explosion of dense retrieval research. In 2020, Facebook AI applied a similar idea for open-domain question answering with DPR (Dense Passage Retrieval): they trained dual BERT encoders for questions and passages such that correct Q–A pairs had higher dot-product than irrelevant pairs. DPR (and its contemporaries) used contrastive learning: given a query, the model was trained to output an embedding closer to its true relevant passage than to various negative passages. Initially, many used triplet loss or hinge loss (as SBERT did) on these triplets of (query, positive, negative). Soon, the field shifted to the now-standard InfoNCE loss (a form of cross-entropy over a batch that treats one positive pair vs. all other negatives), which effectively enables in-batch negatives and better gradient signal. By 2021, methods like SimCSE demonstrated that even unsupervised contrastive learning (using different dropout versions of the same sentence as positive pairs) could yield powerful sentence embeddings, rivaling supervised ones. This trend solidified contrastive objectives as the go-to training method for text embeddings, replacing earlier triplet formulations with a simpler and more robust approach (Noise-Contrastive Estimation).
-
-
-
-\section{The Last Few Years in Embedding Models}
-% LLMs reconverted
-% GTE, nemo-retriever, e5, etc
-% vision embedding models
-
-\section{Engineering}
-% FAISS, SPLADE
-
-\section{Industrial Applications}
-
-RAG, word extraction
