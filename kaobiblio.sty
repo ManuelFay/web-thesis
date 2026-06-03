@@ -422,6 +422,8 @@
 	}%
 }
 
+\DeclareFieldFormat{kaobiblio:linkedtitle}{\kaobiblio@linkedtitle{#1}}
+
 \DeclareNameFormat{kaobiblio:boldfaysse}{%
 	\nameparts{#1}%
 	\kaobiblio@iffaysse{%
@@ -437,7 +439,7 @@
 	\usebibmacro{prenote}}
 	{\DeclareNameAlias{default}{kaobiblio:boldfaysse}%
 	\DeclareNameAlias{sortname}{kaobiblio:boldfaysse}%
-	\DeclareFieldFormat{title}{\kaobiblio@linkedtitle{##1}}%
+	\DeclareFieldAlias{title}{kaobiblio:linkedtitle}%
 	\DeclareFieldFormat{url}{}%
 	\DeclareFieldFormat{doi}{}%
 	\clearfield{pages}%
