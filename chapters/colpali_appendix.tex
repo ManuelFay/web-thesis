@@ -120,10 +120,10 @@ The statistics of the train set are given in the following table. The creation o
         \textbf{Dataset Split} & \textbf{Split Size} & \textbf{Language} & \textbf{Domain}\\
         \midrule
         DocVQA & 39,463 & English & Scanned documents from UCSF Industry\\
-        InfoVQA & 10,074 & English & Infographics scrapped from the web \\
+        InfoVQA & 10,074 & English & Infographics scraped from the web \\
         TATDQA & 13,251 & English & High-quality financial reports \\
         arXivQA & 10,000 & English & Scientific Scientific Figures from arXiv\\
-        Scrapped PDFs & 45,940 & English & Varied PDFs from 3885 distinct URL domains\\
+        Scraped PDFs & 45,940 & English & Varied PDFs from 3885 distinct URL domains\\
         \midrule
         \textbf{TOTAL} & \textbf{118,695} & \textbf{English-only} & \textbf{Mixed} \\
         \bottomrule
@@ -170,7 +170,7 @@ Minimizing storage footprint can be essential to industrial retrieval systems if
 
 \subsection{Latency computations}
 \label{paragraph:latency_app} 
-To ensure comparison fairness, the latencies of the different retrieval systems shown in \autoref{fig:latency-comparison} are measured on the same \texttt{g2-standard-8} GCP VM with a NVIDIA L4 GPU. Document pages are embedded using the highest settings of \texttt{Unstructured} with captioning (see \autoref{subsection:baseline_models}). SigLIP and \textit{ColPali} are both loaded with \texttt{bfloat16} parameter dtypes. The reported times in \autoref{table:latency-comparison} are the average per-page latencies for each indexing operation on 1000 randomly chosen documents across all splits of the \textsc{ViDoRe} benchmark test set. A batch size of $8$ was used for the BGE-M3 model used with \texttt{Unstructured}, and a batch size of $4$ was used for SigLIP and \textit{ColPali}.
+To ensure comparison fairness, the latencies of the different retrieval systems shown in \autoref{fig:latency-comparison} are measured on the same \texttt{g2-standard-8} GCP VM with an NVIDIA L4 GPU. Document pages are embedded using the highest settings of \texttt{Unstructured} with captioning (see \autoref{subsection:baseline_models}). SigLIP and \textit{ColPali} are both loaded with \texttt{bfloat16} parameter dtypes. The reported times in \autoref{table:latency-comparison} are the average per-page latencies for each indexing operation on 1000 randomly chosen documents across all splits of the \textsc{ViDoRe} benchmark test set. A batch size of $8$ was used for the BGE-M3 model used with \texttt{Unstructured}, and a batch size of $4$ was used for SigLIP and \textit{ColPali}.
 
 \begin{table}[ht]
     \centering
