@@ -9,7 +9,7 @@ We define a taxonomy of 13 subtasks that the instructions can fall into: Classif
 We then tag each of the 52000 instructions with the subtask it falls into using GPT4 as an oracle by prompting it with the classification task.
 To verify the quality of the tagging, we manually verify a random sample of 100 instructions and find a 93\% agreement rate. 
 
-The other datasets also originate from the HuggingFace Hub \footnote{\url{https://huggingface.co/datasets/glue}}\footnote{\url{https://huggingface.co/datasets/squad_v2}}\footnote{\url{https://huggingface.co/datasets/conll2003}}. We format all tasks as instructions using the following prompts and concatenating the input at the end.
+The other datasets also originate from the HuggingFace Hub \sidenote{\url{https://huggingface.co/datasets/glue}}\sidenote{\url{https://huggingface.co/datasets/squad_v2}}\sidenote{\url{https://huggingface.co/datasets/conll2003}}. We format all tasks as instructions using the following prompts and concatenating the input at the end.
 
 \paragraph{MNLI} \sidecite{N18-1101} Classify the following relationship between the Hypothesis sentence and the Premise sentence, as either Entailment, Contradiction or Neutral. 
 
