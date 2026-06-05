@@ -1,6 +1,7 @@
 \setchapterpreamble[u]{\margintoc}
 \chapter{\textsc{ViDoRe} Benchmarks: V2 \& V3}
 \label{ch:vidorev3}
+\raggedbottom
 
 
 \begin{sagekaobox}[frametitle=Paper Context]
@@ -33,8 +34,6 @@ More broadly, the three \textsc{ViDoRe} releases illustrate a central lesson of 
 
 \end{sagekaobox}
 
-\clearpage
-
 \begin{kaobox}[frametitle=Paper Abstract]
 Retrieval-Augmented Generation (RAG) pipelines must address challenges beyond simple single-document retrieval, such as interpreting visual elements (tables, charts, images), synthesizing information across documents, and providing accurate source grounding. Existing benchmarks fail to capture this complexity, often focusing on textual data, single-document comprehension, or evaluating retrieval and generation in isolation. We introduce \textbf{\vidorev}, a comprehensive multimodal RAG benchmark featuring multi-type queries over visually rich document corpora. It covers 10 datasets across diverse professional domains, comprising ~26,000 document pages paired with 3,099 human-verified queries, each available in 6 languages. Through 12,000 hours of human annotation effort, we provide high-quality annotations for retrieval relevance, bounding box localization, and verified reference answers. Our evaluation of state-of-the-art RAG pipelines reveals that visual retrievers outperform textual ones, late-interaction models and textual reranking substantially improve performance, and hybrid or purely visual contexts enhance answer generation quality. However, current models still struggle with non-textual elements, open-ended queries, and fine-grained visual grounding. To encourage progress in addressing these challenges, the benchmark is released under a commercially permissive license.
 
@@ -42,7 +41,7 @@ Retrieval-Augmented Generation (RAG) pipelines must address challenges beyond si
 
 \section{Introduction}
 
-\begin{figure}[h]
+\begin{figure}[ht]
     \centering
     \includegraphics[trim={0cm 6.5cm 0cm 3cm}, clip, width=0.9\textwidth]{images/vidorev3_images/vidore_sample.pdf}
     % \includegraphics[width=0.9\textwidth]{images/vidorev3_images/vidore_sample.pdf}
@@ -367,7 +366,7 @@ Using our benchmark, we conduct extensive evaluations across all 3 components of
 %     \label{vidorev3:fig:lf_architecture}
 % \end{figure}
 
-\begin{table*}[h!]
+\begin{table*}[htbp]
 \small
 \centering
 \resizebox{1.2\textwidth}{!}{%
@@ -484,7 +483,7 @@ when aggregating information from multiple sources is required.%\vic{think about
     \label{vidorev3:fig:content-type-performance}
 \end{figure}
 
-\begin{figure}[h!]
+\begin{figure}[htbp]
     \centering
     \includegraphics[width=0.6\textwidth]{images/vidorev3_images/ndcg_by_relevant_pages.pdf}
     \caption[ColEmbed-3B-v2 by number of relevant pages]{\textbf{ColEmbed-3B-v2 NDCG@10 by number of annotated relevant pages.} Retrieval performance is shown as relevance is distributed across more pages.} 
@@ -507,7 +506,7 @@ Retrieval performance is 2--3 points higher in mono-lingual settings (\Cref{vido
 \newcommand{\minus}[1]{\textcolor{red}{\tiny \textbf{$\downarrow$#1}}}
 \newcommand{\val}[2]{\shortstack{#1 \\[-0.2em] \hspace{1.3em}#2}}
 \newcommand{\dline}[2]{\shortstack{#1\\#2}}
-\begin{table*}[h]
+\begin{table*}[htbp]
     \centering
     \small 
     \setlength{\tabcolsep}{3pt} 
@@ -564,7 +563,7 @@ We evaluate the impact of adding a reranker to the textual and visual pipelines 
 
 %\gmor{When you evaluate with jina embedding v4 for text and image, do you use single-vector or late-interaction (as it supports both)? It is harder for cross-encoder to improve results from late interaction embedding model.}
 
-\begin{table*}[h!]
+\begin{table*}[htbp]
 \centering
 \small
 \resizebox{\textwidth}{!}{%
@@ -721,7 +720,7 @@ Inter-annotator agreement on evidence localization reaches an F1 of 0.602, where
 % \end{table*}
 
 
-\begin{table}[h!]
+\begin{table}[htbp]
 \centering
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{llcc}
@@ -773,6 +772,7 @@ Inter-annotator agreement on evidence localization reaches an F1 of 0.602, where
 
 % \manu{Not sure this RW brings a lot compared to what is in the intro. Maybe call the intro "intro and Related Work" and add a few citations there. It seems quite redundant here.}
 
+\flushbottom
 \section{Conclusion}
 
 This work introduces \textsc{ViDoRe} V3, a multilingual, human-annotated RAG benchmark that evaluates retrieval, final answer generation, and visual grounding on large industry-relevant document corpora. We design a human-in-the-loop annotation methodology, deployed in a 12,000-hour annotation campaign, that produces diverse realistic queries paired with relevant pages, bounding boxes, and reference answers. Evaluating state-of-the-art RAG pipelines, we find that visual retrievers outperform textual ones, late interaction and textual reranking yield substantial gains, and visual context improves answer generation quality. Looking ahead, \textsc{ViDoRe} V3 highlights several concrete research directions for practical multimodal RAG. Retriever models still struggle on cross-lingual and open-ended queries requiring visual interpretation, while VLMs need improvement in answer generation from multi-page contexts as well as accurate visual grounding. By providing a rigorous framework for evaluating these limitations, \textsc{ViDoRe} V3 serves as a catalyst for the development of more robust, intelligent document understanding models.

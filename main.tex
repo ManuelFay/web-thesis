@@ -24,14 +24,12 @@
 %	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
 %----------------------------------------------------------------------------------------
 
-\documentclass[
-	a4paper, % Page size
-	fontsize=10pt, % Base font size
-	twoside=true, % Use different layouts for even and odd pages (in particular, if twoside=true, the margin column will be always on the outside)
-	%open=any, % If twoside=true, uncomment this to force new chapters to start on any page, not only on right (odd) pages
-	%chapterentrydots=true, % Uncomment to output dots from the chapter name to the page number in the table of contents
-	numbers=noenddot, % Comment to output dots after chapter numbers; the most common values for this option are: enddot, noenddot and auto (see the KOMAScript documentation for an in-depth explanation)
-]{kaobook}
+\documentclass{kaobook}
+\KOMAoptions{
+	twoside=true, % Use different layouts for even and odd pages
+	numbers=noenddot % Do not output dots after chapter numbers
+}
+\pdfminorversion=7
 \usepackage[utf8]{inputenc}
 
 % Choose the language
@@ -144,7 +142,7 @@
 \definecolor{borderblack}{gray}{0.1}
 
 \newenvironment{promptfigure}[3][superlightgray]{%
-    \begin{figure*}[h!]
+    \begin{figure*}[htbp]
     \centering
     \def\promptCaption{#2}%
     \def\promptLabel{#3}%
@@ -401,11 +399,11 @@
 \addpart{Appendix}
 \pagelayout{margin} % Restore margins
 
-% \include{chapters/colpali_appendix}
-% \include{chapters/vidorev3_appendix}
-% \include{chapters/modernvbert_appendix}
-% \include{chapters/conteb_appendix}
-% \include{chapters/croissant_appendix}
+\include{chapters/colpali_appendix}
+\include{chapters/vidorev3_appendix}
+\include{chapters/modernvbert_appendix}
+\include{chapters/conteb_appendix}
+\include{chapters/croissant_appendix}
 \chapter{Introduction Appendix}
 
 % \include{chapters/canaries}
@@ -415,8 +413,8 @@
 
 \begin{figure*}
     \centering
-    \includegraphics[width = 0.95\textwidth]{images/misc/hbs_meme.jpeg}
-    \caption[Library of Babel joke]{The library of Babel can actually impressively be compressed inside these two books, as goes this famous internet joke. Of course, these two books are themselves contained in the library of Babel.}
+    \includegraphics[width = 0.95\textwidth]{images/misc/harvard.jpg}
+    \caption[Library of Babel fitting in two books]{The library of Babel can actually impressively be compressed inside these two books, as goes this famous internet joke. Of course, these two books are themselves contained in the library of Babel.}
     
     % Latencies indicated in the figure are computed on the same machine \texttt{g2-standard-16} with a NVIDIA-L4 GPU, and averaged over 100 pages. Further details in \autoref{subsection:latency}.The computed score is the average of from all datasets in \textit{ViDoRe} for PDF Parser + Captioning and ColPali respectively. Further details in \autoref{section:results}.} 
     \label{fig:hbs_meme}

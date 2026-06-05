@@ -255,6 +255,7 @@ We construct 4 different model sizes by jointly scaling the number of attention 
 
 \begin{table}
     \centering
+    \resizebox{\textwidth}{!}{%
         \begin{tabular}{llllll}
         \toprule
         Model & Params (M) & Layers & Hidden size & Inter. size & KV heads \\
@@ -267,6 +268,7 @@ We construct 4 different model sizes by jointly scaling the number of attention 
         \bottomrule
         \vspace{0.2mm}
         \end{tabular}
+    }
 
     \caption[Scaling law model info]{Model information for scaling laws. Parameter count excludes embedding and output parameters.}
     \label{tab:model_scaling}
@@ -732,9 +734,10 @@ To assess performance on specific downstream applications, we finetune base mode
 \renewcommand{\arraystretch}{1.0}
 \setlength{\tabcolsep}{4pt} % tighter column padding (default is ~6pt)
 
-\begin{table}[h]
+\begin{table}[ht]
     \centering
     \small % optional: slightly smaller text
+    \resizebox{\textwidth}{!}{%
     \begin{tabular}{@{}l*{5}{c}@{}} % trim outer left/right padding
     \toprule
     Model & ROUGE-1 & Coherence & Consistency & Fluidity & Relevance \\
@@ -744,6 +747,7 @@ To assess performance on specific downstream applications, we finetune base mode
     Mistral (7B)        & \textbf{0.588} & \textbf{4.60} & \textbf{4.73} & 4.72 & \textbf{4.59} \\
     \bottomrule
     \end{tabular}
+    }
     \caption[Dialog summarization results]{Dialog summarization results. Except ROUGE-1, scores are measured by GPT-4, out of 5.}
     \label{tab:sum-finetuned-1}
 \end{table}
@@ -762,6 +766,7 @@ At a 1.3B scale, CroissantLLM runs easily on local hardware (personal computers,
 
 \begin{table}
     \centering
+    \resizebox{\textwidth}{!}{%
     \begin{tabular}{lccccc}
         \toprule
         Model & Parameters (B) & Tokens Per Second & Words Per Second \\
@@ -782,6 +787,7 @@ At a 1.3B scale, CroissantLLM runs easily on local hardware (personal computers,
         \bottomrule
         \vspace{0.2mm}
     \end{tabular}
+    }
     \caption[Inference throughput results]{Inference Results in French and English on an A100 GPU with 40GB VRAM (average results over 100 tokens generations with 100 tokens input based on 100 Wikipedia text samples, vLLM backend and batch size 1)}
     \label{tab:inf_french_res}
 \end{table}
@@ -846,9 +852,37 @@ To assess the transparency of our work, we evaluate our model through the Stanfo
 % \section*{Limitations}
 % Maybe remove limitations 
 
+
+\section{Post-Mortem \& Lessons learned}
+In line with our efforts of full transparency, we share some key lessons learned through this project, in light of a few months of hindsight and of recent developments posterior to the model release.
+
+
+\noindent\textbf{Tokenizer.}
+In this work, we have developed our own tokenizer, inspired by Llama2 \sidecite{touvron_llama_2023} but fitted to a bilingual French-English corpus to improve fertility on both languages. Several key decisions can impact tokenizer design. The \textit{vocabulary size} will have large impacts on the parameter count of the model, potentially making embedding parameters a large share of the total parameter count especially for smaller models \sidecite{gemmateam2024gemma2improvingopen}. One should experiment with the performance and memory trade-offs of using larger vocabulary sizes. Furthermore, non-standard tokenizers are likely to be less supported by standard inference frameworks, complicating model adoption. Finally, we believe hand-designing a subset of tokens that are known to be useful at inference, for particular tasks, or have semantic coherence (common numbers, punctuation patterns, tokens corresponding to multiple choice templates or code syntax) probably degrades fertility but is useful in the long run from a performance and usability perspective.
+
+
+\noindent\textbf{Data Mix.} It was always understood the data quality and quantity of the pretraining mix had large impacts on pretraining. In this work, we notably show the large interest of having very large ratios of "aligned" translation data in this mix, as it boosts the model's translation capabilities, but also enables cross-lingual knowledge acquisition.
+Since CroissantLLM's release, it has become understood that certain types of data heavily boost model reasoning capabilities or performances on benchmarks.
+Typically, \sidecite{abdin_phi-3_2024, rekateam2024rekacoreflashedge, yang2024qwen2technicalreport, dubey2024llama3herdmodels},  put a particular emphasis in including math and reasoning heavy corpora in the training corpus. \sidecite{Groeneveld2023OLMo} reports 24 point gains on MMLU scores by including more knowledge and reasoning rich sources to their training set, as well as improving data quality filtering. In order to source such data with highly "educative" values several approaches are possible, including distilling large model knowledge into fast text classifiers to identify high-quality content from Internet scale data \sidecite{penedo2023refinedweb}, or even generating diverse and high quality synthetic text using LLMs \sidecite{abdin_phi-3_2024, benallal2024cosmopedia, dubey2024llama3herdmodels}. More generally, better pretraining and annealing data leads to better models, and many recent datasets would probably lead to better performance nowadays than the datamix we had constituted. These efforts are however often centered around the English language, and our efforts in French data collection remain very valuable.
+% translations
+% math and reasoning
+% synthetic data
+
+\noindent\textbf{Scheduler.} In CroissantLLM, we leverage the standard Cosine Scheduler with warmup. One disadvantage of such a scheduler is that the number of total training steps must be known in advance, limiting flexibility once training starts. Inspired by the Vision literature \sidecite{zhai_scaling_2021}, the MiniCPM model \sidecite{hu2024minicpmunveilingpotentialsmall} and several models since then have later confirmed the interest of infinite or WSD (Warmup-Stable-Decay) schedulers\sidecite{hagele2024scalinglawscomputeoptimaltraining}. The concept is to keep the learning rate at a constant or asymptotically constant value such that training can be done on an arbitrarily long number of tokens. At the end of training, an \textit{annealing} phase decreases the learning rate to help the model converge and boost performance. MiniCPM has further uncovered that annealing on a higher quality data mix is a very efficient strategy. Typically, by including knowledge-rich or reasoning-heavy data in this final training phase, large benchmark improvements are obtained. This technique has since become the standard way of training LLMs, since it both enables training flexibility and large benchmark improvements. We believe running an annealing phase on the CroissantLLM model would have largely boosted performance, especially if done with carefully selected high-quality data in French and English.
+
+\noindent\textbf{Leveraging Larger LLMs.} As made clear in this work, while training with a linguistically balanced dataset helps multilingual performance, the number of model parameters remains the strongest performance factor, and given our compute budget, better performance could be obtained by training a larger model on less non-English data. This is perfectly in line with the findings of \sidecite{scaling-laws-lm} with Chinchilla scaling laws. Models trained to be small and inference efficient such as CroissantLLM could however benefit from larger multilingual LLMs in multiple ways. Beyond the ever-growing use of LLM-generated data during pretraining \sidecite{abdin_phi-3_2024}, small models can also benefit from larger LLMs as critics for alignment processes \sidecite{yang2024qwen2technicalreport}, but also to replace stochastic weight initialization by starting off from pruned versions of larger models \sidecite{dubey2024llama3herdmodels}. Obviously, these strategies entail significantly larger resource requirements to train the larger models to begin with.
+
+
+\noindent\textbf{Model Release.} Training a model is one thing, enabling people to use it is another. Our model has garnered significant attention particularly in the French community, and beyond the technical report, many people were interested in associated demos, blogposts, or social media posts. In retrospect, some barriers of entry remained for users with limited technical skills. The lack of day 0 support from third party inference libraries (Ollama\sidenote{\url{https://ollama.com/}}, llama.cpp\sidenote{\url{https://github.com/ggerganov/llama.cpp}}, MLCChat\sidenote{\url{https://llm.mlc.ai/}}) has led to some community-proposed implementations that were suboptimal, leading to performance hits. Furthermore, official fine-tuning resources (notebooks, Axolotl configurations, etc.) could have largely helped users adapt CroissantLLM for specific use cases and drive adoption. Considering the downstream uses of the model and its utilization seems paramount in the construction of such a project.
+
+
+\noindent\textbf{Building a model is an iterative process.} Building upon the CroissantLLM work and the above listed insights, our team has since been able to train stronger models \sidecite{martins2024eurollmmultilinguallanguagemodels, boizard2025eurobert}. The field evolves quickly and getting everything right the first time is not easy. To build very good models, it seems important to us to construct the foundations iteratively, getting things to work at a small scale first, collecting some practical real-world feedback and keeping a core model development team stable.
+
+
+
 \subsubsection*{Broader Impact Statement}
 
-This work aims to offset recent English-centric work by enabling the study of the impact of language distribution within the pre-training dataset. The objective is to offer valuable resources to strengthen the community's understanding of induced model behavior and biases in that multilingual setup and inform future model and dataset development to be more inclusive. 
+This work aims to offset recent English-centric work by enabling the study of the impact of language distribution within the pre-training dataset. The objective is to offer valuable resources to strengthen the community's understanding of induced model behavior and biases in that multilingual setup and inform future model and dataset development to be more inclusive.
 
 % FMTI things
 \textbf{Model and Resource Release.}

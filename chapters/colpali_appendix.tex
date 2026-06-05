@@ -115,6 +115,7 @@ The statistics of the train set are given in the following table. The creation o
     \centering
     \label{tab:datasets}
     \small
+    \resizebox{\textwidth}{!}{%
     \begin{tabular}{llll}
         \toprule
         \textbf{Dataset Split} & \textbf{Split Size} & \textbf{Language} & \textbf{Domain}\\
@@ -128,6 +129,7 @@ The statistics of the train set are given in the following table. The creation o
         \textbf{TOTAL} & \textbf{118,695} & \textbf{English-only} & \textbf{Mixed} \\
         \bottomrule
     \end{tabular}
+    }
     \caption[ColPali dataset splits]{Details on the different splits in the dataset used to train ColPali.}
     \label{table:training_set_overview}
 \end{table}
@@ -428,7 +430,7 @@ This architecture preserves the contextual richness of deep language models whil
 
 \begin{center}
     \textbf{Energy} \\[1ex]
-    \begin{figure}[h]
+    \begin{figure}[htbp]
         \centering
         \begin{subfigure}[t]{0.30\textwidth}
             \caption*{\textbf{Query}: What types of accounts or products allow investors to defer paying taxes?}
@@ -447,7 +449,7 @@ This architecture preserves the contextual richness of deep language models whil
     \vspace*{5\baselineskip}
     
     \textbf{Artificial Intelligence} \\[1ex]
-    \begin{figure}[h]
+    \begin{figure}[htbp]
         \centering
         \begin{subfigure}[t]{0.30\textwidth}
             \caption*{\textbf{Query}: What are some common outcome areas targeted by TAII for different age groups?}
@@ -467,7 +469,7 @@ This architecture preserves the contextual richness of deep language models whil
     \vspace*{3\baselineskip}
 
     \textbf{Healthcare Industry} \\[1ex]
-    \begin{figure}[h]
+    \begin{figure}[htbp]
         \centering
         \begin{subfigure}[t]{0.30\textwidth}
             \caption*{\textbf{Query}: What is the chemical formula for the ferroelectric material Lead Zirconium Titanate (PZT)?}
@@ -486,7 +488,7 @@ This architecture preserves the contextual richness of deep language models whil
     \vspace*{5\baselineskip}
 
     \textbf{Government Reports} \\[1ex]
-    \begin{figure}[h]
+    \begin{figure}[htbp]
         \centering
         \begin{subfigure}[t]{0.30\textwidth}
             \caption*{\textbf{Query}: What are some mandates for the EPA under the Pollution Prevention Act?}
@@ -506,7 +508,7 @@ This architecture preserves the contextual richness of deep language models whil
     \vspace*{3\baselineskip}
 
     \textbf{Shift} \\[1ex]
-    \begin{figure}[h]
+    \begin{figure}[htbp]
         \centering
         \begin{subfigure}[t]{0.30\textwidth}
             \caption*{\textbf{Query}: Selon le graphique, quelle est la capacité d'import et la consommation réelle de carburants SAF (biocarburants durables pour l'aviation) prévues en 2050 ?}

@@ -58,6 +58,7 @@
 \centering
 \setlength{\tabcolsep}{4pt}
 \renewcommand{\arraystretch}{1.15}
+\resizebox{\textwidth}{!}{%
 \begin{tabular}{l p{7cm} r c}
 \toprule
 \textbf{Source} & \textbf{Description} & \textbf{Pairs} & \textbf{Epochs} \\
@@ -77,6 +78,7 @@ RLHN~\cite{thakur2025rlhn} & Text–text pairs for complex retrieval & 300k & 3 
 \textbf{TOTAL} & & \textbf{1254k} & \\
 \bottomrule
 \end{tabular}
+}
 \caption[Data mixes for contrastive training]{\textbf{Data mixes for contrastive trainings.} The \textit{Generalist Mix} spans over 1M diverse pairs, while the \textit{Document-Focused Mix} emphasizes document retrieval with extra ColPali epochs.}
 \label{tab:cl_mix}
 \end{table}

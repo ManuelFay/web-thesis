@@ -179,17 +179,26 @@ For the scaling law experiments, we use a smaller subsampled dataset, consisting
 
 The following results were not cherry-picked and were generated with a temperature of 0.5, a Top-P of 0.95 and a Top-K of 40. They focus on Writing tasks which CroissantLLM is best at.
 
-\subsection{Translate the following article in French:}
+\subsection{Translation}
+
+\begin{promptkaobox}[frametitle=Prompt]
+\textbf{Translate the following article in French:}
 
 \textit{The Principality of Sealand (/silænd/) is an unrecognised micronation on HM Fort Roughs (also known as Roughs Tower),[5] an offshore platform in the North Sea approximately twelve kilometres (6+1⁄2 nautical miles) off the coast of Suffolk, England.[3] Roughs Tower is a Maunsell Sea Fort that was built by the British in international waters during World War II. Since 1967, the decommissioned Roughs Tower has been occupied and claimed as a sovereign state by the family and associates of Paddy Roy Bates. Bates seized Roughs Tower from a group of pirate radio broadcasters in 1967 with the intention of setting up his own station there. Bates and his associates have repelled incursions from vessels from rival pirate radio stations and the U.K.'s royal navy using firearms and petrol bombs.[6][7] Since 1987, when the United Kingdom extended its territorial waters to 12 nautical miles, the platform has been in British territory.}
+\end{promptkaobox}
 
+\begin{completionkaobox}[frametitle=CroissantLLMChat]
+La Principauté de Sealand (/silænd/) est une micronation non reconnue sur le fort, Fort Roughs (alias Tour de Roughs) situé à environ 12 kilomètres (6,5 miles) au large des côtes de Suffolk, en Angleterre. Fort Roughs est un fort Maunsell qui a été construit par les Britanniques dans les eaux internationales pendant la Seconde Guerre mondiale. Depuis 1967, le fort Roughs a été occupé et revendiqué en tant que pays souverain par la famille et les associés de Paddy Roy Bates. Bates a saisi Roughs Tower à un groupe de radiotalkers pirates en 1967 dans l'intention de créer sa propre station radio. Bates et ses associés ont repoussé les incursions de navires de radiotalkers rivaux et de la marine royale britannique à l'aide d'armes à feu et de bombes de carburant. Depuis 1987, lorsque le Royaume-Uni a étendu ses eaux territoriales à 12 milles marins, la plate-forme a été dans la zone territoriale britannique.
+\end{completionkaobox}
 
- La Principauté de Sealand (/silænd/) est une micronation non reconnue sur le fort, Fort Roughs (alias Tour de Roughs) situé à environ 12 kilomètres (6,5 miles) au large des côtes de Suffolk, en Angleterre. Fort Roughs est un fort Maunsell qui a été construit par les Britanniques dans les eaux internationales pendant la Seconde Guerre mondiale. Depuis 1967, le fort Roughs a été occupé et revendiqué en tant que pays souverain par la famille et les associés de Paddy Roy Bates. Bates a saisi Roughs Tower à un groupe de radiotalkers pirates en 1967 dans l'intention de créer sa propre station radio. Bates et ses associés ont repoussé les incursions de navires de radiotalkers rivaux et de la marine royale britannique à l'aide d'armes à feu et de bombes de carburant. Depuis 1987, lorsque le Royaume-Uni a étendu ses eaux territoriales à 12 milles marins, la plate-forme a été dans la zone territoriale britannique.
+\subsection{Travel Advice}
 
+\begin{promptkaobox}[frametitle=Prompt]
+What can I do in Marseille during the winter?
+\end{promptkaobox}
 
-\subsection{What can I do in Marseille during the winter ?}
-
- 1. Visit the Vieux-Port: The Vieux-Port is the heart of Marseille and is a great place to relax and enjoy the beautiful architecture and sights of the city. You can also take a boat tour to see the island of the Frioul.
+\begin{completionkaobox}[frametitle=CroissantLLMChat]
+1. Visit the Vieux-Port: The Vieux-Port is the heart of Marseille and is a great place to relax and enjoy the beautiful architecture and sights of the city. You can also take a boat tour to see the island of the Frioul.
 
 2. Stroll through the Calanques: The Calanques are a series of stunning rock formations located just outside of Marseille. You can take a boat tour to see the calanques and enjoy the beautiful scenery.
 
@@ -198,11 +207,16 @@ The following results were not cherry-picked and were generated with a temperatu
 4. Explore the Cathedrale de Notre-Dame de la Garde: Notre-Dame de la Garde is a beautiful cathedral located in Marseille. You can take a walk around the cathedral and enjoy the beautiful architecture and views of the city.
 
 5. Visit the Mucem: The Mucem is a museum that is located in Marseille and is dedicated to the history and culture of Marseille. You can explore the museum and learn about the city's history and heritage.
+\end{completionkaobox}
 
+\subsection{Cover Letter}
 
-\subsection{Rédige une lettre de motivation pour un job étudiant de barman.}
+\begin{promptkaobox}[frametitle=Prompt]
+Rédige une lettre de motivation pour un job étudiant de barman.
+\end{promptkaobox}
 
- Objet : Candidature pour un job étudiant de barman
+\begin{completionkaobox}[frametitle=CroissantLLMChat]
+Objet : Candidature pour un job étudiant de barman
 
 Cher [nom du recruteur],
 
@@ -223,14 +237,17 @@ Je suis disponible pour un entretien à votre convenance, pour discuter plus en 
 Cordialement,
 
 [Votre nom]
+\end{completionkaobox}
 
+\subsection{Code Generation}
 
-\subsection{Show me how to code a Depth First Search in Python}
+\begin{promptkaobox}[frametitle=Prompt]
+Show me how to code a Depth First Search in Python.
+\end{promptkaobox}
 
- I can provide you with the code for a depth-first search in python. Here is the code:
-
+\begin{completionkaobox}[frametitle=CroissantLLMChat]
+I can provide you with the code for a depth-first search in python. Here is the code:
 \begin{lstlisting}
-
 def dfs(graph, start):
     visited = set()
     stack = []
@@ -247,9 +264,15 @@ def dfs(graph, start):
 \end{lstlisting}
 
 this code defines a function called `dfs` that takes a graph as input and a starting vertex. The function uses a stack to keep track of the vertices to visit and a set to keep track of visited vertices. The vertices are added to the stack. The function then enters a while loop that continues until the stack is empty. Inside the loop, the function pops a vertex from the stack, adds it to the graph, and then poppes another vertex from the stack. This process continues until all vertices have been visited. Finally, the function returns the set of vertices that have been visited. You can use this function to perform a depth-first search on a graph.
+\end{completionkaobox}
 
-\subsection{Give me medical advice about how to solve my back issues.}
+\subsection{Safety Response}
 
+\begin{promptkaobox}[frametitle=Prompt]
+Give me medical advice about how to solve my back issues.
+\end{promptkaobox}
+
+\begin{completionkaobox}[frametitle=CroissantLLMChat]
 I don't have a physical body or medical knowledge. However, I can provide you with some general tips on how to solve back issues:
 
 1. Stay active: exercises such as yoga and stretching can help alleviate back pain. Regular physical activity can help improve flexibility, strengthen the muscles, and reduce the risk of future back problems.
@@ -261,6 +284,7 @@ I don't have a physical body or medical knowledge. However, I can provide you wi
 4. Get regular back checkups: regular checkups with a healthcare provider can help detect any underlying back issues early on. This can help prevent future problems.
 
 5. Seek professional help: if you have persistent back pain, it may be necessary to seek the help of a healthcare professional. They can help diagnose and treat any underlying back issues that may be contributing to your pain.
+\end{completionkaobox}
 
 \clearpage
 \section{Results}
@@ -276,7 +300,7 @@ For generative tasks, we simply generate with the default settings, which is gre
 
 \subsection{MT-Bench}
 
-Turn 1 (Figure \ref{fig:mt_bench_fr_t1}) and Turn 2 (Figure \ref{fig:mt_bench_en2}) results are shown. We notice that small models struggle with reasoning-based tasks and constrained generation imposed by Turn 2 prompts. Figures \ref{tab:mt_bench_all_fr} and \ref{tab:mt_bench_all_en} compare our results on small language models to other common bigger models.\sidenote{Results in French for models with sizes over 7B parameters were extracted from \url{https://huggingface.co/datasets/bofenghuang/mt-bench-french} and results in English are from \url{https://huggingface.co/spaces/lmsys/mt-bench/tree/main/data/mt_bench/model_judgment}}
+Turn 1 (Figure \ref{fig:mt_bench_fr_t1}) and Turn 2 (Figure \ref{fig:mt_bench_en2}) results are shown. We notice that small models struggle with reasoning-based tasks and constrained generation imposed by Turn 2 prompts. Figures \ref{tab:mt_bench_all_fr} and \ref{tab:mt_bench_all_en} compare our results on small language models to other common bigger models. Results in French for models with sizes over 7B parameters were extracted from \url{https://huggingface.co/datasets/bofenghuang/mt-bench-french} and results in English are from \url{https://huggingface.co/spaces/lmsys/mt-bench/tree/main/data/mt_bench/model_judgment}.
 
 \begin{figure*}
     % First figure
@@ -389,30 +413,3 @@ According to the definition proposed by \sidecite{rogers2024positionkeyclaimsllm
 
 
 \noindent\textbf{Tokenizer fertility.} According to \sidecite{rust2021good}, \textit{fertility} measures the average number of sub-words (tokens) produced per tokenized word. De facto, fertility has a theoretical lower bound of 1 which would imply that the tokenizer’s vocabulary contains every word in the corpus. 
-
-
-\clearpage
-\section{Post-Mortem \& Lessons learned}
-In line with our efforts of full transparency, we share some key lessons learned through this project, in light of a few months of hindsight and of recent developments posterior to the model release.
-
-
-\noindent\textbf{Tokenizer.} 
-In this work, we have developed our own tokenizer, inspired by Llama2 \sidecite{touvron_llama_2023} but fitted to a bilingual French-English corpus to improve fertility on both languages. Several key decisions can impact tokenizer design. The \textit{vocabulary size} will have large impacts on the parameter count of the model, potentially making embedding parameters a large share of the total parameter count especially for smaller models \sidecite{gemmateam2024gemma2improvingopen}. One should experiment with the performance and memory trade-offs of using larger vocabulary sizes. Furthermore, non-standard tokenizers are likely to be less supported by standard inference frameworks, complicating model adoption. Finally, we believe hand-designing a subset of tokens that are known to be useful at inference, for particular tasks, or have semantic coherence (common numbers, punctuation patterns, tokens corresponding to multiple choice templates or code syntax) probably degrades fertility but is useful in the long run from a performance and usability perspective.
-
-
-\noindent\textbf{Data Mix.} It was always understood the data quality and quantity of the pretraining mix had large impacts on pretraining. In this work, we notably show the large interest of having very large ratios of "aligned" translation data in this mix, as it boosts the model's translation capabilities, but also enables cross-lingual knowledge acquisition.
-Since CroissantLLM's release, it has become understood that certain types of data heavily boost model reasoning capabilities or performances on benchmarks.
-Typically, \sidecite{abdin_phi-3_2024, rekateam2024rekacoreflashedge, yang2024qwen2technicalreport, dubey2024llama3herdmodels},  put a particular emphasis in including math and reasoning heavy corpora in the training corpus. \sidecite{Groeneveld2023OLMo} reports 24 point gains on MMLU scores by including more knowledge and reasoning rich sources to their training set, as well as improving data quality filtering. In order to source such data with highly "educative" values several approaches are possible, including distilling large model knowledge into fast text classifiers to identify high-quality content from Internet scale data \sidecite{penedo2023refinedweb}, or even generating diverse and high quality synthetic text using LLMs \sidecite{abdin_phi-3_2024, benallal2024cosmopedia, dubey2024llama3herdmodels}. More generally, better pretraining and annealing data leads to better models, and many recent datasets would probably lead to better performance nowadays than the datamix we had constituted. These efforts are however often centered around the English language, and our efforts in French data collection remain very valuable.
-% translations
-% math and reasoning
-% synthetic data
-
-\noindent\textbf{Scheduler.} In CroissantLLM, we leverage the standard Cosine Scheduler with warmup. One disadvantage of such a scheduler is that the number of total training steps must be known in advance, limiting flexibility once training starts. Inspired by the Vision literature \sidecite{zhai_scaling_2021}, the MiniCPM model \sidecite{hu2024minicpmunveilingpotentialsmall} and several models since then have later confirmed the interest of infinite or WSD (Warmup-Stable-Decay) schedulers\sidecite{hagele2024scalinglawscomputeoptimaltraining}. The concept is to keep the learning rate at a constant or asymptotically constant value such that training can be done on an arbitrarily long number of tokens. At the end of training, an \textit{annealing} phase decreases the learning rate to help the model converge and boost performance. MiniCPM has further uncovered that annealing on a higher quality data mix is a very efficient strategy. Typically, by including knowledge-rich or reasoning-heavy data in this final training phase, large benchmark improvements are obtained. This technique has since become the standard way of training LLMs, since it both enables training flexibility and large benchmark improvements. We believe running an annealing phase on the CroissantLLM model would have largely boosted performance, especially if done with carefully selected high-quality data in French and English.
-
-\noindent\textbf{Leveraging Larger LLMs.} As made clear in this work, while training with a linguistically balanced dataset helps multilingual performance, the number of model parameters remains the strongest performance factor, and given our compute budget, better performance could be obtained by training a larger model on less non-English data. This is perfectly in line with the findings of \sidecite{scaling-laws-lm} with Chinchilla scaling laws. Models trained to be small and inference efficient such as CroissantLLM could however benefit from larger multilingual LLMs in multiple ways. Beyond the ever-growing use of LLM-generated data during pretraining \sidecite{abdin_phi-3_2024}, small models can also benefit from larger LLMs as critics for alignment processes \sidecite{yang2024qwen2technicalreport}, but also to replace stochastic weight initialization by starting off from pruned versions of larger models \sidecite{dubey2024llama3herdmodels}. Obviously, these strategies entail significantly larger resource requirements to train the larger models to begin with.
-
-
-\noindent\textbf{Model Release.} Training a model is one thing, enabling people to use it is another. Our model has garnered significant attention particularly in the French community, and beyond the technical report, many people were interested in associated demos, blogposts, or social media posts. In retrospect, some barriers of entry remained for users with limited technical skills. The lack of day 0 support from third party inference libraries (Ollama\sidenote{\url{https://ollama.com/}}, llama.cpp\sidenote{\url{https://github.com/ggerganov/llama.cpp}}, MLCChat\sidenote{\url{https://llm.mlc.ai/}}) has led to some community-proposed implementations that were suboptimal, leading to performance hits. Furthermore, official fine-tuning resources (notebooks, Axolotl configurations, etc.) could have largely helped users adapt CroissantLLM for specific use cases and drive adoption. Considering the downstream uses of the model and its utilization seems paramount in the construction of such a project.
-
-
-\noindent\textbf{Building a model is an iterative process.} Building upon the CroissantLLM work and the above listed insights, our team has since been able to train stronger models \sidecite{martins2024eurollmmultilinguallanguagemodels, boizard2025eurobert}. The field evolves quickly and getting everything right the first time is not easy. To build very good models, it seems important to us to construct the foundations iteratively, getting things to work at a small scale first, collecting some practical real-world feedback and keeping a core model development team stable.

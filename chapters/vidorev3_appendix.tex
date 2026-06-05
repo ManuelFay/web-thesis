@@ -4,7 +4,7 @@
 
 \section{Dataset examples}
 
-\begin{figure*}[h]
+\begin{figure*}[htbp]
     \centering
     \includegraphics[width=\textwidth]{images/vidorev3_images/dataset-examples.pdf}
     \caption[Examples from \textsc{ViDoRe} V3 datasets]{\textbf{Examples from the \textsc{ViDoRe} V3 datasets.} The sample pages illustrate varied query types and visually rich document layouts across domains, reflecting realistic retrieval scenarios.}
@@ -71,7 +71,7 @@ Tables~\ref{vidorev3:tab: english-only retrieval} and \ref{vidorev3:tab: french-
 % \vspace{15cm}
 % \hfill
 
-\begin{figure*}[h]
+\begin{figure*}[htbp]
     \centering
     \includegraphics[width=1.2\textwidth]{images/vidorev3_images/upset_plot_query_types_complete.pdf}
     \caption[Query-type intersections in \textsc{ViDoRe} V3]{\textbf{UpSet plot of query-type intersections in \textsc{ViDoRe} V3.} Horizontal bars show total counts for each query type, and top bars show frequencies of specific type combinations indicated by the dot matrix. \textit{Extractive} is the most common type overall, while \textit{Open Ended} is the largest unique category; frequent \textit{Enumerative}--\textit{Extractive} intersections highlight list-based factual retrieval patterns.} 
@@ -310,7 +310,7 @@ ColSmol-256M & colSmol-256M & \cite{marafioti2025smolvlmredefiningsmallefficient
 % \end{figure}
 
 
-\begin{table*}[h!]
+\begin{table*}[htbp]
 \centering
 %\resizebox{\textwidth}{!}{%
 \begin{tabular}{l c c c c c c c c >{\columncolor{avgcol}}c}
@@ -351,7 +351,7 @@ ColSmol-256M & 0.25 & 57.4 & 36.5 & 47.7 & 51.4 & 46.0 & 38.5 & 47.5 & 46.4 \\
 \end{table*}
 
 
-\begin{table*}[h!]
+\begin{table*}[htbp]
 \small
 \centering
 %\resizebox{\textwidth}{!}{%
@@ -464,7 +464,7 @@ We model NDCG@10 as a linear function of the number of annotated pages ($P$) str
 
 Results in Figure~\ref{vidorev3:fig:perf content num pages} and Table~\ref{vidorev3:tab:num pages content type decay} reveal that all query types suffer a significant performance penalty as the number of annotated pages increases. Slope values are nearly uniform ($a \approx -0.024$), suggesting a similar drop in retrieval accuracy across most query types. The open-ended and enumerative types are the two exceptions: despite having the lowest NDCG@10 for low page counts, they also have the shallowest slope, which suggests that retrieval success on these queries is constrained by the model's fundamental difficulty in synthesizing multiple relevant sources rather than the volume of relevant context.
 
-\begin{table}[!h]
+\begin{table}[htbp]
 \small
 \centering
 %\resizebox{0.8\textwidth}{!}{%
@@ -492,14 +492,14 @@ German & 57.9 \\
     \label{vidorev3:fig:num pages per query type}
 \end{figure}
 
-\begin{figure}[h!]
+\begin{figure}[htbp]
     \centering
     \includegraphics[width=0.8\textwidth]{images/vidorev3_images/ndcg_query_type_num_pages.pdf}
     \caption[ColEmbed-3B-v2 by pages and query type]{\textbf{ColEmbed-3B-v2 NDCG@10 by number of annotated pages and query type.} Performance trends are shown jointly by query complexity and evidence spread.} 
     \label{vidorev3:fig:perf content num pages}
 \end{figure}
 
-\begin{table}[h!]
+\begin{table}[htbp]
 \centering
 \small
 \begin{tabular}{lccc}
@@ -524,7 +524,7 @@ Open-ended        & -0.0129 & 0.577 & 0.057 \\
 NDCG@10 by content type in Table~\ref{vidorev3:tab:perf content type} show that retrieval is more challenging for visual content, with Image performing 10pp below Text. However, content type and query type are correlated in our benchmark: for instance, tables appear in numerical queries 2.2 $\times$ more often than the baseline, while images are over-represented in open-ended queries (Figure~\ref{vidorev3:fig:lift content type}). Since numerical queries are easier than open-ended ones, we test whether the effect of content type is a byproduct of query type confounding. We fit an additive model that predicts performance as the sum of independent query-type and content-type effects. Figure~\ref{vidorev3:fig:ndcg content query residuals heatmap} shows the residuals which measure deviation from this baseline. We see that most residuals are below 5pp, indicating that the two factors combine additively without significant interaction.
 
 
-\begin{table}[h!]
+\begin{table}[htbp]
 \small
 \centering
 %\resizebox{0.8\textwidth}{!}{%
@@ -546,14 +546,14 @@ Mixed & 45.1 & 1164 \\
 \label{vidorev3:tab:perf content type}
 \end{table}
 
-\begin{figure}[h!]
+\begin{figure}[htbp]
 \centering
 \includegraphics[width=0.8\textwidth]{images/vidorev3_images/lift_content_query_type.pdf}
 \caption[Lift of query types conditioned on content type]{\textbf{Lift of query types by content type.} Each cell reports observed frequency over baseline frequency for a content-type/query-type pair. Values above 1 indicate over-representation; values below 1 indicate under-representation.}
 \label{vidorev3:fig:lift content type}
 \end{figure}
 
-\begin{figure}[h!]
+\begin{figure}[htbp]
 \centering
 \includegraphics[width=0.8\textwidth]{images/vidorev3_images/ndcg_content_query_residuals_heatmap.pdf}
 \caption[Residuals of additive query-type/content-type model]{\textbf{Residuals from an additive performance model.} Each cell is the difference between observed NDCG@10 and predictions from query-type and content-type main effects. Near-zero values indicate limited interaction; positive and negative values indicate better- or worse-than-expected combinations.} 
@@ -691,7 +691,7 @@ Mixed & 45.1 & 1164 \\
 
 Table~\ref{vidorev3:tab:inter-annotator bbox agreement} shows IoU and F1 scores between human annotations, to detail results of Section~\ref{vidorev3:sec: grounded qa}.
 
-\begin{table*}[h!]
+\begin{table*}[htbp]
 \centering
 \resizebox{\textwidth}{!}{%
 \begin{tabular}{l c c c c c c c c c c >{\columncolor{avgcol}}c}
@@ -713,7 +713,7 @@ Table~\ref{vidorev3:tab:inter-annotator bbox agreement} shows IoU and F1 scores 
 
 Figure~\ref{vidorev3:fig:bbox_instructions} shows the prompt used to generate final answers with inline bounding boxes for visual grounding, and Figure~\ref{vidorev3:fig:bbox evaluation} reports bounding box localization F1 scores by dataset.
 
-\begin{figure*}[h!]
+\begin{figure*}[htbp]
     \centering
     \includegraphics[width=\textwidth]{images/vidorev3_images/bbox_localization_by_dataset.pdf}
     \caption[Model bounding-box localization scores]{\textbf{Model bounding-box localization performance.} Each F1 score measures zone-based overlap between model predictions and human annotations, using the annotator that yields the highest match.} 
@@ -751,7 +751,7 @@ We measured an average score of 65.74\,\% with a standard deviation of 0.94\,\%.
 % \label{vidorev3:tab: hard queries answer generation}
 % \end{table*}
 
-\begin{table*}[h!]
+\begin{table*}[htbp]
 \centering
 \label{vidorev3:tab:performance_model}
 % \resizebox{\textwidth}{!}{%
@@ -789,14 +789,14 @@ Qualitative analysis reveals distinct failure modes. Gemini frequently produces 
 
 %Figures~\ref{vidorev3:fig:bbox examples qwen} and~\ref{vidorev3:fig:bbox examples gemini} show examples of bounding box predictions by Qwen3-VL-30B-A3B and Gemini 3 Pro for 4 dataset pages. They show examples of the qualitative behavior of the models we observe throughout the dataset. Qwen3-VL's bounding boxes tend to be comparatively wide and encompass entire page elements, as seen in pages (a), (c) and (d), while Gemini 3 Pro's visual grounding is more precise (pages (b) and (c)). We also include evidence of errors and omissions from these two models: in page (b), the chart is not labeled by Qwen3-VL and in page (d), Gemini 3 Pro predicts wrong bounding boxes for the bottom table, while Qwen3-VL provides grounding for the wrong table.
 
-\begin{figure*}[h!]
+\begin{figure*}[htbp]
     \centering
     \includegraphics[width=\textwidth]{images/vidorev3_images/bbox_examples_qwen.pdf}
     \caption[Qwen3-VL grounding examples vs. humans]{\textbf{Visual grounding comparative examples for Qwen3-VL-30B-A3B.} Each panel shows a document page with Qwen3-VL's predicted bounding boxes (solid magenta) and human bounding boxes (dashed blue and green, one color per annotator). Corresponding datasets and queries: (a) finance\_en: What was the average daily Value at Risk (VaR) for Goldman Sachs during 2024?, (b) finance\_en: List the 3 components of regulatory capital under Basel III, and determine the role of each component., (c) hr\_en: Analyze how full-time employment among returning health workers evolved in the Netherlands and Italy from 2018 to 2023, and describe the differences in their employment trends., (d) finance\_fr: Croissance Mode Maroquinerie vs Vins Spiritueux 2023 performance}
     \label{vidorev3:fig:bbox examples qwen}
 \end{figure*}
 
-\begin{figure*}[h!]
+\begin{figure*}[htbp]
     \centering
     \includegraphics[width=\textwidth]{images/vidorev3_images/bbox_examples_gemini.pdf}
     \caption[Gemini 3 Pro grounding examples vs. humans]{\textbf{Visual grounding comparative examples for Gemini 3 Pro.} Each panel shows a document page with Gemini's predicted bounding boxes (solid magenta) and human bounding boxes (dashed blue and green, one color per annotator). Corresponding datasets and queries: (a) finance\_en: What was the average daily Value at Risk (VaR) for Goldman Sachs during 2024?, (b) finance\_en: List the 3 components of regulatory capital under Basel III, and determine the role of each component., (c) hr\_en: Analyze how full-time employment among returning health workers evolved in the Netherlands and Italy from 2018 to 2023, and describe the differences in their employment trends., (d) finance\_fr: Croissance Mode Maroquinerie vs Vins Spiritueux 2023 performance}
@@ -834,7 +834,7 @@ Qualitative analysis reveals distinct failure modes. Gemini frequently produces 
 
 \paragraph{Query-Page Relevancy linking}\Cref{vidorev3:fig:task_2_instructions} details the step-by-step instructions provided to annotators for assessing page relevance, identifying content modalities, and localizing evidence via bounding boxes. \Cref{vidorev3:tab:relevance_scale} gives the definitions of relevancy scores used by the human annotators.
 
-\begin{table}[h!]
+\begin{table}[htbp]
 \centering
 \small
 % Removed vertical bars (|) from the column definition
@@ -916,7 +916,7 @@ Modality : [“text”, “table”, “chart”, infographic”, “image”, �
 All the prompts used for both dataset generation and evaluations are detailed from \Cref{vidorev3:fig:query_generation_prompt} to \Cref{vidorev3:fig:bbox_instructions}.
 
 \begin{promptfigure}{\textbf{Prompt used generate synthetic queries with the NeMo Data Designer tool}}{vidorev3:fig:query_generation_prompt}
-\begin{Verbatim}[breaklines=true,breakanywhere=true,fontsize=\scriptsize]
+\begin{Verbatim}[breaklines=true,breakanywhere=true,fontsize=\tiny]
 <mission>
 You are an assistant specialized in visual document understanding tasks. You will be given a context, 
 summarizing the content of a section or multiple document sections. Your goal is to carefully analyze 

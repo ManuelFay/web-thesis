@@ -161,16 +161,16 @@ We open-source all project artifacts, including the benchmark, models and traini
 
 \subsection{Retrieval Frameworks}
 In this paper, we consider the traditional retrieval framework where a retrieval system given a query \(q\), searches a corpus \(\mathcal{D}\) for relevant documents. Each document \(d \in \mathcal{D}\) is scored based on its content by first embedding the text into a vector space, and then computing a similarity measure. The similarity between a query \(q\) and a document \(d\) is defined as
-\begin{equation}
-\text{sim}(q, d) = f\big(\phi(q), \phi(d)\big) \nonumber
-\end{equation}
+\begin{equation*}
+\text{sim}(q, d) = f\big(\phi(q), \phi(d)\big)
+\end{equation*}
 where \(\phi\) maps text into an \(n\)-dimensional vector space and \(f: \mathbb{R}^n \times \mathbb{R}^n \to \mathbb{R}\) is a similarity function, such as cosine similarity or dot product.
 
 In applied settings, individual documents are often too long to be practical for retrieval purposes \sidecite{Liu_LlamaIndex_2022, mixofgranularity}. % \manu{expand and illustrate}
 Each document \(d\) is thus divided into segments called \emph{chunks} by a partitioning function \(\mathcal{P}\) defined as
-\begin{equation}
-\mathcal{P}(d) = \{c_1, c_2, \dots, c_{N_d}\} \nonumber%, d = \bigcup_{i=1}^n c_i \nonumber
-\end{equation}
+\begin{equation*}
+\mathcal{P}(d) = \{c_1, c_2, \dots, c_{N_d}\}%, d = \bigcup_{i=1}^n c_i
+\end{equation*}
 
 
 % with each chunk \(c_i\) representing a segment of \(d\) and $N_d$ represents the number of chunks in the document $d$.
@@ -182,14 +182,14 @@ Each document \(d\) is thus divided into segments called \emph{chunks} by a part
 % The retrieval function \(\text{sim}(q, c)\) assigns a relevance score to a query \(q\) and a chunk \(c\). 
 In the \emph{standard retrieval} setting, the score is computed solely based on chunk content:
 
-\begin{equation}
-\text{sim}(q, c) = f\big(\phi(q), \phi(c)\big) \nonumber
-\end{equation}
+\begin{equation*}
+\text{sim}(q, c) = f\big(\phi(q), \phi(c)\big)
+\end{equation*}
 
  Additional information (priors) is however often available to the document embedding system. Typically, knowledge of the entire corpus $\mathcal{D}$, or of \emph{structural metadata} \(M_c\) such as neighboring document chunks obtained through \(\mathcal{P}\), can be leveraged by a modified embedding function \(\phi_2\), yielding the following similarity score:
-\begin{equation}
-\text{sim}(q, c) = f\Big(\phi(q), \phi_2\big(c, M_c, \mathcal{D}\big)\Big) \nonumber
-\end{equation} 
+\begin{equation*}
+\text{sim}(q, c) = f\Big(\phi(q), \phi_2\big(c, M_c, \mathcal{D}\big)\Big)
+\end{equation*}
 
 \noindent\textit{This work is centered on efficiently integrating priors about the entire document when embedding a sub-document chunk.}
 
@@ -380,13 +380,14 @@ Neural embedding models for passage-level text representation, popularized by Se
   % ------- slightly larger rows to fit sentences -------
   \renewcommand{\arraystretch}{1.25}
 
+  \resizebox{\textwidth}{!}{%
   \begin{tabular}{
       C{5mm}                          % Domain group (fixed width, centered)
       l                                % Dataset name
-      S[table-format=3.1]                % # Queries
-      S[table-format=3.1]                % # Docs
-      S[table-format=3.1]              % Tokens / Chunk
-      S[table-format=3.1]              % Chunks / Doc
+      c                                % # Queries
+      c                                % # Docs
+      c                                % Tokens / Chunk
+      c                                % Chunks / Doc
       c
       % p{40mm}                          % 5-word sentence (fixed width)
   }
@@ -409,6 +410,7 @@ Neural embedding models for passage-level text representation, popularized by Se
     & NanoBEIR$^*$        &  650 & 56723 & 199.4 &  1 & No context is needed  \\
   \bottomrule
   \end{tabular}
+  }
 
   \caption[ConTEB dataset details]{Merged \emph{ConTEB} dataset details. Controlled datasets are highlighted in {\color{navyblue}\textbf{bold blue}}. NanoBEIR values are summed over the 13 datasets that compose it.}
   \label{table:merged_conteb}
@@ -564,18 +566,18 @@ In this work, we leverage recent advances in long-context embedding models \side
 
 \noindent\textbf{Late Chunking.}
 Late Chunking \sidecite{LateChunking} (LC) is a training-free token pooling technique designed to enable information propagation across same-document chunks. Formally, given a document $d$ split into chunks $\{c_1, \dots, c_{N_d}\}$, dense retrievers compute independent representations:  
-\begin{equation}
-\phi(d) = [\phi(c_1), \phi(c_2), \dots, \phi(c_{N_d})] \nonumber
-\end{equation}  
+\begin{equation*}
+\phi(d) = [\phi(c_1), \phi(c_2), \dots, \phi(c_{N_d})]
+\end{equation*}
 
 In Late Chunking, chunks are concatenated and the whole sequence representation is computed in a single-forward pass:  
-\begin{equation}
-H = \phi(c_1 \oplus c_2 \oplus \dots \oplus c_{N_d}) \nonumber
-\end{equation}  
+\begin{equation*}
+H = \phi(c_1 \oplus c_2 \oplus \dots \oplus c_{N_d})
+\end{equation*}
 where $H = [h_1, h_2, \dots, h_T]$ consists of token-level representations.  We then apply average pooling within each original chunk to obtain chunk-wise representations:  
-\begin{equation}
-\phi_{LC}(c_i) = \frac{1}{|c_i|} \sum_{t \in c_i} h_t, \quad \forall i \in \{1, \dots, N_d\} \nonumber
-\end{equation}  
+\begin{equation*}
+\phi_{LC}(c_i) = \frac{1}{|c_i|} \sum_{t \in c_i} h_t, \quad \forall i \in \{1, \dots, N_d\}
+\end{equation*}
 
 This allows each chunk representation to benefit from contextualization over the full document before aggregation.
 
@@ -583,11 +585,10 @@ This allows each chunk representation to benefit from contextualization over the
 
 \noindent\textbf{Late Interaction.} 
 Late Interaction (LI) models \sidecite{khattab2020colbert, chen_bge_2024} are retrieval methods that do not pool token representations and instead store all token embeddings of each document. This approach boosts performance, especially on long-context retrieval tasks \sidecite{modernbert, zhu2024longembedextendingembeddingmodels}, at the expense of storage cost. In this work, we propose extending Late Chunking approaches to LI models by applying standard LC but simply forgoing the final pooling and storing token embeddings depending on their original chunk memberships.
-\begin{equation}
+\begin{equation*}
 \phi_{LI}(c_i) \;=\; \{\,h_t : t \in c_i\}, 
 \quad \forall\,i \in \{1, \dots, N_d\}
-\nonumber
-\end{equation}
+\end{equation*}
 
 \noindent\textbf{Setup.}
 % In our setup, we utilize the \textit{ModernBERT} architecture, an encoder-only model optimized for both performance and efficiency. ModernBERT supports a context length of up to 8,192 tokens, significantly surpassing the 512-token limit of traditional BERT models, thereby enabling the processing of longer documents \sidecite{modernbert}.
@@ -629,13 +630,13 @@ Intuitively, training Late Chunking models contrastively with chunks from \emph{
 
 where \( \lambda_{\text{seq}} \in [0,1] \). Loss terms are defined as:
 
-\begin{equation}
-    \mathcal{L}_{\text{seq}} = - \mathbb{E}\left[ \log \frac{\exp\left( q \cdot k^+ / \tau \right)}{\sum_{k_i \in \mathcal{N}_{\text{seq}}} \exp\left( q \cdot k_i / \tau \right)} \right]\nonumber
-\end{equation}
+\begin{equation*}
+    \mathcal{L}_{\text{seq}} = - \mathbb{E}\left[ \log \frac{\exp\left( q \cdot k^+ / \tau \right)}{\sum_{k_i \in \mathcal{N}_{\text{seq}}} \exp\left( q \cdot k_i / \tau \right)} \right]
+\end{equation*}
 
-\begin{equation}
-    \mathcal{L}_{\text{batch}} = - \mathbb{E}\left[ \log \frac{\exp\left( q \cdot k^+ / \tau \right)}{\sum_{k_j \in \mathcal{N}_{\text{batch}} \cup \{k^+\}} \exp\left( q \cdot k_j / \tau \right)} \right]\nonumber
-\end{equation}
+\begin{equation*}
+    \mathcal{L}_{\text{batch}} = - \mathbb{E}\left[ \log \frac{\exp\left( q \cdot k^+ / \tau \right)}{\sum_{k_j \in \mathcal{N}_{\text{batch}} \cup \{k^+\}} \exp\left( q \cdot k_j / \tau \right)} \right]
+\end{equation*}
 
 Here, \( q \) denotes the query representation, and \( k^+ \) is the gold chunk representation, which belongs to \( \mathcal{N}_{\text{seq}} \), the set of chunks from the same sequence as \( k^+ \). Temperature \( \tau > 0 \), and \( \mathcal{N}_{\text{batch}} \) is the set of all in-batch samples that do not belong to \( \mathcal{N}_{\text{seq}} \). This extends to late interaction models by replacing the dot product between query and chunk embeddings by ColBERT's \emph{MaxSim} between the multiple query and document token embeddings.
 

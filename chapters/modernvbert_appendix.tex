@@ -121,7 +121,7 @@ A lightweight OCR-free visual document retriever with only 174M parameters built
 
 \subsection{Performance Against Off-the-Shelf Dual Encoder}
 \label{appendix:objective_downstream}
-\textcolor{red}{We study whether the \textit{off-the-shelf} performance of the standalone vision tower outweighs the burden of adding language parameters and re-training through language modeling, as proposed in our work. Figure~\ref{fig:objective_downstream_noft} shows the results of the various models on the tasks described in Section~\ref{sec:methodology}. Similarly to Section~\ref{sec:ablation_tasks}, we observe that the early fusion model trained with an LM objective significantly outperforms the standalone vision tower on document retrieval tasks (+10.9 nDCG@5). It even surpasses the larger dual encoder (+4.8 nDCG@5) on these latter tasks. We note that the standalone vision tower largely outperforms the early fusion models on the other natural-image tasks, supporting the use of the SigLIP model for these tasks as found in various general benchmarks~\sidecite{xiao2025miebmassiveimageembedding}.}
+We study whether the \textit{off-the-shelf} performance of the standalone vision tower outweighs the burden of adding language parameters and re-training through language modeling, as proposed in our work. Figure~\ref{fig:objective_downstream_noft} shows the results of the various models on the tasks described in Section~\ref{sec:methodology}. Similarly to Section~\ref{sec:ablation_tasks}, we observe that the early fusion model trained with an LM objective significantly outperforms the standalone vision tower on document retrieval tasks (+10.9 nDCG@5). It even surpasses the larger dual encoder (+4.8 nDCG@5) on these latter tasks. We note that the standalone vision tower largely outperforms the early fusion models on the other natural-image tasks, supporting the use of the SigLIP model for these tasks as found in various general benchmarks~\sidecite{xiao2025miebmassiveimageembedding}.
 \begin{figure}
     \centering
     \includegraphics[width=0.75\linewidth]{images/modernvbert_figures/vbert_style/objective_downstream__rebuttal.pdf}
@@ -247,7 +247,7 @@ Our contrastive learning stage provides direct performance trade-offs on differe
 We conduct an ablation study to determine the optimal contrastive training curriculum for specializing \flagship{} in document retrieval. Specifically, we investigate whether a preliminary generalist contrastive training phase, intended to leverage a larger dataset, improves downstream performance. As shown in Table \ref{appendix:flagship_ablations}, our results demonstrate that this initial generalist phase is detrimental to final performance ($-0.5\%$). The optimal strategy is to specialize the model on the target task directly after its initial Masked Language Modeling (MLM) alignment.
 
 \subsection{Text-Only Retrieval}
-\begin{table}[h]
+\begin{table}[htbp]
 \centering
 \begin{tabular}{l r r}
   \toprule
@@ -284,11 +284,11 @@ The results in Table \ref{appendix:text_perf} detail the performance of \colflag
 \subsubsection{Image Resolution Tradeoffs}
 \label{appendix:visual_tokens}
 
-\textcolor{red}{Figure~\ref{fig:tokens_shuffling_tradeoff} presents the pixel shuffling trade-off. Processing larger images creates more visual tokens, leading to very long sequences (around $17'500$ tokens for a 2048x2048 px image with no pixel shuffling). Pixel shuffling allow to compress these sequence by concatenating the embeddings of spatially close patches. This diminishes the number of tokens for longer visual token embeddings. Table~\ref{tab:image_resolution_latency} presents the latency to process one image of various resolutions on one L4 GPU and CPU.}
+Figure~\ref{fig:tokens_shuffling_tradeoff} presents the pixel shuffling trade-off. Processing larger images creates more visual tokens, leading to very long sequences (around $17'500$ tokens for a 2048x2048 px image with no pixel shuffling). Pixel shuffling allow to compress these sequence by concatenating the embeddings of spatially close patches. This diminishes the number of tokens for longer visual token embeddings. Table~\ref{tab:image_resolution_latency} presents the latency to process one image of various resolutions on one L4 GPU and CPU.
 
 \begin{figure}[ht] 
 \centering \includegraphics[width=0.6\linewidth]{images/modernvbert_figures/visual_tokens_hidden_size_vs_shuffling_ratio.pdf} 
-\caption[Image processing parameters impact]{\textbf{\textcolor{red}{Image processing parameters impact on visual tokens.}} Here we assume a square image for simplicity. Scaling the image size introduces naturally more tokens, but having a large enough pixel shuffling ratio ($r\geq4$) allows to counterbalance by concatenating spatially close patch representations.} \label{fig:tokens_shuffling_tradeoff} \end{figure}
+\caption[Image processing parameters impact]{\textbf{Image processing parameters impact on visual tokens.} Here we assume a square image for simplicity. Scaling the image size introduces naturally more tokens, but having a large enough pixel shuffling ratio ($r\geq4$) allows to counterbalance by concatenating spatially close patch representations.} \label{fig:tokens_shuffling_tradeoff} \end{figure}
 
 \begin{table}[ht]
     \centering
@@ -306,15 +306,14 @@ The results in Table \ref{appendix:text_perf} detail the performance of \colflag
     \bottomrule
     \end{tabular}%
     }
-    \caption[\flagship{} image processing latency]{\textcolor{red}{\textbf{\flagship{} image processing latency}}. Computing the average time to process a single image on GPU and CPU. The average is computed on 100 images. The values represent the mean latency in milliseconds, with the standard deviation included in parenthesis.}
+    \caption[\flagship{} image processing latency]{\textbf{\flagship{} image processing latency}. Computing the average time to process a single image on GPU and CPU. The average is computed on 100 images. The values represent the mean latency in milliseconds, with the standard deviation included in parenthesis.}
     \label{tab:image_resolution_latency}
 \end{table}
 
 \subsubsection{Online Query Encoding Latency}
 \label{appendix:gpu_latency}
-\textcolor{red}{We evaluate the query embedding speed of our model on GPU. We use a single Nvidia H100 with 80GB of VRAM. As for Section~\ref{sec:results}, latencies are computed in batch size 1 to simulate online situations, and are averaged over all NanoBEIR queries. Only the text parameters are loaded and run, to minimize memory usage. Parameters are cast to bfloat16 and Flash Attention 2 is used. The resulting speeds are often much faster than those obtained by running inference through each model's reference implementation. Results are shown in Table~\ref{table:pu_latency}). Interestingly in this setup where memory is not a bottleneck, model depth seems to be a large performance driver, sometimes more the parameter count.
+We evaluate the query embedding speed of our model on GPU. We use a single Nvidia H100 with 80GB of VRAM. As for Section~\ref{sec:results}, latencies are computed in batch size 1 to simulate online situations, and are averaged over all NanoBEIR queries. Only the text parameters are loaded and run, to minimize memory usage. Parameters are cast to bfloat16 and Flash Attention 2 is used. The resulting speeds are often much faster than those obtained by running inference through each model's reference implementation. Results are shown in Table~\ref{table:pu_latency}). Interestingly in this setup where memory is not a bottleneck, model depth seems to be a large performance driver, sometimes more the parameter count.
 We finally evaluate batched GPU throughput. We use batches of size 512 by default and iteratively half it when memory is insufficient. We observe that \flagship{} based models are extremely fast and can process 5000 queries per second. In the table, the reported figures correspond to the inverted throughput (latency per batch divided by the number of queries per batch). These speed and throughput gains are made possible due to a combination of size, and efficient hardware-informed design as well as the support of flash attention and sequence packing other models of the size often lack \sidecite{modernbert}.
-}
 
 
 
