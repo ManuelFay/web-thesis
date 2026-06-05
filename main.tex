@@ -173,13 +173,13 @@
 \definecolor{borderblack}{rgb}{0.1, 0.1, 0.1} % Darker black for the frame
 \definecolor{superlightgray}{rgb}{0.97, 0.97, 0.97} % Very light background
 
-\newcommand{\vidorev}{ViDoRe~V3}
+\newcommand{\vidorev}{\textsc{ViDoRe}~V3}
 
 % Variables
 \def\questionmark{\textbf{?}}
 \def\partially{$\sim$}
-\def\vidore{ViDoRe}
-\def\vidorev{\mbox{ViDoRe V3}}
+\def\vidore{\textsc{ViDoRe}}
+\def\vidorev{\mbox{\textsc{ViDoRe} V3}}
 
 
 \usepackage{siunitx}
@@ -326,6 +326,8 @@
 
 \tableofcontents % Output the table of contents
 
+% Keep explicit bold formatting from captions out of the figure/table lists.
+\let\textbf\textnormal
 \listoffigures % Output the list of figures
 
 % Comment both of the following lines to have the LOF and the LOT on different pages
@@ -354,8 +356,8 @@
 
 
 \include{chapters/colpali}
-% \include{chapters/vidorev3}
-%\include{chapters/modernvbert}
+\include{chapters/vidorev3}
+\include{chapters/modernvbert}
 
 
 \pagelayout{wide} % No margins
@@ -363,8 +365,8 @@
 \pagelayout{margin} % Restore margins
 
 
-% \include{chapters/conteb}
-% \include{chapters/croissant}
+\include{chapters/conteb}
+\include{chapters/croissant}
 
 
 \pagelayout{wide} % No margins
@@ -399,11 +401,11 @@
 \addpart{Appendix}
 \pagelayout{margin} % Restore margins
 
-% \include{chapters/colpali_appendix}
-% \include{chapters/vidorev3_appendix}
-% \include{chapters/modernvbert_appendix}
-% \include{chapters/conteb_appendix}
-% \include{chapters/croissant_appendix}
+\include{chapters/colpali_appendix}
+\include{chapters/vidorev3_appendix}
+\include{chapters/modernvbert_appendix}
+\include{chapters/conteb_appendix}
+\include{chapters/croissant_appendix}
 \chapter{Introduction Appendix}
 
 % \include{chapters/canaries}

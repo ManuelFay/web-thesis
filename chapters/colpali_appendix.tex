@@ -2,7 +2,7 @@
 
 \section*{Reproducibility Statement}
 
-For transparency, reproducibility and to foster future work, we release our training data, model checkpoints (adapters), entire codebase, and complete evaluation benchmark under MIT licenses as detailed in the main paper. We also host a public \textit{ViDoRe} leaderboard\sidenote{\url{https://huggingface.co/spaces/vidore/vidore-leaderboard}} to foster concurrent work in the space. The supplementary material further details training configurations for our models (also specified in HuggingFace model repositories), and dives into the process we used to generate synthetic data, how latency computations are performed, as well as provides further detailed evaluation results.
+For transparency, reproducibility and to foster future work, we release our training data, model checkpoints (adapters), entire codebase, and complete evaluation benchmark under MIT licenses as detailed in the main paper. We also host a public \textsc{ViDoRe} leaderboard\sidenote{\url{https://huggingface.co/spaces/vidore/vidore-leaderboard}} to foster concurrent work in the space. The supplementary material further details training configurations for our models (also specified in HuggingFace model repositories), and dives into the process we used to generate synthetic data, how latency computations are performed, as well as provides further detailed evaluation results.
 
 
 
@@ -105,7 +105,7 @@ Here is the page:
 % For our use case, we used the test set of TabFQuAD by filtering out adversarial questions as we are interested in a retrieval task.
 % In the original TabFQuAD dataset, we observed that certain questions are irrelevant to the retrieval task. For instance, \textit{When was the project created?} (in French, \textit{Quand a été crée le projet ?}) is too vague. Thus, we have decided to keep the table images but to create new queries following the same methodology as in\autoref{paragraph:query_generation} but with GPT-4 Vision. Eventually, we obtained a retrieval version of TabFQuAD with 1,800 document query pairs, which we split into a training set of 1550 examples and a test set of 250 examples.
 
-\noindent\textbf{Human Validation.} We manually validate every single synthetically created query in \textit{ViDoRe} to ensure quality, query relevance, and consistency with the benchmark objective of evaluating retrieval in practical industrial settings. During this step, we randomly assign document-pair queries to 4 volunteer annotators and instruct them to filter out queries that do not fit the above-listed criteria. We also instruct annotators to flag any documents they deem to contain PII information or content not suited for an academic benchmark. No flag was raised during the entirety of the process, validating our prior PDF collection strategy. 100 queries per topic are collected in this manner. Annotators are colleagues and collaborators of the authors who volunteered to help. Each annotator spent approximately 3 hours filtering the larger query set down to 100 high-quality queries per topic.
+\noindent\textbf{Human Validation.} We manually validate every single synthetically created query in \textsc{ViDoRe} to ensure quality, query relevance, and consistency with the benchmark objective of evaluating retrieval in practical industrial settings. During this step, we randomly assign document-pair queries to 4 volunteer annotators and instruct them to filter out queries that do not fit the above-listed criteria. We also instruct annotators to flag any documents they deem to contain PII information or content not suited for an academic benchmark. No flag was raised during the entirety of the process, validating our prior PDF collection strategy. 100 queries per topic are collected in this manner. Annotators are colleagues and collaborators of the authors who volunteered to help. Each annotator spent approximately 3 hours filtering the larger query set down to 100 high-quality queries per topic.
 
 \subsection{Training Dataset}
 \label{subsection:training_dataset}
@@ -163,14 +163,14 @@ Minimizing storage footprint can be essential to industrial retrieval systems if
     \textit{ColPali} (float16)            & 257.5              \\
     % \hline
     \end{tabular}
-    \caption[DocVQA embedding sizes]{Comparison of the embedding sizes for the DocVQA test set from \textit{ViDoRe} w.r.t. different retrieval models. The \textit{mean ± std} size is given for the sparse embeddings. In general multiple vectors (2-5) per page are used for BGE-M3 and BM25.}
+    \caption[DocVQA embedding sizes]{Comparison of the embedding sizes for the DocVQA test set from \textsc{ViDoRe} w.r.t. different retrieval models. The \textit{mean ± std} size is given for the sparse embeddings. In general multiple vectors (2-5) per page are used for BGE-M3 and BM25.}
     \label{table:embedding_size}
 \end{table}
 
 
 \subsection{Latency computations}
 \label{paragraph:latency_app} 
-To ensure comparison fairness, the latencies of the different retrieval systems shown in \autoref{fig:latency-comparison} are measured on the same \texttt{g2-standard-8} GCP VM with a NVIDIA L4 GPU. Document pages are embedded using the highest settings of \texttt{Unstructured} with captioning (see \autoref{subsection:baseline_models}). SigLIP and \textit{ColPali} are both loaded with \texttt{bfloat16} parameter dtypes. The reported times in \autoref{table:latency-comparison} are the average per-page latencies for each indexing operation on 1000 randomly chosen documents across all splits of the \textit{ViDoRe} benchmark test set. A batch size of $8$ was used for the BGE-M3 model used with \texttt{Unstructured}, and a batch size of $4$ was used for SigLIP and \textit{ColPali}.
+To ensure comparison fairness, the latencies of the different retrieval systems shown in \autoref{fig:latency-comparison} are measured on the same \texttt{g2-standard-8} GCP VM with a NVIDIA L4 GPU. Document pages are embedded using the highest settings of \texttt{Unstructured} with captioning (see \autoref{subsection:baseline_models}). SigLIP and \textit{ColPali} are both loaded with \texttt{bfloat16} parameter dtypes. The reported times in \autoref{table:latency-comparison} are the average per-page latencies for each indexing operation on 1000 randomly chosen documents across all splits of the \textsc{ViDoRe} benchmark test set. A batch size of $8$ was used for the BGE-M3 model used with \texttt{Unstructured}, and a batch size of $4$ was used for SigLIP and \textit{ColPali}.
 
 \begin{table}[ht]
     \centering
@@ -322,7 +322,7 @@ You are an assistant specialized in document analysis. Given a table or a figure
     }
     
 
-    \caption[ViDoRe Recall@1 evaluation]{\textbf{Comprehensive evaluation of baseline models and our proposed method on \textit{ViDoRe}.} Results are presented using Recall@1 metrics. Text-only metrics are not computed for benchmarks with only visual elements.}
+    \caption[\textsc{ViDoRe} Recall@1 evaluation]{\textbf{Comprehensive evaluation of baseline models and our proposed method on \textsc{ViDoRe}.} Results are presented using Recall@1 metrics. Text-only metrics are not computed for benchmarks with only visual elements.}
     \label{table:results_appendix}
 \end{table*}
 
@@ -368,7 +368,7 @@ You are an assistant specialized in document analysis. Given a table or a figure
     }
     
 
-    \caption[ViDoRe ablations and negative results]{\textbf{Benchmark scores for the ``negative results" and various ablations on \textit{ViDoRe}; \textit{ColPali} for reference.} Results are presented using nDCG@5 metrics. Text-only metrics are not computed for benchmarks with only visual elements.}
+    \caption[\textsc{ViDoRe} ablations and negative results]{\textbf{Benchmark scores for the ``negative results" and various ablations on \textsc{ViDoRe}; \textit{ColPali} for reference.} Results are presented using nDCG@5 metrics. Text-only metrics are not computed for benchmarks with only visual elements.}
     \label{table:negative_results}
 \end{table*}
 
@@ -421,7 +421,7 @@ This architecture preserves the contextual richness of deep language models whil
 
 
 \newpage
-\section{Examples from the \textit{ViDoRe} benchmark}
+\section{Examples from the \textsc{ViDoRe} benchmark}
 \label{subsection:docvisbenchmark_examples}
 
 \vspace*{3\baselineskip}

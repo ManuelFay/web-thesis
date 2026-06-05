@@ -171,7 +171,7 @@ Our findings in subsection~\ref{sec:scaling=-cont} indicate that incorporating a
   \begin{tabular}{@{} >{}l c cccc >{\columncolor{avgcol}}c}
     & & \multicolumn{2}{>{\columncolor{grpA}}c}{\textbf{Document Retrieval}} & \multicolumn{2}{>{\columncolor{grpB}}c}{\textbf{Image/Caption Retrieval}} \\
     \cmidrule(lr){3-6}
-& \rot{Model Size} & \rot{ViDoRe(v1)} & \rot{ViDoRe(v2)} & \rot{MSCOCO (T$\rightarrow$I)} & \rot{Flickr30k (T$\rightarrow$I)} & \rot{\textbf{Average}} \\
+& \rot{Model Size} & \rot{\textsc{ViDoRe}(v1)} & \rot{\textsc{ViDoRe}(v2)} & \rot{MSCOCO (T$\rightarrow$I)} & \rot{Flickr30k (T$\rightarrow$I)} & \rot{\textbf{Average}} \\
 
     \midrule
     \multicolumn{7}{@{}l}{\itshape CLIP Encoders}\\
@@ -229,7 +229,7 @@ Our contrastive learning stage provides direct performance trade-offs on differe
 \resizebox{\linewidth}{!}{%
   % --- your tabular code unchanged ---
   \begin{tabular}{@{} l cc >{\columncolor{avgcol}}c}
-    & \rot{ViDoRe(v1)} & \rot{ViDoRe(v2)} & \rot{\textbf{Average}} \\
+    & \rot{\textsc{ViDoRe}(v1)} & \rot{\textsc{ViDoRe}(v2)} & \rot{\textbf{Average}} \\
     \toprule
     \multicolumn{4}{@{}l}{\itshape Document retrieval contrastive training starting checkpoint}\\
     \midrule
@@ -239,7 +239,7 @@ Our contrastive learning stage provides direct performance trade-offs on differe
     \bottomrule
   \end{tabular}
 }
-\caption[\flagship{} curriculum performance]{\textbf{Performance of \flagship{} Document Specialisation Curriculums.} This table presents the performance of various contrastive training curriculums starting from \flagship{}-base, on the ViDoRe(v1) and ViDoRe(v2) benchmarks. The generalist contrastive learning mix used in the last two models is detailed in Table~\ref{tab:cl_mix}. We see that a preliminary stage of generalist contrastive learning harms the final document retrieval performance, regardless of whether a multi-vector approach is used.}
+\caption[\flagship{} curriculum performance]{\textbf{Performance of \flagship{} Document Specialisation Curriculums.} This table presents the performance of various contrastive training curriculums starting from \flagship{}-base, on the \textsc{ViDoRe}(v1) and \textsc{ViDoRe}(v2) benchmarks. The generalist contrastive learning mix used in the last two models is detailed in Table~\ref{tab:cl_mix}. We see that a preliminary stage of generalist contrastive learning harms the final document retrieval performance, regardless of whether a multi-vector approach is used.}
 \label{appendix:flagship_ablations}
 \end{table}
 

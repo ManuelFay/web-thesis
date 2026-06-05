@@ -58,7 +58,7 @@ Historically, AI search engines have treated documents primarily as text. This t
 
 We show that this approach substantially simplifies and accelerates document indexing pipelines, while also improving retrieval performance, particularly for visually complex documents with rich layouts, tables, figures, or other non-linear structures (Chapter \autoref{ch:colpali}).
 
-The success of VDR has led since the original publication to many follow-up works by academic and industrial actors. As a result, model performance rapidly improved, saturating the original Visual Document Retrieval benchmark \textit{ViDoRe} introduced in the ColPali paper, and leading to subsequent benchmarking efforts. In ViDoRe V2 \sidecite{macé2025vidorebenchmarkv2raising}, we construct complex and realistic pairs of queries and documents to assess retrieval performance on open-ended questions spanning up to multiple pages and rely on complex AI pipelines to simulate realistic interactions between users and information corpora. In ViDoRe V3 \sidecite{loison2026vidorev3comprehensiveevaluation}, we collaborate with Nvidia to further scale annotation efforts on varied domains reflecting real-world use of industrial search systems and develop an annotation pipeline that combines AI agents with over 12,000 hours of expert human annotators. These contributions are detailed in Chapter \autoref{ch:vidorev3}.
+The success of VDR has led since the original publication to many follow-up works by academic and industrial actors. As a result, model performance rapidly improved, saturating the original Visual Document Retrieval benchmark \textsc{ViDoRe} introduced in the ColPali paper, and leading to subsequent benchmarking efforts. In \textsc{ViDoRe} V2 \sidecite{macé2025vidorebenchmarkv2raising}, we construct complex and realistic pairs of queries and documents to assess retrieval performance on open-ended questions spanning up to multiple pages and rely on complex AI pipelines to simulate realistic interactions between users and information corpora. In \textsc{ViDoRe} V3 \sidecite{loison2026vidorev3comprehensiveevaluation}, we collaborate with Nvidia to further scale annotation efforts on varied domains reflecting real-world use of industrial search systems and develop an annotation pipeline that combines AI agents with over 12,000 hours of expert human annotators. These contributions are detailed in Chapter \autoref{ch:vidorev3}.
 
 A year after the publication of the ColPali paper, we released \emph{ModernVBert}, a visual document retrieval model that commoditizes VDR performance by showcasing performance similar to that of the original ColPali model while being 10x smaller and running on CPU \sidecite{teiletche2025modernvbert}. This was made possible through ablations of all performance factors behind vision-language retrieval models, and many critical insights were uncovered and detailed in Chapter \autoref{ch:modernvbert}.
 
@@ -110,16 +110,16 @@ The parting words in Chapter \autoref{ch:conclusion} offer some personal perspec
 \section{List of Publications}
 
 This thesis is a recollection of a focused selection of
-papers produced during the first 2.5 years of my PhD program.\sidenote{I am first author on ColPali, Context is Gold and CroissantLLM, and last author on Vidore V2 and ModernVBert but was the one initiating the projects, setting the research direction, closely supervising more junior collaborators, and mostly writing the produced manuscripts.} Papers presented are inserted verbatim as chapters of the thesis and left mostly unmodified with respect to the original peer-reviewed publication of the work in top international conferences.
+papers produced during the first 2.5 years of my PhD program.\sidenote{I am first author on ColPali, Context is Gold and CroissantLLM, and last author on \textsc{ViDoRe} V2 and ModernVBert but was the one initiating the projects, setting the research direction, closely supervising more junior collaborators, and mostly writing the produced manuscripts.} Papers presented are inserted verbatim as chapters of the thesis and left mostly unmodified with respect to the original peer-reviewed publication of the work in top international conferences.
 
 
 \noindent\textbf{Visual Document Retrieval.} The first part focuses on visual document retrieval, beginning with
 \emph{ColPali: Efficient Document Retrieval with Vision Language Models}
 \sidecite{faysse2025colpaliefficientdocumentretrieval}, published at ICLR 2025. It then turns to
 \emph{ModernVBERT: Towards Smaller Visual Document Retrievers}
-\sidecite{teiletche2025modernvbert}, published at ICML 2026, and to the ViDoRe benchmark series:
-\emph{ViDoRe Benchmark V2: Raising the Bar for Visual Retrieval} and
-\emph{ViDoRe V3: A Comprehensive Evaluation of Retrieval Augmented Generation in Complex Real-World Scenarios}
+\sidecite{teiletche2025modernvbert}, published at ICML 2026, and to the \textsc{ViDoRe} benchmark series:
+\emph{\textsc{ViDoRe} Benchmark V2: Raising the Bar for Visual Retrieval} and
+\emph{\textsc{ViDoRe} V3: A Comprehensive Evaluation of Retrieval Augmented Generation in Complex Real-World Scenarios}
 \sidecite{macé2025vidorebenchmarkv2raising, loison2026vidorev3comprehensiveevaluation}, accepted at ACL 2026\sidenote{Although I initiated the project and was the original senior author, my role became more advisory towards the end as I joined the team at Meta FAIR working on unrelated topics for the last 6 months of my PhD.}.
 
 

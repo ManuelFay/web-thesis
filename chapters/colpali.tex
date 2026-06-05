@@ -23,7 +23,7 @@ In the broader context of this thesis, this line of work offers two central take
 
 
 Documents are visually rich structures that convey information through text, but also figures, page layouts, tables, or even fonts. Since modern retrieval systems mainly rely on the textual information they extract from document pages to index documents -often through lengthy and brittle processes-, they struggle to exploit key visual cues efficiently. This limits their capabilities in many practical document retrieval applications such as Retrieval Augmented Generation (RAG).
-To benchmark current systems on visually rich document retrieval, we introduce the Visual Document Retrieval Benchmark \textit{ViDoRe}, composed of various page-level retrieval tasks spanning multiple domains, languages, and practical settings. 
+To benchmark current systems on visually rich document retrieval, we introduce the Visual Document Retrieval Benchmark \textsc{ViDoRe}, composed of various page-level retrieval tasks spanning multiple domains, languages, and practical settings. 
 The inherent complexity and performance shortcomings of modern systems motivate a new concept; doing document retrieval by directly embedding the images of the document pages. We release \textit{ColPali}, a Vision Language Model trained to produce high-quality multi-vector embeddings from images of document pages. Combined with a late interaction matching mechanism, \textit{ColPali} largely outperforms modern document retrieval pipelines while being drastically simpler, faster and end-to-end trainable. 
 We release models, data, code and benchmarks under open licenses at \url{https://hf.co/vidore}.
 
@@ -50,13 +50,13 @@ In our experiments (\autoref{table:colpali:results}), we typically find that opt
 
 % pipeline usually starts with a rotation correction model. Then comes the Optical Character Recognition (OCR) task: a text detection model locates the character/word bounding boxes (e.g. \texttt{crnn\_vgg16\_bn} \sidecite{shi_end--end_2015}, \texttt{LinkNet} \sidecite{chaurasia_linknet_2017}, \texttt{TextNET \sidecite{chen_fast_2021}}) and a text recognition model predicts the strings associated the words in the previously detected bounding boxes (e.g. \texttt{db\_resnet50}, \texttt{db\_mobilenet\_v3\_large} \sidecite{liao_real-time_2019}, \texttt{sar\_resnet31} \sidecite{li_show_2018}). Finally, specialized models or heuristics to determine the reading order to segment pages into titles and paragraphs \sidecite{huang_layoutlmv3_2022, meunier_optimized_2005}, to detect images and tables \sidecite{smock_pubtables-1m_2021, qiao_lgpma_2021, li_dit_2022, ge_yolox_2021} in order to process them separately, and finally to split documents into optimized text chunks to be embedded. The whole process can be lengthy, and its sequential nature propagates errors from earlier systems downstream. Moreover, it is non-differentiable and requires heavy parametrization efforts to optimize the deployment infrastructures. Finally, it is unclear how to best represent visually rich document objects such as tables, figures, and images \sidecite{zha_tablegpt_2023, gao_retrieval-augmented_2023}. In practice, they are often overlooked, although recently, some captioning strategies have been shown to be effective, although very resource-intensive during indexation.
 
-\noindent\textbf{Contribution 1: \textit{ViDoRe}.}
-In this work, we argue that document retrieval systems should not be evaluated solely on the capabilities of text embedding models \sidecite{bajaj_ms_2016, thakur_beir_2021, muennighoff_mteb_2022}, but should also consider the context and visual elements of the documents to be retrieved. To this end, we create and openly release \textit{ViDoRe}, a comprehensive benchmark to evaluate systems on page-level document retrieval with a wide coverage of domains, visual elements, and languages. \textit{ViDoRe} addresses practical document retrieval scenarios, where queries often necessitate both textual and visual understanding for accurate document matching. We highlight the shortcomings of current text-centric systems in these settings.\sidenote{The \textit{ViDoRe} benchmark leaderboard is hosted publicly at \url{https://huggingface.co/spaces/vidore/vidore-leaderboard} to encourage further developments.}
+\noindent\textbf{Contribution 1: \textsc{ViDoRe}.}
+In this work, we argue that document retrieval systems should not be evaluated solely on the capabilities of text embedding models \sidecite{bajaj_ms_2016, thakur_beir_2021, muennighoff_mteb_2022}, but should also consider the context and visual elements of the documents to be retrieved. To this end, we create and openly release \textsc{ViDoRe}, a comprehensive benchmark to evaluate systems on page-level document retrieval with a wide coverage of domains, visual elements, and languages. \textsc{ViDoRe} addresses practical document retrieval scenarios, where queries often necessitate both textual and visual understanding for accurate document matching. We highlight the shortcomings of current text-centric systems in these settings.\sidenote{The \textsc{ViDoRe} benchmark leaderboard is hosted publicly at \url{https://huggingface.co/spaces/vidore/vidore-leaderboard} to encourage further developments.}
 
 % \url{https://huggingface.co/spaces/<anonymous>}
 
 \noindent\textbf{Contribution 2: \textit{ColPali}.}
-We propose a novel concept and model architecture based on Vision Language Models (VLMs) to efficiently index documents purely from their visual features, allowing for subsequent fast query matching with late interaction mechanisms \sidecite{khattab2020colbert}. Our method, \textit{ColPali}, significantly outperforms all other retrieval systems on \textit{ViDoRe} while being fast and end-to-end trainable.
+We propose a novel concept and model architecture based on Vision Language Models (VLMs) to efficiently index documents purely from their visual features, allowing for subsequent fast query matching with late interaction mechanisms \sidecite{khattab2020colbert}. Our method, \textit{ColPali}, significantly outperforms all other retrieval systems on \textsc{ViDoRe} while being fast and end-to-end trainable.
 These results demonstrate the potential and the many benefits of this novel \textit{Retrieval in Vision Space} concept, which could significantly alter the way document retrieval is approached in the industry moving forward.
 We release all resources at \url{https://hf.co/vidore}.
 
@@ -139,13 +139,13 @@ The PaliGemma-3B model \sidecite{beyer2024paligemmaversatile3bvlm} extends conce
 
 
 
-\section{The \textit{ViDoRe} Benchmark}
+\section{The \textsc{ViDoRe} Benchmark}
 \label{section:docvis_benchmark}
 
-Existing benchmarks for contrastive vision-language models primarily evaluate retrieval for natural images \sidecite{lin_microsoft_2014, borchmann_due_2021, thapliyal_crossmodal-3600_2022}. On the other hand, textual retrieval benchmarks \sidecite{muennighoff_mteb_2022} are evaluated at at textual passage level and are not tailored for document retrieval tasks. We fill the gap with \textit{ViDoRe}, a comprehensive benchmark for document retrieval using visual features. 
+Existing benchmarks for contrastive vision-language models primarily evaluate retrieval for natural images \sidecite{lin_microsoft_2014, borchmann_due_2021, thapliyal_crossmodal-3600_2022}. On the other hand, textual retrieval benchmarks \sidecite{muennighoff_mteb_2022} are evaluated at at textual passage level and are not tailored for document retrieval tasks. We fill the gap with \textsc{ViDoRe}, a comprehensive benchmark for document retrieval using visual features. 
 
 \subsection{Benchmark Design}
-\textit{ViDoRe} is designed to comprehensively evaluate retrieval systems on their capacity to match queries to relevant documents at the page level. This benchmark encompasses multiple orthogonal subtasks, with focuses on various modalities - text, figures, infographics, tables; thematic domains - medical, business, scientific, administrative; or languages - English, French. Tasks also span varying levels of complexity, in order to capture signals from both weaker and stronger systems.  
+\textsc{ViDoRe} is designed to comprehensively evaluate retrieval systems on their capacity to match queries to relevant documents at the page level. This benchmark encompasses multiple orthogonal subtasks, with focuses on various modalities - text, figures, infographics, tables; thematic domains - medical, business, scientific, administrative; or languages - English, French. Tasks also span varying levels of complexity, in order to capture signals from both weaker and stronger systems.  
 As many systems require large amounts of time to index pages (captioning-based approaches can take dozens of seconds per page for instance), we limit the number of candidate documents for each retrieval task in order to evaluate even complex systems in a reasonable timeframe without sacrificing quality. For trainable retrieval systems, we provide a reference training set that can be used to facilitate comparisons.
 % Introduce the idea that some tasks are tougher than others
 
@@ -173,7 +173,7 @@ As many systems require large amounts of time to index pages (captioning-based a
         Shift Project &French & 100 &1000 & Environmental reports\\
         \bottomrule
     \end{tabular}
-    \caption[\textit{ViDoRe} benchmark overview]{\textit{ViDoRe} comprehensively evaluates multimodal retrieval methods.}
+    \caption[\textsc{ViDoRe} benchmark overview]{\textsc{ViDoRe} comprehensively evaluates multimodal retrieval methods.}
     \label{table:docvisbench_eval_overview}
 \end{table*}
 
@@ -290,7 +290,7 @@ Following \sidecite{khattab2020colbert}, we define our in-batch contrastive loss
 \subsection{Model training}
 
 \noindent\textbf{Dataset.} Our training dataset of 118,695 query-page pairs is comprised of train sets of openly available academic datasets ($63\%$) and a synthetic dataset made up of pages from web-crawled PDF documents and augmented with VLM-generated (Claude-3 Sonnet) pseudo-questions ($37\%$). Dataset split details are given in \autoref{subsection:training_dataset}.
-Our training set is fully English by design, enabling us to study zero-shot generalization to non-English languages\sidenote{Multilingual data is present in the pretraining corpus of the language model (Gemma-2B) and potentially occurs during PaliGemma-3B's multimodal training.}. We explicitly verify no multi-page PDF document is used both \textit{ViDoRe} and in the train set to prevent evaluation contamination. A validation set is created with $2\%$ of the samples to tune hyperparameters. We openly release the training dataset\sidenote{\url{https://huggingface.co/datasets/vidore/colpali_train_set}} for reproducibility and to encourage further research. 
+Our training set is fully English by design, enabling us to study zero-shot generalization to non-English languages\sidenote{Multilingual data is present in the pretraining corpus of the language model (Gemma-2B) and potentially occurs during PaliGemma-3B's multimodal training.}. We explicitly verify no multi-page PDF document is used both \textsc{ViDoRe} and in the train set to prevent evaluation contamination. A validation set is created with $2\%$ of the samples to tune hyperparameters. We openly release the training dataset\sidenote{\url{https://huggingface.co/datasets/vidore/colpali_train_set}} for reproducibility and to encourage further research. 
 
 \noindent\textbf{Parameters.} All models are trained for 1 epoch on the train set. Unless specified otherwise, we train models in \texttt{bfloat16} format, use low-rank adapters (LoRA, \sidecite{hu_lora_2021}) with $\alpha=32 $ and $r=32$ on the transformer layers from the language model, as well as the final randomly initialized projection layer, and use a \texttt{paged\_adamw\_8bit} optimizer. We train on an 8 GPU setup with data parallelism, a learning rate of $5e-5$ with linear decay with 2.5\% warmup steps, and a batch size of 32.
 
@@ -310,7 +310,7 @@ Our training set is fully English by design, enabling us to study zero-shot gene
 \begin{table*}[ht]
     \centering
     
-    \resizebox{\textwidth}{!}{%
+    \resizebox{1.3\textwidth}{!}{%
     \begin{tabular}{ll@{\hskip 0.5em}l@{\hskip 0.5em}l@{\hskip 0.5em}l@{\hskip 0.5em}l@{\hskip 0.5em}l@{\hskip 0.5em}l@{\hskip 0.5em}l@{\hskip 0.5em}l@{\hskip 0.5em}l|@{\hskip 0.5em}l}
 
 \toprule
@@ -353,7 +353,7 @@ BiPali \tiny (+LLM) & 56.5\textcolor{red!75!black}{\tiny $\downarrow$-2.0} & 30.
 \end{tabular}}
 
 
-    \caption[Baseline and \textit{ViDoRe} evaluation]{\textbf{Comprehensive evaluation of baseline models and our proposed method on \textit{ViDoRe}.} Results are presented using nDCG@5 metrics, and illustrate the impact of different components. Text-only metrics are not computed for benchmarks with only visual elements.} 
+    \caption[Baseline and \textsc{ViDoRe} evaluation]{\textbf{Comprehensive evaluation of baseline models and our proposed method on \textsc{ViDoRe}.} Results are presented using nDCG@5 metrics, and illustrate the impact of different components. Text-only metrics are not computed for benchmarks with only visual elements.} 
     \label{table:colpali:results}
 \end{table*}
 
@@ -468,7 +468,7 @@ By superimposing the late interaction heatmap on top of the original image, we c
 \section{Ablation study}
 \label{section:ablation_study}
 
-We run various ablations to better understand the mechanisms at play. By default, result deltas reported below refer to nDCG@5 values averaged over all ViDoRe tasks.  Detailed results in \ref{subection:model_variants}.
+We run various ablations to better understand the mechanisms at play. By default, result deltas reported below refer to nDCG@5 values averaged over all \textsc{ViDoRe} tasks.  Detailed results in \ref{subection:model_variants}.
 
 %\subsection{Is it better to increase model size or the number of patches ?}
 
@@ -501,14 +501,14 @@ These results suggest there are \textit{tradeoffs} between performance (R1), lat
 
 \noindent\textbf{Better VLMs lead to better visual retrievers.} As improved VLMs are released, it is interesting to observe if improved performances on generative tasks translate once these models are adapted for image retrieval tasks through ColPali training strategies. We train the recently released Qwen2-VL 2B \sidecite{wang2024qwen2vlenhancingvisionlanguagemodels}, a SOTA 2 billion parameter generative VLM, with the same data and training strategy, obtaining ColQwen2-VL. To approximately match ColPali's memory requirements, we limit the number of image patches to 768, slightly less than ColPali's 1024 patches. We observe clear performance improvements of $+5.3$ nDCG@5 values over ColPali showcasing clear performance correlations between generative benchmarks performance and retrieving metrics.
 
-\noindent\textbf{Out-of-domain generalization.} Some of the datasets in the ViDoRe benchmark have train sets, which we have integrated within the ColPali train set (eg. academic tasks). This is standard in embedding models \sidecite{wang2024improvingtextembeddingslarge, lee2024nvembedimprovedtechniquestraining}, and while ColPali also exhibits strong performance on tasks in which this is not the case (French data is never seen by the model during training for instance), it remains interesting to evaluate model performance when training is done on a fully disjoint data distribution. We train a ColPali variant solely using the recent DocMatix dataset \sidecite{laurençon2024building}, a large scale, synthetically annotated visual document question answering dataset, which we subsample to obtain a comparably-sized train set. Results on ViDoRe show the performance drop is minor ($-2.2$ nDCG@5), still outperforming the closest baseline method by over 12 points. These results showcase
+\noindent\textbf{Out-of-domain generalization.} Some of the datasets in the \textsc{ViDoRe} benchmark have train sets, which we have integrated within the ColPali train set (eg. academic tasks). This is standard in embedding models \sidecite{wang2024improvingtextembeddingslarge, lee2024nvembedimprovedtechniquestraining}, and while ColPali also exhibits strong performance on tasks in which this is not the case (French data is never seen by the model during training for instance), it remains interesting to evaluate model performance when training is done on a fully disjoint data distribution. We train a ColPali variant solely using the recent DocMatix dataset \sidecite{laurençon2024building}, a large scale, synthetically annotated visual document question answering dataset, which we subsample to obtain a comparably-sized train set. Results on \textsc{ViDoRe} show the performance drop is minor ($-2.2$ nDCG@5), still outperforming the closest baseline method by over 12 points. These results showcase
 ColPali generalizes well outside of its training distribution, and demonstrate that our results are not unreasonably boosted with respect to baselines (BGE-M3) that cannot be fine-tuned on the same data\sidenote{To train with data resembling the one BGE-M3 models would see at inference time would require running complex extraction pipelines for the more than 100K documents in the training set, notably relying on external proprietary captioning models which is both too costly and lengthy. This is not needed to train vision-based models.} 
 %In practice, these models are most often used off-the-shelf without further fine-tuning in the majority of use cases.}
 
 \section{Conclusions}
 \label{section:colpali:conclusions_and_future_work}
 
-In this work, we introduced the Visual Document Retrieval Benchmark (\textit{ViDoRe}), which evaluates document retrieval systems in realistic settings involving visually complex documents. We demonstrated that current retrieval pipelines and contrastive vision-language models struggle to efficiently exploit visual information embedded in documents, leading to suboptimal performance. To address this, we presented \textit{ColPali}, a novel retrieval method that leverages Vision-Language Models to create high-quality, multi-vector embeddings purely from visual document features. \textit{ColPali} largely outperforms the best existing document retrieval methods while enabling faster corpus indexing times and maintaining low querying latencies, thus circumventing many pain points of modern document retrieval applications. We hope to drive industrial adoption, and to encourage future work by publicly releasing the \textit{ViDoRe} benchmark, the data, the codebase, and all models and baselines from our work.
+In this work, we introduced the Visual Document Retrieval Benchmark (\textsc{ViDoRe}), which evaluates document retrieval systems in realistic settings involving visually complex documents. We demonstrated that current retrieval pipelines and contrastive vision-language models struggle to efficiently exploit visual information embedded in documents, leading to suboptimal performance. To address this, we presented \textit{ColPali}, a novel retrieval method that leverages Vision-Language Models to create high-quality, multi-vector embeddings purely from visual document features. \textit{ColPali} largely outperforms the best existing document retrieval methods while enabling faster corpus indexing times and maintaining low querying latencies, thus circumventing many pain points of modern document retrieval applications. We hope to drive industrial adoption, and to encourage future work by publicly releasing the \textsc{ViDoRe} benchmark, the data, the codebase, and all models and baselines from our work.
 
 % hese results demonstrate the potential and the many benefits of this novel Retrieval in Vision Space concept, which could significantly alter the way document retrieval is approached in the industry moving forward. 
 

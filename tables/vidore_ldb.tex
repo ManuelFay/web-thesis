@@ -4,7 +4,7 @@
   \small
   \resizebox{\textwidth}{!}{%
   \begin{tabular}{@{} >{}l cc cc >{\columncolor{avgcol}}c >{\columncolor{latcol}}c}
-    & {Late Interaction} & {Model Size (B)} & \rot{ViDoRe(v1)} & \rot{ViDoRe(v2,eng)} & \rot{\textbf{Average}} & \rot{\textbf{Latency (ms)}} \\
+    & {Late Interaction} & {Model Size (B)} & \rot{\textsc{ViDoRe}(v1)} & \rot{\textsc{ViDoRe}(v2,eng)} & \rot{\textbf{Average}} & \rot{\textbf{Latency (ms)}} \\
 
     \midrule
     \multicolumn{7}{@{}l}{\itshape $\ge$ 1B Parameters}\\
@@ -32,7 +32,7 @@
     \bottomrule
   \end{tabular}%
    }
-  \caption[Performance on ViDoRe]{\textbf{Performance on ViDoRe.}
+  \caption[Performance on \textsc{ViDoRe}]{\textbf{Performance on \textsc{ViDoRe}.}
   Our model \colflagship{} offers the best performance-size tradeoff, significantly outperforming existing sub-1B models and matching the performance of models up to 10x larger with substantially lower inference CPU latency. Details and GPU latencies in Appendix \ref{appendix:gpu_latency}. Models marked with $^*$ are not specifically trained for VDR. Bold values indicate the best performance amongst sub-1B models.}
   \label{table:res}
 \end{table*}
