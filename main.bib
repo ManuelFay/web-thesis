@@ -589,7 +589,7 @@ technologies des langues},
 @misc{behnamghader_llm2vec_2024,
 	title = {{LLM2Vec}: {Large} {Language} {Models} {Are} {Secretly} {Powerful} {Text} {Encoders}},
 	copyright = {Creative Commons Attribution 4.0 International},
-	shorttitle = {{LLM2Vec}},
+	% shorttitle = {{LLM2Vec}},
 	url = {https://arxiv.org/abs/2404.05961},
 	doi = {10.48550/ARXIV.2404.05961},
 	abstract = {Large decoder-only language models (LLMs) are the state-of-the-art models on most of today's NLP tasks and benchmarks. Yet, the community is only slowly adopting these models for text embedding tasks, which require rich contextualized representations. In this work, we introduce LLM2Vec, a simple unsupervised approach that can transform any decoder-only LLM into a strong text encoder. LLM2Vec consists of three simple steps: 1) enabling bidirectional attention, 2) masked next token prediction, and 3) unsupervised contrastive learning. We demonstrate the effectiveness of LLM2Vec by applying it to 3 popular LLMs ranging from 1.3B to 7B parameters and evaluate the transformed models on English word- and sequence-level tasks. We outperform encoder-only models by a large margin on word-level tasks and reach a new unsupervised state-of-the-art performance on the Massive Text Embeddings Benchmark (MTEB). Moreover, when combining LLM2Vec with supervised contrastive learning, we achieve state-of-the-art performance on MTEB among models that train only on publicly available data. Our strong empirical results and extensive analysis demonstrate that LLMs can be effectively transformed into universal text encoders in a parameter-efficient manner without the need for expensive adaptation or synthetic GPT-4 generated data.},
@@ -7533,4 +7533,98 @@ series = {SIGIR '21}
   publisher = {Association for Computing Machinery},
   address   = {New York, NY, USA},
   doi       = {10.1145/775047.775067}
+}
+
+@inproceedings{gupta-etal-2018-retrieve,
+    title = "Retrieve and Re-rank: A Simple and Effective {IR} Approach to Simple Question Answering over Knowledge Graphs",
+    author = "Gupta, Vishal  and
+      Chinnakotla, Manoj  and
+      Shrivastava, Manish",
+    editor = "Thorne, James  and
+      Vlachos, Andreas  and
+      Cocarascu, Oana  and
+      Christodoulopoulos, Christos  and
+      Mittal, Arpit",
+    booktitle = "Proceedings of the First Workshop on Fact Extraction and {VER}ification ({FEVER})",
+    month = nov,
+    year = "2018",
+    address = "Brussels, Belgium",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/W18-5504/",
+    doi = "10.18653/v1/W18-5504",
+    pages = "22--27",
+    abstract = "SimpleQuestions is a commonly used benchmark for single-factoid question answering (QA) over Knowledge Graphs (KG). Existing QA systems rely on various components to solve different sub-tasks of the problem (such as entity detection, entity linking, relation prediction and evidence integration). In this work, we propose a different approach to the problem and present an information retrieval style solution for it. We adopt a two-phase approach: candidate generation and candidate re-ranking to answer questions. We propose a Triplet-Siamese-Hybrid CNN (TSHCNN) to re-rank candidate answers. Our approach achieves an accuracy of 80{\%} which sets a new state-of-the-art on the SimpleQuestions dataset."
+}
+
+@inproceedings{morris2023text,
+  title = "Text Embeddings Reveal (Almost) As Much As Text",
+  author = "Morris, John and
+    Kuleshov, Volodymyr and
+    Shmatikov, Vitaly and
+    Rush, Alexander",
+  editor = "Bouamor, Houda and
+    Pino, Juan and
+    Bali, Kalika",
+  booktitle = "Proceedings of the 2023 Conference on Empirical Methods in Natural Language Processing",
+  month = dec,
+  year = "2023",
+  address = "Singapore",
+  publisher = "Association for Computational Linguistics",
+  url = "https://aclanthology.org/2023.emnlp-main.765/",
+  doi = "10.18653/v1/2023.emnlp-main.765",
+  pages = "12448--12460"
+}
+
+@inproceedings{weller2026theoretical_limitations,
+  title = {On the Theoretical Limitations of Embedding-Based Retrieval},
+  author = {Weller, Orion and Boratko, Michael and Naim, Iftekhar and Lee, Jinhyuk},
+  booktitle = {International Conference on Learning Representations},
+  year = {2026},
+  url = {https://openreview.net/forum?id=k9CzIvzfaA}
+}
+
+
+@inproceedings{sun2023chatgpt,
+  title = {Is {ChatGPT} Good at Search? Investigating Large Language Models as Re-Ranking Agents},
+  author = {Sun, Weiwei and Yan, Lingyong and Ma, Xinyu and Wang, Shuaiqiang and Ren, Pengjie and Chen, Zhumin and Yin, Dawei and Ren, Zhaochun},
+  booktitle = {Proceedings of the 2023 Conference on Empirical Methods in Natural Language Processing},
+  year = {2023},
+  address = {Singapore},
+  publisher = {Association for Computational Linguistics},
+  pages = {14918--14937},
+  doi = {10.18653/v1/2023.emnlp-main.923},
+  url = {https://aclanthology.org/2023.emnlp-main.923/}
+}
+
+
+@misc{nakano2021webgpt,
+  title = {{WebGPT}: Browser-assisted Question-Answering with Human Feedback},
+  author = {Nakano, Reiichiro and Hilton, Jacob and Balaji, Suchir and Wu, Jeff and Ouyang, Long and Kim, Christina and Hesse, Christopher and Jain, Shantanu and Kosaraju, Vineet and Saunders, William and Jiang, Xu and Cobbe, Karl and Eloundou, Tyna and Krueger, Gretchen and Button, Kevin and Knight, Matthew and Chess, Benjamin and Schulman, John},
+  year = {2021},
+  eprint = {2112.09332},
+  archivePrefix = {arXiv},
+  primaryClass = {cs.CL}
+}
+
+@inproceedings{yao2023react,
+  title = {{ReAct}: Synergizing Reasoning and Acting in Language Models},
+  author = {Yao, Shunyu and Zhao, Jeffrey and Yu, Dian and Du, Nan and Shafran, Izhak and Narasimhan, Karthik and Cao, Yuan},
+  booktitle = {International Conference on Learning Representations},
+  year = {2023}
+}
+
+@inproceedings{trivedi2023ircot,
+  title = {Interleaving Retrieval with Chain-of-Thought Reasoning for Knowledge-Intensive Multi-Step Questions},
+  author = {Trivedi, Harsh and Balasubramanian, Niranjan and Khot, Tushar and Sabharwal, Ashish},
+  booktitle = {Proceedings of the 61st Annual Meeting of the Association for Computational Linguistics},
+  year = {2023},
+  pages = {10014--10037},
+  doi = {10.18653/v1/2023.acl-long.557}
+}
+
+@inproceedings{asai2024selfrag,
+  title = {{Self-RAG}: Learning to Retrieve, Generate, and Critique through Self-Reflection},
+  author = {Asai, Akari and Wu, Zeqiu and Wang, Yizhong and Sil, Avirup and Hajishirzi, Hannaneh},
+  booktitle = {International Conference on Learning Representations},
+  year = {2024}
 }
