@@ -36,8 +36,11 @@
 
 
 \begin{sagekaobox}[frametitle=Paper Context]
-After the release of ColPali, many Visual Document Retrieval models were trained by various academic and industrial teams around the world, including from our team. Most efforts centered around leveraging stronger VLM backbones which we have shown with the \emph{ColQwen} series to directly improve retrieval performance. 
-In this paper released in September 2025 and published at ICML 2026, we instead take another route. With ModernVBERT, we maintain ColPali retrieval performance with a model 10 times smaller. Beyond the ressource release, this paper should be seen as a thorough exploration of the performance factors behind repurposing VLMs for visual embeddings. Our ablations span architecture research, data mixes, cross-modality positive transfers, model souping and more. Importantly, we show strong retrieval performance can be achieved even with little ressources at querying time, enabling cheap deployments and widespread industrial use of the VDR technology.
+Following the release of \emph{ColPali}, Visual Document Retrieval has rapidly evolved, with academic and industrial teams worldwide training increasingly capable models---including our own contributions. Much of this progress has come from scaling to stronger VLM backbones, a trend we demonstrated with the \emph{ColQwen} series, where better vision-language models translated directly into stronger retrieval performance.
+
+In this work, released in September 2025 and published at ICML 2026, we take a different path. With \emph{ModernVBERT}, we match ColPali-level retrieval performance using a model that is \textbf{10$\times$ smaller}. Beyond releasing a compact and practical resource, this paper offers a systematic study of what truly drives performance when repurposing VLMs for visual embeddings. Our ablations cover architecture design, data mixtures, cross-modal positive transfer, model souping, and more.
+
+Most importantly, we show that strong visual retrieval does not require heavy query-time resources. \emph{ModernVBERT} makes high-quality VDR cheaper to deploy, easier to scale, and more accessible for widespread industrial use.
 \end{sagekaobox}
 
 

@@ -10,10 +10,11 @@
 % \end{figure*}
 
 \begin{sagekaobox}[frametitle=Paper Context]
-This paper, released in June 2024 and published at ICLR 2025, first proposes repurposing modern multimodal LLMs for representation learning. Specifically, it shows one main interest lies in applying this to document retrieval, a field of great industrial value - offering a very practical alternative to systems in place and launching the now active field of \emph{Visual Document Retrieval} (VDR). A secondary interest lies in the use of the \emph{Late Interaction} mechanism which is shown in this work to both work, and be particularly well suited to the VDR task. Today, open models released with this work have been downloaded over 10 million times and most major industrial players in the field (Google Deepmind, Meta, Amazon, Cohere, MixedBread) have experimented with Visual Document Retrieval, leveraging the training concepts detailed in this work, evaluating with the benchmarks introduced in this work, and often best performance stems in the \emph{Late Interaction} setting. 
+Released in June 2024 and published at ICLR 2025, this paper first proposed repurposing modern multimodal LLMs for representation learning. Its main contribution was to show that this idea is especially powerful for document retrieval: a field of major industrial value, where end-to-end visual retrieval offers a practical alternative to traditional parsing-heavy systems. In doing so, the paper helped launch what is now the active field of \emph{Visual Document Retrieval} (VDR). A secondary interest is the use of \emph{Late Interaction}. In this work, we show that late interaction is not only effective, but particularly well suited to VDR: it allows fine-grained associations between textual queries and visual document patches, while preserving strong retrieval performance. 
 
+Today, the open models released with this work have been downloaded more than 10 million times, and most major industrial players in the field---including NVIDIA, Meta, Amazon, Cohere, Google DeepMind, and MixedBread---have experimented with Visual Document Retrieval. Many of these efforts build on the training ideas introduced in this chapter, evaluate on the benchmarks released with this work, and often find their strongest performance in the late-interaction setting.
 
-For this thesis, this line of work shows two clear takeaways. First, existing \emph{priors} should be exploited when available; here document structure and visual context is a clear source of information that we show can be used to strenghten retrieval capabilities. Moreover, Sutton's bitter lesson is demonstrated here: by replacing handcrafted parsing pipelines by end-to-end systems, we remove inductive biases capping performance and achieve better results with simpler frameworks. The second takeaway is more technical: ColPali demonstrates that we can create and exploit associative links across modalities -- here between query terms and image patches. These strong associative links are very powerful as they go beyond words and fit in with the vision of Vannevar Bush: search is about making connections that go beyond a fixed rule set. 
+In the broader context of this thesis, this line of work offers two central takeaways. First, useful \emph{priors} should be exploited when they are available. In document retrieval, layout, structure, and visual context provide rich signals that can substantially strengthen retrieval capabilities. At the same time, this work illustrates Sutton's bitter lesson: by replacing handcrafted parsing pipelines with end-to-end systems, we remove brittle inductive biases that cap performance, and obtain stronger results with simpler frameworks.  Second,\emph{ColPali}  shows that retrieval models can create and exploit associative links across modalities---here, between query terms and image patches. These links are powerful precisely because they go beyond words. They align with Vannevar Bush's vision of search as a process of connection-making: not merely matching against a fixed rule set, but building useful associations across heterogeneous information.
 \end{sagekaobox}
 
 \clearpage
@@ -149,7 +150,7 @@ As many systems require large amounts of time to index pages (captioning-based a
 % Introduce the idea that some tasks are tougher than others
 
 
-\begin{table}[ht]
+\begin{table*}[ht]
     \centering
     \label{tab:docvisbench}
     \small
@@ -174,7 +175,7 @@ As many systems require large amounts of time to index pages (captioning-based a
     \end{tabular}
     \caption[\textit{ViDoRe} benchmark overview]{\textit{ViDoRe} comprehensively evaluates multimodal retrieval methods.}
     \label{table:docvisbench_eval_overview}
-\end{table}
+\end{table*}
 
 \noindent\textbf{Academic Tasks.}
 We repurpose widely used visual question-answering benchmarks for retrieval tasks: for each page-question-answer triplet, we use the question as the query, and the associated page as the gold document (\autoref{table:docvisbench_eval_overview}). These academic datasets either focus on single specific modalities \sidecite{mathew_docvqa_2020, mathew_infographicvqa_2021, li2024multimodal} or target more varied visually rich documents \sidecite{zhu_towards_2022}. Moreover, we consider TabFQuAD, a human-labeled dataset on tables extracted from French industrial PDF documents released with this work. Details can be found in \autoref{subsection:academic_datasets}.
