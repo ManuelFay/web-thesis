@@ -1,239 +1,159 @@
-# kaobook
+# Document Retrieval Beyond Text Embeddings
 
-## Acknowledgements
+Source repository for Manuel Faysse's doctoral thesis, **Document Retrieval
+Beyond Text Embeddings**, prepared at Université Paris-Saclay.
 
-This class is based on the work of [Ken Arroyo
-Ohori](https://3d.bk.tudelft.nl/ken/en/) for his doctoral thesis.
-The main ideas behind the layout can be found in this [blog
-post](https://3d.bk.tudelft.nl/ken/en/2016/04/17/a-1.5-column-layout-in-latex.html).
-The [Tufte-LaTeX class](https://github.com/Tufte-LaTeX/tufte-latex) has also been a
-source of ideas about the layout.
+The thesis studies modern information retrieval, with an emphasis on visual
+document retrieval, contextual document representations, language models, and
+agentic search. The document is written in LaTeX and uses a locally modified
+version of the [`kaobook`](https://github.com/fmarotta/kaobook) class.
 
-My gratitude goes also to [Vel](https://www.vel.nz/), for his patience 
-and his invaluable suggestions about the design, and to all the people 
-who have contributed either on 
-[GitHub](https://github.com/fmarotta/kaobook/graphs/contributors) or by 
-sending e-mails.
+The repository was originally forked from the `kaobook` project. Information
+about the template, its upstream authors, and the inherited class files has
+been moved to [`docs/KAOBOOK.md`](docs/KAOBOOK.md).
 
-## Description
+## Compile with Docker
 
-The salient features of the class are as follows.
+Docker is the recommended build method. It provides the complete TeX Live
+environment used by the project and avoids requiring a local LaTeX
+installation.
 
-* Wide margin to house captions, small figures or tables, and textual 
-  notes.
+From the repository root, run:
 
-* Mini table of contents in the margin at the start of each chapter.
-
-* Easily-customisable chapter headings.
-
-* Flexible citations with references both in the margin and in the 
-  bibliography at the end.
-
-* Powered by KOMA-Script.
-
-* Many commands have been redefined to ease the life of the user.
-
-A better description can be found at [LaTeX 
-Templates](http://www.latextemplates.com/template/kaobook). If you think 
-that a PDF is worth a thousand words, have a look at [this](example_and_documentation.pdf).
-
-## Showcase
-
-In the [examples](examples) directory you can find some sample 
-documents, but here are some more books or reports created with the 
-kaobook class. If you want to add a link to your work, please send me an 
-email or open a pull request!
-
-* [Growing Open Source Projects with a Stable
-Foundation](https://www.cyrius.com/foss-foundations/growing-open-source-projects.pdf)
-* [Cours De Physique - Mécanique Classique](https://femto-physique.fr/mecanique/pdf/book_meca.pdf)
-
-## Getting Started
-
-If you are not familiar with LaTeX, I recommend starting with [this 
-tutorial](https://www.overleaf.com/learn/latex/Learn_LaTeX_in_30_minutes), 
-which will give you a basic understanding of the language. As you will 
-read in the tutorial, all LaTeX documents, including books, start by 
-defining the so-called *class* of the document, for example 'article', 
-or 'book'. Thus, the first line of a LaTeX document will be something 
-like
-```
-\documentclass{book}
+```bash
+mkdir -p dist
+DOCKER_BUILDKIT=1 docker build \
+  --output type=local,dest=dist \
+  .
 ```
 
-Each class provides a unique style and set of commands that can be used 
-throughout the document. `kaobook` is just another class. The following 
-paragraphs will outline how to use it.
+The compiled thesis will be written to:
 
-### On Overleaf
-
-Browse to the [latextemplates.com page for
-kaobook](https://www.latextemplates.com/template/kaobook) and start 
-editing the `main.tex` file to fill it with your own contents.
-
-### On your computer
-
-Download the latest release from GitHub. At the root of the repository, 
-create a new `.tex` file and make sure that the first line reads 
-`\documentclass{kaobook}` (for books) or `\documentclass{kaohandt}` (for 
-reports). Then, fill the file with your LaTeX contents.
-
-Important: when we say `\documentclass{kaobook}`, LaTeX needs to know 
-where the `kaobook` file is. This means that the `.tex` file should be 
-in the same folder as the `kaobook.cls` file, *i.e.* at the root of the 
-repository. (There are exceptions to this rule. For instance, the 
-kaobook files can be placed in a folder that is automatically searched 
-by LaTeX. This, way, the `.tex` file with your contents can be placed 
-anywhere; check out the [instructions](instructions) directory for 
-hints.)
-
-If you don't want to start from scratch, go to the `examples` directory, 
-and find a template that you like; then, copy the corresponding 
-`main.tex` at the root of the repository, and start editing it, filling 
-it with your contents.
-
-### Other
-
-Check out the [instructions](instructions) directory for additional 
-guidance. There, you can read about setting up your own sharelatex 
-server or integrating kaobook with your local LaTeX installation.
-
----
-
-The class is documented and exemplified in the 
-[example\_and\_documentation.pdf](example_and_documentation.pdf) file. 
-The easiest way to start using the class is to open one of the examples 
-and start editing them.
-
-## Compiling the examples
-
-In the `examples` directory of this repository you can find several
-documents exemplifying the kaobook class. For the sake of simplicity
-I shall list the commands to compile only the documentation, but the
-compilation of the other examples would proceed in the same way. Also,
-you can replace pdflatex with your favorite engine, like *e.g.* xelatex.
-
-### From the command line (Unix-like operating systems)
-
-`cd` into the root of the repository, and run
-```
-pdflatex -output-directory examples/documentation main.tex
-biber -output-directory examples/documentation main
-pdflatex -output-directory examples/documentation main.tex
-pdflatex -output-directory examples/documentation main.tex
-pdflatex -output-directory examples/documentation main.tex
+```text
+dist/Thesis.pdf
 ```
 
-To compile the glossary and nomenclature as well, `cd` into the 
-`examples/documentation` directory and run
+The first build downloads and installs `texlive-full`, so it can take some
+time and requires several gigabytes of disk space. Docker will cache these
+layers for subsequent builds.
+
+To force a clean rebuild:
+
+```bash
+DOCKER_BUILDKIT=1 docker build \
+  --no-cache \
+  --output type=local,dest=dist \
+  .
 ```
-makeindex main.nlo -s nomencl.ist -o main.nls
-makeglossaries main
+
+The Docker build runs:
+
+```bash
+latexmk -pdf -interaction=nonstopmode -halt-on-error -outdir=build main.tex
 ```
-Then, `cd` back into the root of the repository and re-run pdflatex.
 
-NOTE: sometimes LaTeX needs more than one run to get the correct
-position of each element; this is true in particular for the positioning
-of floating elements like figures, tables, and margin notes.
-Occasionally, LaTeX can need up to four re-runs, so If the alignment of
-margin elements looks odd, or if they bleed into ther main text, try
-running pdflatex one more time.
+`latexmk` automatically performs the additional LaTeX and Biber passes needed
+to resolve the bibliography, references, table of contents, and lists of
+figures and tables.
 
-## Updating kaobook
+## Local Compilation
 
-To update kaobook you should download the whole repository (or one of
-the releases) again, and replace all of your old files with the newer
-ones, *except* for the main.tex and the files that you have created,
-like the chapters of the book. The crucial files that pertain to kaobook
-and that you should always update are:
+A local build requires a sufficiently complete TeX Live installation,
+including `latexmk` and `biber`. The project currently targets PDFLaTeX.
 
-1. `kaobook.cls`;
-2. `kaohandt.cls`;
-3. `kao.sty`;
-3. `kaobiblio.sty` (optional);
-4. `kaorefs.sty` (optional);
-5. `kaotheorems.sty` (optional);
+```bash
+mkdir -p build/chapters
+latexmk -pdf -interaction=nonstopmode -halt-on-error -outdir=build main.tex
+```
 
-These files should be in the same folder as your `main.tex`. Even if a
-file has not been modified, I would still suggest to replace everything
-because it is easier.
+The result is `build/main.pdf`.
 
-In practice, I would do as follows. I would have a directory, called for 
-example 'my\_book', with all the files necessary for the book: 
-`kaobook.cls`, `kaohand.cls`, the `*.sty` files, and the `main.tex`. I 
-like to have a separate file for each chapter, so I would also have a 
-directory called `chapters`, with all the `.tex` files with the actual 
-chapters. Then, when I want to update kaobook, I would download the 
-GitHub repository (or one of the releases) into a directory called 
-'kaobook', and finally copy the `kaobook.cls`, `kaohandt.cls`, and the 
-whole `styles` directory from 'kaobook' to 'my\_book'. Once the update 
-is completed, the whole 'my\_book' directory can be uploaded on Overleaf 
-or on a personal ShareLaTeX server.
+To remove generated files:
 
-Alternatively, advanced users can download the repository in their local 
-texmf tree; see the [instructions](instructions) directory for hints.
+```bash
+latexmk -C -outdir=build main.tex
+```
 
-## Repository Schema
+The root-level `compileall.sh` is an older manual compilation helper. The
+Docker/`latexmk` workflow above is the canonical build path.
 
-There are two main class files: `kaobook.cls`, used for books, and 
-`kaohandt.cls`, used for reports or handouts; both heavily rely on 
-`kao.sty`, which contains the bulk of the definitions that are common to 
-both classes. In the future there may be another class for theses.
+## Repository Structure
 
-Some examples and templates are listed in the `examples` directory. The 
-book that documents the class is an example itself, and the pdf has been 
-copied to the root of the repository so that it will be found more 
-easily.
+```text
+.
+├── main.tex                 # Thesis entry point and chapter selection
+├── main.bib                 # Bibliography database
+├── chapters/                # Thesis chapters and appendices
+├── images/                  # Figures, grouped by thesis contribution
+├── tables/                  # Reusable LaTeX table fragments
+├── Dockerfile               # Reproducible TeX Live build
+├── .github/workflows/       # Continuous-integration PDF build
+├── scripts/                 # Bibliography maintenance utilities
+├── kaobook.cls              # Locally included kaobook document class
+├── kao.sty                  # Shared kaobook definitions
+├── kaobiblio.sty            # Bibliography and citation styling
+├── kaorefs.sty              # Cross-reference commands
+├── kaotheorems.sty          # Theorem styling
+└── docs/KAOBOOK.md          # Template attribution and upstream information
+```
 
-The `*.sty` files contain additional packages that are used by the 
-class, but in principle they are independent of it (even though in 
-practice it is still not so).
+### Thesis Sources
 
-If you want to do something more peculiar, the `instructions` directory 
-may contain what you need.
+`main.tex` defines the document metadata, loads the packages and bibliography,
+and controls which chapters are compiled. The primary prose and research
+chapters live in `chapters/`.
 
-## Contributing
+The current draft directly includes:
 
-Do you like the design, but you found a bug? Is there something you 
-would have done differently? Any contribution is welcome! Moreover, even 
-if you'd rather not tamper with the code it is *not* forbidden to send 
-me the documents you compiled using the kaobook class.
+- `chapters/introduction.tex`
+- `chapters/history.tex`
+- `chapters/conclusion.tex`
 
-Since the content of this repository is published at [LaTeX 
-Templates](http://www.latextemplates.com/), if you wish to contribute by 
-changing the code you must follow the style guidelines of the site: 
-extensive commenting and clear separation of the code into nicely 
-formatted blocks.
+The research chapters and appendices are also present in `chapters/`, including
+the sources for ColPali, ViDoRe, ModernVBERT, contextual embeddings, and
+CroissantLLM. Their `\include{...}` lines in `main.tex` can be uncommented when
+they should be part of the compiled document.
 
-## Supporting
+When enabling a chapter, use a path relative to the repository root:
 
-I am always happy to help as much as I can, and I am glad if someone
-uses the `kaobook` class for their works, so there is no real need to do
-anything: the kaobook can be used just like any other LaTeX package (no 
-need to add copyright statements). However, if you want to acknowledge 
-kaobook, adding somewhere a sentence like 'This book was typeset with the
-kaobook class' would suffice.
+```latex
+\include{chapters/colpali}
+```
 
-Coffee keeps me awake and helps me writing a better LaTeX template. As 
-another way to contribute, you can buy me a coffee through PayPal: 
-https://paypal.me/marofede.
+### Bibliography
 
-## License
+All references are stored in `main.bib` and loaded from `main.tex` through
+`biblatex`/Biber. Citation commands include `\cite`, `\sidecite`, and
+`\fullcite`.
 
-This repository contains two independent works. On the one hand, the 
-kaobook class, consisting of `kaobook.cls`, `kaohandt.cls`, and 
-`kao.def` files plus all of the files listed in the `styles` directory; 
-on the other hand, the templates and the examples in the `examples` 
-directory.
+Bibliography maintenance scripts are available in `scripts/`:
 
-The first work is licensed under the [LaTeX Project Public
-License](https://www.latex-project.org/lppl/), so if you want to modify
-and/or distribute the `*.cls` and `*.sty` files pertaining to this work
-you have to complain with the terms of the license. However, if you just
-want to use the class to compile your documents you need not worry about
-the license.
+- `scripts/dedup_bib.py`
+- `scripts/find_potential_duplicates.py`
 
-The second work is released into the public domain with a Creative 
-Commons Zero License.
+`history_citation_verification.md` tracks manual verification work for
+citations used in the history chapter.
 
-Read [MANIFEST.md](MANIFEST.md) for the details.
+### Figures and Tables
+
+Figures are stored under `images/`, generally grouped by chapter or project.
+Reusable table fragments are stored under `tables/` and included from chapter
+sources with `\input{...}`.
+
+## Continuous Integration
+
+Pushes to `main` trigger the workflow in
+`.github/workflows/compile.yaml`. It installs TeX Live, compiles `main.tex`
+with `latexmk`, renames the result to `Thesis.pdf`, and uploads it as a GitHub
+Actions artifact named `PDF`.
+
+## Template and Licensing
+
+The document layout is based on the `kaobook` class by Federico Marotta, itself
+inspired by the doctoral thesis of Ken Arroyo Ohori and by Tufte-LaTeX.
+Detailed attribution and upstream documentation links are provided in
+[`docs/KAOBOOK.md`](docs/KAOBOOK.md).
+
+The inherited `kaobook` class and style files retain their upstream licensing
+terms. See [`MANIFEST.md`](MANIFEST.md) for those details. No separate license
+for the thesis content is declared by this README.
