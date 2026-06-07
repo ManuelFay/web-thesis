@@ -1,0 +1,416 @@
+\chapter{Glossary}
+\label{ch:glossary}
+
+This glossary defines recurring technical terms as they are used throughout this
+thesis. Definitions are intentionally concise and reflect common usage in
+information retrieval and machine learning; citations are included where a term
+is tied to a particular method or formalization.
+
+\section*{Information Retrieval}
+
+\noindent\textbf{Information retrieval (IR).}
+The study and practice of finding items relevant to an information need within a
+collection. In this thesis, the items are usually documents, passages, or
+document-page images, and the information need is expressed as a query.
+
+\noindent\textbf{Corpus, document, passage, and chunk.}
+A \emph{corpus} is the collection being searched. A \emph{document} is one item
+in that collection, while a \emph{passage} is a span of text. In this thesis,
+``passage'' and ``document'' are sometimes used interchangeably for textual
+retrieval units. What counts as a document is partly a system-design choice: a
+book, page, paragraph, or passage may be indexed as one item.
+
+\emph{Chunking} divides a long document into smaller units, or \emph{chunks},
+that can be indexed and retrieved independently.
+
+\noindent\textbf{Information need, query, and relevance.}
+An \emph{information need} is the underlying information a user seeks; a
+\emph{query} is the expression of that need supplied to a retrieval system.
+\emph{Relevance} describes how well a candidate item satisfies the information
+need, not merely whether it contains the query words
+\sidecite{manning2008introduction_ir}. Relevance may be binary or graded and is
+task-dependent: a passage can be topically related to a query without containing
+the evidence needed to answer it.
+
+\noindent\textbf{Indexing, retrieval, and reranking.}
+\emph{Indexing} preprocesses a corpus into a data structure that supports fast
+search. \emph{Retrieval} uses that index to obtain an initial set of candidates.
+\emph{Reranking} then applies a typically slower and more expressive model to
+reorder a limited candidate set.
+
+\noindent\textbf{Sparse, lexical, and dense retrieval.}
+\emph{Lexical retrieval} primarily matches explicit terms shared by queries and
+documents. Its representations are usually \emph{sparse}: most coordinates,
+often associated with vocabulary terms, are zero. \emph{Dense retrieval} uses
+learned, low-dimensional vectors whose coordinates are generally non-zero and
+can capture semantic similarity even when the query and document use different
+words.
+
+\noindent\textbf{Inverted index.}
+A data structure composed of a dictionary of terms and, for each term, a
+\emph{postings list} identifying the documents, and often positions, in which it
+occurs. It is the standard basis for efficient lexical retrieval at corpus scale
+\sidecite{manning2008introduction_ir}.
+
+\noindent\textbf{Nearest-neighbor search and vector index.}
+Given a query vector, nearest-neighbor search finds the indexed vectors that are
+closest under a chosen distance or similarity function. Exact search compares
+the query with every vector; approximate nearest-neighbor (ANN) methods use
+specialized data structures to trade a small amount of recall for much lower
+latency and memory use at scale. A \emph{vector index} stores embeddings and
+supports this search efficiently \sidecite{johnson2017faiss}.
+
+\noindent\textbf{Term frequency--inverse document frequency (TF--IDF).}
+A family of term-weighting schemes that gives a term more weight when it occurs
+frequently in a document but less weight when it occurs in many documents
+\sidecite{sparck_jones_statistical_1972}. For a corpus
+$\mathcal{D}=\{d_1,\ldots,d_N\}$, a common form is
+\[
+  \operatorname{tfidf}(t,d,\mathcal{D})
+  =
+  \operatorname{tf}(t,d)\operatorname{idf}(t,\mathcal{D}),
+  \qquad
+  \operatorname{idf}(t,\mathcal{D})
+  =
+  \log\!\left(\frac{N}{\operatorname{df}(t)}\right),
+\]
+where $\operatorname{tf}(t,d)$ measures the frequency of term $t$ in document
+$d$, and $\operatorname{df}(t)$ is the number of corpus documents containing
+$t$. Many implementations use logarithmic scaling or smoothing. In the classic
+vector-space model, TF--IDF weights form query and document vectors that can be
+ranked using a similarity function such as cosine similarity
+\sidecite{manning2008introduction_ir}.
+
+\noindent\textbf{Okapi BM25.}
+A widely used lexical ranking function that combines inverse document
+frequency, saturating term frequency, and document-length normalization
+\sidecite{robertson1994bm25,robertson_okapi_1994}. Using the notation introduced
+in the history chapter, its score is
+\[
+  \operatorname{BM25}(q,d)
+  =
+  \sum_{t\in q}
+  \operatorname{idf}(t)
+  \frac{f_{t,d}(k_1+1)}
+       {f_{t,d}+k_1\!\left(1-b+b\,\frac{|d|}{\operatorname{avgdl}}\right)},
+\]
+with
+\[
+  \operatorname{idf}(t)
+  =
+  \log\!\left(
+  \frac{N-\operatorname{df}(t)+0.5}
+       {\operatorname{df}(t)+0.5}
+  \right).
+\]
+Here $f_{t,d}$ is the count of $t$ in $d$, $|d|$ is the document length,
+$\operatorname{avgdl}$ is the corpus-average document length, $k_1>0$ controls
+term-frequency saturation, and $b\in[0,1]$ controls length normalization.
+
+\section*{Representations and Matching}
+
+\noindent\textbf{Embedding.}
+A learned numerical representation of an item as a vector or set of vectors.
+Text embeddings may represent tokens, passages, queries, or entire documents;
+visual embeddings may represent image patches or complete images. Retrieval
+models are trained so that geometrical relationships between embeddings are
+useful for matching.
+
+\noindent\textbf{Embedding space and latent space.}
+An \emph{embedding space} is the vector space in which embeddings are compared.
+A \emph{latent space} is a more general learned representation space whose
+coordinates are not directly observed or manually assigned. In this thesis,
+``latent space'' and ``representation space'' often refer to the internal
+learned geometry of representations exposed for downstream comparison or retrieval.
+
+\noindent\textbf{Similarity function.}
+A function that assigns a matching score to two representations. Common choices
+include the dot product and cosine similarity. Cosine similarity compares the
+angle between vectors,
+\[
+  \cos(\mathbf{x},\mathbf{y})
+  =
+  \frac{\mathbf{x}^{\mathsf{T}}\mathbf{y}}
+       {\lVert\mathbf{x}\rVert_2\lVert\mathbf{y}\rVert_2},
+\]
+and therefore ignores their overall magnitudes.
+
+\noindent\textbf{Single-vector and multi-vector representation.}
+A \emph{single-vector} model compresses each query or document into one vector.
+A \emph{multi-vector} model retains several vectors, commonly one per token or
+image patch, allowing a more fine-grained matching function at the cost of a
+larger index.
+
+\noindent\textbf{Pooling.}
+An operation that aggregates several representations into fewer
+representations, often a single vector. \emph{Mean pooling} averages vectors,
+\emph{max pooling} retains the maximum according to a chosen aggregation
+criterion, and
+\emph{special-token pooling} uses the representation of a designated token such
+as \texttt{[CLS]} or the final token. Token pooling can also group nearby or
+redundant token vectors to reduce the storage and computation required by
+multi-vector retrieval. In MaxSim late interaction, for example, the maximum is
+taken over document-token similarity scores for each query token, rather than
+over embedding dimensions.
+
+\noindent\textbf{Contextual embedding.}
+An embedding whose value depends on surrounding input rather than representing
+an item in isolation. A contextual token embedding changes when the token's
+sentence changes; similarly, a contextual chunk embedding may incorporate
+information from other passages in the same document or from the wider corpus.
+
+\noindent\textbf{Bi-encoder (dual encoder).}
+A model that encodes the query and document independently, often into
+single-vector embeddings. Document representations can therefore be computed
+offline and indexed, while retrieval reduces to efficient nearest-neighbor
+search. This architecture favors scalability but limits direct query--document
+interaction \sidecite{reimers2019sbert}.
+
+\noindent\textbf{Cross-encoder.}
+A model that processes a query and candidate document jointly, allowing
+self-attention across all query and document tokens before producing a relevance
+score. Cross-encoders are expressive but cannot precompute a query-independent
+document score, so they are generally used for reranking rather than exhaustive
+corpus search.
+
+\noindent\textbf{Late interaction.}
+A retrieval architecture between bi-encoders and cross-encoders. Queries and
+documents are encoded independently into multi-vector representations, but
+their token- or patch-level vectors interact at scoring time. ColBERT's common
+\emph{MaxSim} operator finds, for every query vector, the most similar document
+vector and sums these maxima \sidecite{khattab2020colbert}. This preserves
+offline document indexing while enabling finer matching than a single-vector
+similarity.
+
+\noindent\textbf{Contrastive learning.}
+A training approach that makes representations of matched or relevant examples
+more similar and representations of unmatched examples less similar. In
+retrieval, a query and its relevant document form a positive pair, while other
+documents serve as negatives; \emph{hard negatives} are non-relevant candidates
+that are difficult for the current model to distinguish from positives.
+
+\noindent\textbf{Positive, negative, and hard-negative examples.}
+A \emph{positive} is an example that should match the anchor input, such as a
+relevant document for a query. A \emph{negative} should not match it.
+\emph{Hard negatives} are non-relevant examples that nevertheless appear
+plausible to the model, for example because they are topically similar or
+highly ranked by another retriever. They generally provide a stronger training
+signal than randomly sampled negatives, but false negatives can teach the model
+to separate genuinely relevant pairs.
+
+\noindent\textbf{Contrastive loss.}
+An objective used to implement contrastive learning. It increases the score of
+positive pairs relative to negative pairs, commonly by applying a softmax and
+cross-entropy over the candidates in a batch. A temperature parameter may
+control how sharply score differences affect the loss.
+
+\noindent\textbf{Late chunking.}
+A method that encodes a long document before pooling token representations into
+individual chunk embeddings. Unlike independently encoding each chunk, this
+allows a chunk representation to incorporate information from surrounding
+document context \sidecite{LateChunking}.
+
+\section*{Model Architectures}
+
+\noindent\textbf{Token and tokenizer.}
+A \emph{token} is a discrete unit processed by a language model, such as a word,
+subword, character, punctuation mark, or special symbol. A \emph{tokenizer}
+defines the vocabulary and the procedure that converts raw text into tokens and
+back into text.
+
+\noindent\textbf{Pretraining, fine-tuning, and inference.}
+\emph{Pretraining} learns general-purpose model parameters from a large and
+broad dataset, usually before a specific downstream task is fixed.
+\emph{Fine-tuning} continues training those parameters, or a smaller set of
+added parameters, on task- or domain-specific data. \emph{Inference} is the use
+of the trained model to encode, score, classify, or generate outputs without
+updating its parameters.
+
+\noindent\textbf{Transformer.}
+A neural-network architecture built around attention mechanisms rather than
+recurrence. Transformer layers use self-attention to let each token combine
+information from other tokens, followed by position-wise feed-forward
+transformations \sidecite{vaswani_attention_2017}. Transformers can be organized
+as encoders, decoders, or encoder--decoder models and underpin most language and
+vision models discussed in this thesis.
+
+\noindent\textbf{Attention, self-attention, and causal attention.}
+\emph{Attention} computes a weighted combination of value vectors according to
+the compatibility of queries and keys. In \emph{self-attention}, queries, keys,
+and values are derived from the same sequence. \emph{Bidirectional} self-attention
+allows a token to use tokens on both sides, whereas \emph{causal} attention masks
+future positions so that a token can depend only on earlier tokens.
+
+\noindent\textbf{Encoder and decoder.}
+An \emph{encoder} maps an input into contextual representations and commonly
+uses bidirectional attention. An autoregressive \emph{decoder} predicts a
+sequence one token at a time using causal attention. An
+\emph{encoder--decoder} model first encodes an input and then generates an
+output conditioned on those encoded representations.
+
+\noindent\textbf{Autoregressive model.}
+A model that factorizes the probability of a sequence into successive
+next-token predictions. During generation, each new token is sampled or selected
+conditioned on the preceding tokens and is then appended to the context used to
+predict the next one.
+
+\noindent\textbf{Context window.}
+The maximum amount of input, measured in tokens, that a model can process in one
+forward pass. Material outside this window must be discarded, compressed, or
+handled through mechanisms such as chunking or retrieval. A long context window
+increases capacity to process complete documents but also raises computation
+and memory costs.
+
+\noindent\textbf{Large and small language models (LLMs and SLMs).}
+A language model assigns probabilities to token sequences and can generate text.
+Following the operational definition used in the CroissantLLM work, an LLM is
+pretrained on a large text corpus, supports text generation, and enables
+transfer through fine-tuning or prompting \sidecite{rogers2024positionkeyclaimsllm}.
+The cited definition proposes one billion pretraining tokens as a lower
+threshold; under these criteria, CroissantLLM is an LLM despite its relatively
+small parameter count compared with current frontier models.
+``Small language model'' is a relative term for a lower-parameter language model
+designed, for example, for lower latency, memory use, or local inference; there
+is no universal parameter threshold separating SLMs from LLMs.
+
+\noindent\textbf{Vision Transformer (ViT) and image patch.}
+A Vision Transformer divides an image into fixed-size regions called
+\emph{patches}, projects them into vectors, and processes the resulting sequence
+with a transformer \sidecite{dosovitskiy_image_2020}. A patch embedding is
+therefore analogous to a text-token embedding, although it represents a spatial
+image region.
+
+\noindent\textbf{Vision--language model (VLM).}
+A model that processes both visual and textual inputs in a shared architecture
+or aligned representation spaces. VLMs may be generative, contrastive, or
+encoder-based; in this thesis they are frequently adapted to produce embeddings
+for image--text retrieval.
+
+\noindent\textbf{Modality alignment.}
+Training that makes representations from different modalities, such as images
+and text, mutually compatible. Alignment can map paired inputs into nearby
+regions of a shared embedding space or teach a multimodal model to process one
+modality through representations expected by another. Contrastive image--text
+training is a common alignment method \sidecite{radford_learning_2021}.
+
+\noindent\textbf{Early fusion and dual-encoder multimodal models.}
+An \emph{early-fusion} model combines representations from different modalities
+inside a shared backbone, allowing cross-modal interaction throughout much of
+the network. A multimodal \emph{dual encoder} processes each modality with a
+separate encoder and compares only their final representations. Dual encoders
+support efficient precomputation, while early fusion enables richer interaction
+at greater computational cost.
+
+\noindent\textbf{Quantization.}
+The representation of model parameters, activations, or stored embeddings with
+lower-precision values than those used in standard floating-point computation.
+Quantization reduces memory, storage, and often latency, but aggressive
+compression can reduce model or retrieval quality.
+
+\section*{Document AI and Evaluation}
+
+\noindent\textbf{Optical character recognition (OCR).}
+The process of converting text visible in an image or scanned document into
+machine-readable characters. OCR-based retrieval first extracts text, whereas
+visual document retrieval can index page images directly.
+
+\noindent\textbf{Visual document retrieval (VDR).}
+Retrieval in which documents, usually pages, are represented from their visual
+appearance rather than exclusively from parsed text. This retains evidence
+carried by layout, typography, tables, figures, and spatial relationships, as
+well as by visible words.
+
+\noindent\textbf{Retrieval-augmented generation (RAG).}
+A system pattern in which a retriever selects external evidence and a generative
+model produces an output conditioned on that evidence. The original RAG
+formulation combined a sequence-to-sequence generator with a learned dense
+Wikipedia retriever \sidecite{lewis_retrieval-augmented_2020}; current usage also
+covers pipelines with lexical or hybrid retrieval, reranking, query rewriting,
+and iterative search.
+
+\noindent\textbf{Parametric and non-parametric knowledge.}
+\emph{Parametric knowledge} is information encoded implicitly in a model's
+learned weights. \emph{Non-parametric knowledge} is stored in an external
+resource, such as a document corpus or vector index, that can be searched or
+updated without retraining the model. RAG combines a parametric generator with
+access to non-parametric knowledge \sidecite{lewis_retrieval-augmented_2020}.
+
+\noindent\textbf{Test collection and relevance judgment.}
+A standard retrieval test collection contains a document corpus, a set of
+information needs represented as queries, and judgments identifying which
+documents are relevant to each need \sidecite{manning2008introduction_ir}.
+Retrieval metrics summarize performance with respect to these judgments, which
+act as the evaluation ground truth.
+
+\noindent\textbf{Recall@$k$.}
+The fraction of all relevant items for a query that occur among the first $k$
+retrieved results. When a benchmark contains one known relevant item per query,
+Recall@$k$ is equivalently the fraction of queries for which that item appears
+in the top $k$.
+
+\noindent\textbf{Precision@$k$.}
+The fraction of the first $k$ retrieved items that are relevant. Unlike
+Recall@$k$, it does not account for relevant items that exist elsewhere in the
+corpus.
+
+\noindent\textbf{Mean reciprocal rank (MRR).}
+For each query, reciprocal rank is the inverse of the rank of the first relevant
+result, or zero if no relevant result is retrieved. MRR averages this value over
+queries and therefore emphasizes placing at least one relevant result near the
+top of the ranking.
+
+\noindent\textbf{Average precision and mean average precision (AP and MAP).}
+Average precision summarizes a ranking by averaging precision at the ranks
+where relevant items occur. Mean average precision averages AP over queries. It
+rewards retrieving all relevant items and placing them early, and is most
+directly applicable to binary relevance judgments.
+
+\noindent\textbf{Normalized discounted cumulative gain (nDCG@$k$).}
+A ranking metric for graded relevance. It accumulates relevance gains through
+rank $k$, discounts gains appearing lower in the ranking, and divides by the
+score of an ideal ordering. The normalized score lies between zero and one,
+with one indicating an ideal ranking under the supplied relevance judgments.
+
+\section*{Language-Model Training and Evaluation}
+
+\noindent\textbf{Perplexity.}
+An exponentiated average negative log-likelihood that measures how much
+probability a language model assigns to a token sequence. Lower perplexity means
+the model predicts the evaluated token sequence with greater confidence.
+Perplexities are not directly comparable across models that use different
+tokenizers or evaluation protocols.
+
+\noindent\textbf{Scaling law.}
+An empirical relationship describing how model loss or downstream performance
+changes as a power-law-like function of factors such as parameter count,
+training data, or compute. Scaling laws can guide how a fixed training budget is
+allocated, but their predictions depend on the architecture, data distribution,
+and range over which they were fitted
+\sidecite{scaling-laws-lm,hoffmann2022training}.
+
+\noindent\textbf{Zero-shot and few-shot learning.}
+In a \emph{zero-shot} evaluation, a model performs a task without task-specific
+demonstrations in its input. In a \emph{few-shot} evaluation, the prompt
+contains a small number of example input--output pairs. These terms describe
+the evaluation context and do not imply that the model has never encountered
+related tasks or data during training.
+
+\section*{CroissantLLM-Specific Terms}
+
+\noindent\textbf{Effective capacity ratio.}
+The \emph{effective parameters} of a multilingual model for one language are the
+number of non-embedding parameters a comparable monolingual model would require
+to match its performance in that language \sidecite{pmlr-v202-fernandes23a}.
+The effective capacity ratio divides this estimate by the multilingual model's
+number of non-embedding parameters. It measures how much of the multilingual
+model's capacity appears effectively available to the language in question. In
+the joint scaling-law experiments reported for CroissantLLM, models trained on
+equal proportions of English and French reach an effective capacity ratio above
+82\% for French, suggesting substantial capacity sharing between the two
+languages.
+
+\noindent\textbf{Tokenizer fertility.}
+The average number of subword tokens produced per tokenized word
+\sidecite{rust2021good}. Lower fertility means that a tokenizer represents the
+same text with fewer tokens; its theoretical lower bound is one token per word
+under a word-based measurement.

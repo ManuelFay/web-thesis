@@ -5,17 +5,16 @@ As a small application of the lexical retrieval methods discussed in this
 thesis, this chapter gives a compact view of the vocabulary that most
 distinguishes each main-body chapter. The lists below contain the twenty terms
 with the highest term frequency--inverse document frequency (TF--IDF) weight in
-each chapter \sidecite{sparck_jones_statistical_1972}.
+each chapter \sidecite{sparck_jones_statistical_1972}. TF--IDF and other
+recurring technical terms are defined in \autoref{ch:glossary}.
 
 The computation treats each of the eight main-body chapters as one document.
-The accompanying script, \texttt{scripts/chapter\_tfidf.py}, removes comments,
-LaTeX commands, citations, references and mathematics; normalizes words to
-lowercase unaccented forms; removes English stopwords and common document
-scaffolding; excludes presentation-only vocabulary introduced by the source
-formatting rather than the prose; and retains unigram terms of at least three
-characters. These exclusions are deliberately limited to generic structural
-or formatting artifacts rather than topic-specific words. For a term $t$ in
-chapter $d$, it then computes
+The text is normalized by removing comments, LaTeX commands, citations,
+references, mathematics, English stopwords, and common document scaffolding.
+Words are converted to lowercase unaccented forms, and unigram terms of at
+least three characters are retained. These exclusions are deliberately limited
+to generic structural or formatting artifacts rather than topic-specific words.
+For a term $t$ in chapter $d$, the weight is
 \[
   \operatorname{tfidf}(t,d)
   =
@@ -26,7 +25,6 @@ chapter $d$, it then computes
 \]
 where $N=8$ is the number of chapters and $n_t$ is the number of chapters
 containing $t$. The smoothing avoids zero weights, and alphabetical order
-breaks exact score ties. The generated lists can be reproduced with
-\texttt{python3 scripts/chapter\_tfidf.py}.
+breaks exact score ties.
 
 \input{tables/chapter_tfidf_terms}

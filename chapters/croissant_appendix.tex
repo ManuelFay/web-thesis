@@ -399,17 +399,3 @@ We assess bias through CROWS \sidecite{nangia2020crowspairs, neveol-etal-2022-fr
 \subsection{MMLU Results}
 
 The MMLU benchmark \sidecite{hendrycks_measuring_2020} has become standard in evaluating Large Language Model knowledge and reasoning capabilities. However, it is still currently very challenging for smaller models, and even very recent pretrained models such as Llama 3.2(1B) or Gemma2 \sidecite{dubey2024llama3herdmodels, gemmateam2024gemma2improvingopen} report base model performances that are only slightly better than random ($\leq 33\%)$. CroissantLLM, TinyLlama, and other small model baselines in this paper display random performance on the task ($\approx 25\%)$ which is why the task is not included in the main paper.
-
-\clearpage
-\section{Terminology}
-\label{sec:terminology}
-
-\noindent\textbf{Large Language Models.} 
-According to the definition proposed by \sidecite{rogers2024positionkeyclaimsllm}, Large Language Models (LLMs) (1) have the capacity to model and generate text, (2) are pretrained on large amounts of text data (over 1B tokens according to the proposed threshold) (3) enable transfer learning through finetuning or prompting. Under these criteria, CroissantLLM can largely be considered a large language model despite its small size relative to current best-in-class LLMs.
-
-\noindent\textbf{Small Language Models.} Small Language Models (SLMs) is a term that has appeared more recently and that refers to LLMs with a relatively low parameter count, often optimized for speed or to enable inference with local or lower-end hardware.
-
-\noindent\textbf{Effective Capacity Ratio.} Introduced in \sidecite{pmlr-v202-fernandes23a}, the \textit{effective parameters} of a multilingual model in a particular language is the number of non-embedding parameters a monolingual model would require to match the language performance of the multilingual model. The intuition is that a multilingual model splits its capacity between different languages, so a monolingual model would reach similar performances on a specific language with a fraction of the parameters. We further compute the \textit{effective capacity ratio} by dividing the effective parameters by the multilingual model size. In our joint scaling laws experiments (\autoref{fig:scaling-laws-capacity}), we show that the models trained with equal ratios of English to French have an \textit{ effective capacity ratio} of over 82\% in the French language, indicating that training a monolingual French model with the same performance would require about 82\% of the non-embedding parameters. This hints there must be some effective capacity sharing between English and French.
-
-
-\noindent\textbf{Tokenizer fertility.} According to \sidecite{rust2021good}, \textit{fertility} measures the average number of sub-words (tokens) produced per tokenized word. De facto, fertility has a theoretical lower bound of 1 which would imply that the tokenizer’s vocabulary contains every word in the corpus. 

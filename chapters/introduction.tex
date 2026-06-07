@@ -37,6 +37,10 @@ This thesis focuses on an even more recent development of modern search systems:
 
 \section{This Thesis at a Glance}
 
+For readers unfamiliar with the terminology of information retrieval and modern
+machine learning, recurring technical terms are defined in the standalone
+\autoref{ch:glossary}.
+
 Information retrieval (IR)\sidenote{IR is used interchangeably with \emph{Search} in this thesis.} \emph{is the process of finding material (usually documents) of an unstructured nature (usually text) that satisfies an information need from within large collections (nowadays, usually stored on computers)}.\sidenote{This definition is largely inspired by \cite{manning2008introduction_ir}.} In simpler terms, it is the process of using a query to find and rank information resources (broadly called \emph{documents}\sidenote{A \textbf{document} is an information unit of limited size, typically small enough for a human reader to assess its relevance to a query, such as a page, paragraph, or passage. Although documents are ideally self-contained, they often depend on surrounding context; for example, a page in a textbook may contain the sought-after formula while requiring preceding pages for proper interpretation.}) that are relevant to a user’s information need.
 
 Today, the deep neural networks used to index and query information mostly rely on a \emph{semantic understanding} of the content to retrieve documents at large scales. This contrasts with previous methods that leveraged meta-information (title, author, tags, document visits), or relied on statistical heuristics to match content to a user query (keyword matching).
