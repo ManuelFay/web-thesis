@@ -309,20 +309,20 @@ and (3)  \textbf{enplus} containing 60\,\% English data, 20\,\% French data and 
 
 % \patrick{should I put the scaling law form here? The GPT-4 tech report didn't even bother...}
 
-\begin{figure*}
+\begin{figure}
     % First figure
     \centering
     \includegraphics[width=0.95\textwidth]{images/croissant_images/scaling_laws_croissant_wiki.pdf}
     \caption[Test loss scaling evolution]{Evolution of test cross-entropy loss with model size in English (left) and French (right), for the \textit{wiki} domain, as well as the fitted joint scaling laws,}
     \label{fig:scaling_laws_fit}
-\end{figure*}
+\end{figure}
 
-\begin{figure*}
+\begin{figure}
     \centering
     \includegraphics[width=0.95\textwidth]{images/croissant_images/scaling_laws_capacity_wiki.pdf}
     \caption[Effective capacity ratio]{\textit{Effective capacity ratio} (as predicted by our fitted joint scaling law) for English and French as we change the weight of each language.}
     \label{fig:scaling-laws-capacity}
-\end{figure*}
+\end{figure}
 
 \autoref{fig:scaling_laws_fit} shows the performance predicted by jointly-fitted scaling laws as we scale the model and vary the language weightings on the Wiki data validation split.
 %composed of wiki data, as well as the empirical performance obtained from the trained models.

@@ -1,2 +1,4 @@
 Thesis.pdf
 /build/
+__pycache__/
+*.py[cod]
