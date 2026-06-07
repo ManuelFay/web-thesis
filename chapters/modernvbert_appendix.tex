@@ -142,13 +142,14 @@ We study the different training dynamics of the different training objectives. W
 \subsection{Bridging the Gap with Longer Contrastive Training}
 \label{appendix:cl_scaling}
 We study the impact of additional in-distribution training pairs on embedding tasks by scaling the contrastive training stage. Starting from the final checkpoint of our encoder-based ablation model, we double the contrastive dataset size at each step and train until convergence\sidenote{To avoid overfitting, we set an early stopping on an eval set. We limit the number of step to one epoch on the full dataset.}. This setup tests whether scaling continues to improve performance. 
-Figure~\ref{fig:cl_scaling} shows the scaling behavior. Performance improves overall with more in-distribution data. The vision-tower baseline is quickly surpassed on visual document benchmarks, and scaling narrows the gap on other tasks\sidenote{Note that the models probably won't fully recover baseline vision-tower performance. This highlights the need to choose models according to use case (e.g., lightweight CLIP-like models for image classification).}. We note a plateau in captioning and classification, pointing to the need for more diverse data.  
-\begin{figure}[ht]
+Figure~\ref{fig:cl_scaling} shows the scaling behavior. Performance improves overall with more in-distribution data. The vision-tower baseline is quickly surpassed on visual document benchmarks, and scaling narrows the gap on other tasks\sidenote{Note that the models probably won't fully recover baseline vision-tower performance. This highlights the need to choose models according to use case (e.g., lightweight CLIP-like models for image classification).}. We note a plateau in captioning and classification, pointing to the need for more diverse data.
+
+\begin{figure*}[ht]
     \centering
     \includegraphics[width=\linewidth]{images/modernvbert_figures/vbert_style/cl_scaling.pdf}
     \caption[Contrastive training scaling]{Contrastive training scaling. Each dot on the blue curve represents one fraction of the baseline contrastive training mix (ColPali + MSCOCO). Performance improves with more in-distribution data, surpassing the baseline on document benchmarks and narrowing the gap on image captioning. There is no clear improvement in image classification, highlighting the need for more diverse pairs.}
     \label{fig:cl_scaling}
-\end{figure}
+\end{figure*}
 
 \subsubsection{Optimal Text-To-Image Ratio for Document Retrieval}
 \label{appendix:text_image_ratio}

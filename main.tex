@@ -401,29 +401,32 @@
 \include{chapters/modernvbert_appendix}
 \include{chapters/conteb_appendix}
 \include{chapters/croissant_appendix}
-\chapter{Introduction Appendix}
+\chapter{Additional Appendix}
 
 % \include{chapters/canaries}
 % \include{chapters/reranking_short}
 % \include{chapters/learning_dynamics}
 
 
-\begin{figure*}
+\begin{center}
     \centering
-    \includegraphics[width = 0.95\textwidth]{images/misc/harvard.jpg}
-    \caption[Library of Babel fitting in two books]{The library of Babel can actually impressively be compressed inside these two books, as goes this famous internet joke. Of course, these two books are themselves contained in the library of Babel.}
+    \includegraphics[width=0.9\textwidth]{images/misc/harvard.jpg}
+    \captionof{figure}[Library of Babel fitting in two books]{The library of Babel can actually impressively be compressed inside these two books, as goes this famous internet joke. Of course, these two books are themselves contained in the library of Babel.}
     
     % Latencies indicated in the figure are computed on the same machine \texttt{g2-standard-16} with a NVIDIA-L4 GPU, and averaged over 100 pages. Further details in \autoref{subsection:latency}.The computed score is the average of from all datasets in \textit{ViDoRe} for PDF Parser + Captioning and ColPali respectively. Further details in \autoref{section:results}.} 
     \label{fig:hbs_meme}
-\end{figure*}
-
-\include{chapters/acknowledgments}
-
+\end{center}
 
 %----------------------------------------------------------------------------------------
 
 \backmatter % Denotes the end of the main document content
 \setchapterstyle{plain} % Output plain chapters from this point onwards
+
+\pagelayout{wide} % No margins
+\addpart{Acknowledgments}
+\pagelayout{margin} % Restore margins
+
+\include{chapters/acknowledgments}
 
 %----------------------------------------------------------------------------------------
 %	BIBLIOGRAPHY

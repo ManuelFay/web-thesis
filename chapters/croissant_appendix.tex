@@ -36,7 +36,6 @@ We are open to discussions for potential scoring modifications, and consider the
 
 
 
-\newpage
 \section{Additional data details}
 \label{sec:appendix}
 
@@ -174,7 +173,6 @@ OPUS data distribution is given in Figure \ref{fig:opus}.
 
 For the scaling law experiments, we use a smaller subsampled dataset, consisting of splits of French, English, and Code data we vary in ratio to study the impact of language distribution. In total, we train on 50 billion tokens and sample from the following datasets: French \url{https://huggingface.co/datasets/manu/french-30b}, English \url{https://huggingface.co/datasets/manu/english-60b} and Code \url{https://huggingface.co/datasets/manu/code_20b}. In all datasets, a breakdown of the sources is given in the \textit{dataset\_stats.csv} file at the root of the data folder. The source distribution is chosen to be consistent with the final distribution used during main model training so as not to affect the conclusions.
 
-\clearpage
 \section{Chat examples}
 
 The following results were not cherry-picked and were generated with a temperature of 0.5, a Top-P of 0.95 and a Top-K of 40. They focus on Writing tasks which CroissantLLM is best at.
@@ -286,7 +284,6 @@ I don't have a physical body or medical knowledge. However, I can provide you wi
 5. Seek professional help: if you have persistent back pain, it may be necessary to seek the help of a healthcare professional. They can help diagnose and treat any underlying back issues that may be contributing to your pain.
 \end{completionkaobox}
 
-\clearpage
 \section{Results}
 \subsection{Methodology}
 Base models are evaluated through the LM Evaluation harness framework \sidecite{eval-harness}. For classification tasks, we choose the answer with the largest log likelihood when concatenated with the prompt, as is implemented within the framework.
