@@ -150,6 +150,7 @@ Late-interaction models provide one way to increase expressiveness without movin
 % This makes late interaction more expressive than single-vector bi-encoders, while remaining more scalable than full cross-encoders.
 Hypencoders \sidecite{killingback2025hypencoderhypernetworksinformationretrieval} propose another way to improve matching expressivity: the query encoder produces a small neural network that scores document representations, enabling query-specific relevance functions. Like late interaction, Hypencoder can be seen as an attempt to move beyond fixed cosine similarity while preserving some of the efficiency advantages of retrieval-time indexing.
 
+Generative information retrieval (GenIR) departs more radically from standard matching-based retrieval: instead of comparing a query representation against indexed document representations, a generative model directly produces relevant document identifiers given a query, typically by having assimilated the corpus content in parametric memory \sidecite{tay2022transformermemorydifferentiablesearch, li2024matchinggenerationsurveygenerative}. While scaling GenIR to very large corpora remains difficult, it is an interesting concept because it exploits associative recall in a way standard retrieval models cannot.
 
 
 \noindent\textbf{Learned sparse retrieval.}
