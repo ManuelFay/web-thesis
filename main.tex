@@ -295,9 +295,16 @@
 %	OUTPUT TITLE PAGE AND PREVIOUS
 %----------------------------------------------------------------------------------------
 
-% Note that \maketitle outputs the pages before here
+% Official Paris-Saclay title and abstract pages.
+\hypersetup{pageanchor=false}
+\input{chapters/official_frontmatter.tex}
+\hypersetup{pageanchor=true}
 
+% Original thesis title page and dedication/quote.
+\pagelayout{wide} % No margins
 \maketitle
+\pagelayout{margin} % Restore margins
+
 
 %----------------------------------------------------------------------------------------
 %	PREFACE

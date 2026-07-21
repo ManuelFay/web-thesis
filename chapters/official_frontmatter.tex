@@ -1,0 +1,105 @@
+\definecolor{Prune}{RGB}{99,0,60}
+
+\begin{titlepage}
+\thispagestyle{empty}
+\newgeometry{left=6cm,bottom=2cm,top=1cm,right=1cm}
+\sffamily
+
+\tikz[remember picture,overlay] \node[anchor=west,opacity=1,inner sep=0pt,outer sep=0pt] at (current page.west){\includegraphics[height=\paperheight]{official_template/Frame-ups.pdf}};
+
+\color{white}
+\begin{picture}(0,0)
+\put(-152,-743){\rotatebox{90}{\Large \textsc{THÈSE DE DOCTORAT}}} \\
+\put(-120,-743){\rotatebox{90}{NNT : [numéro NNT à compléter]}}
+\end{picture}
+\vspace{-14mm}
+
+\flushright
+\vspace{10mm}
+\color{Prune}
+\fontsize{22}{26}\selectfont
+\Huge Document Retrieval Beyond Text Embeddings\\
+
+\normalsize
+\color{black}
+\Large{\textit{Recherche documentaire au-delà des plongements textuels}}\\
+
+\fontsize{9}{13}\selectfont
+\vspace{1.5cm}
+
+\large
+\textbf{Thèse de doctorat de l'université Paris-Saclay}\\
+
+\vspace{6mm}
+
+\normalsize École doctorale n$^{\circ}$ 580, Sciences et Technologies de l'Information et de la Communication (STIC)\\
+\normalsize Spécialité de doctorat : Informatique\\
+\normalsize Graduate School : INTERFACES. Référent : [référent à compléter]\\
+\vspace{6mm}
+
+\small Thèse préparée dans l'unité de recherche \textbf{Mathématiques et Informatique pour la Complexité et les Systèmes - EA 4037}, sous la direction de \textbf{Céline Hudelot et de Pierre Colombo}.\\
+\vspace{15mm}
+
+\textbf{Thèse soutenue à Paris-Saclay, le [JJ mois AAAA], par}\\
+\bigskip
+\Large {\color{Prune} \textbf{Manuel Faysse}}
+
+\vspace{\fill}
+\bigskip
+
+\flushleft
+\normalsize {\color{Prune} \textbf{Composition du jury}}\\
+{\color{Prune} \footnotesize {Membres du jury avec voix délibérative}} \\
+\vspace{2mm}
+\footnotesize
+\begin{tabular}{|p{7cm}l}
+\arrayrulecolor{Prune}
+\textbf{Claire Gardent} & Examinatrice\\
+Directrice de recherche CNRS, LORIA & \\
+\textbf{Benjamin Piwowarski} & Rapporteur \& examinateur\\
+Directeur de recherche CNRS, ISIR & \\
+\textbf{Didier Schwab} & Rapporteur \& examinateur\\
+Professeur des universités, Université Grenoble Alpes, LIG & \\
+\textbf{Omar Khattab} & Examinateur\\
+Assistant Professor, MIT EECS, CSAIL & \\
+\textbf{Alexandre Allauzen} & Examinateur\\
+Professeur d'informatique, ESPCI Paris - PSL, LAMSADE & \\
+\end{tabular}
+\end{titlepage}
+
+\clearpage
+\thispagestyle{empty}
+\newgeometry{top=1.5cm,bottom=1.25cm,left=2cm,right=2cm}
+\sffamily
+
+\noindent
+\includegraphics[height=2.45cm]{official_template/logo_usp_STIC.png}
+\vspace{8mm}
+
+\normalsize
+
+\begin{mdframed}[linecolor=Prune,linewidth=1]
+\textbf{Titre :} Recherche documentaire au-delà des plongements textuels
+
+\noindent \textbf{Mots clés :} recherche d'information, recherche documentaire, plongements, recherche visuelle, apprentissage profond, grands modèles de langue
+
+\begin{multicols}{2}
+\noindent \textbf{Résumé :} Cette thèse étudie les limites des systèmes modernes de recherche documentaire fondés uniquement sur des plongements textuels. Elle défend l'idée que la recherche doit exploiter des informations facilement disponibles mais souvent négligées, notamment la structure visuelle des documents et les contextes qui entourent les requêtes et les passages. La première partie introduit et analyse la recherche documentaire visuelle, où les pages sont indexées directement à partir de leur image afin de prendre en compte le texte, la mise en page, les tableaux et les figures. La seconde partie examine comment le contexte documentaire, les connaissances paramétriques des modèles de langue et l'entraînement multilingue peuvent améliorer les représentations utilisées pour la recherche. L'ensemble propose des pistes pour construire des systèmes de recherche plus robustes, plus multimodaux et mieux adaptés aux usages réels.
+\end{multicols}
+\end{mdframed}
+
+\vspace{6mm}
+
+\begin{mdframed}[linecolor=Prune,linewidth=1]
+\textbf{Title:} Document Retrieval Beyond Text Embeddings
+
+\noindent \textbf{Keywords:} information retrieval, document retrieval, embeddings, visual retrieval, deep learning, large language models
+
+\begin{multicols}{2}
+\noindent \textbf{Abstract:} This thesis studies the limits of modern document retrieval systems that rely only on text embeddings. It argues that retrieval should make better use of readily available but often overlooked information, especially the visual structure of documents and the context surrounding queries and passages. The first part introduces and analyzes visual document retrieval, where pages are indexed directly from their images so that text, layout, tables, figures, and other visual cues can contribute to retrieval. The second part studies how document context, the parametric knowledge of language models, and multilingual training can improve the representations used for search. Together, these contributions outline practical directions for retrieval systems that are more robust, more multimodal, and better aligned with real-world information needs.
+\end{multicols}
+\end{mdframed}
+
+\clearpage
+\restoregeometry
+\normalfont
