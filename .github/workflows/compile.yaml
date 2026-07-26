@@ -40,3 +40,4 @@ jobs:
           name: PDF
           path: Thesis.pdf
           if-no-files-found: error
+          retention-days: 3
