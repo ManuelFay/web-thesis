@@ -1,0 +1,85 @@
+---
+import ThesisLayout from "../layouts/ThesisLayout.astro";
+import site from "../generated/site.json";
+
+const base = import.meta.env.BASE_URL.replace(/\/?$/, "/");
+const allEntries = site.outline.flatMap((section) => section.chapters);
+const mainChapterCount = allEntries.filter((chapter) => chapter.kind === "Chapter").length;
+---
+
+<ThesisLayout
+  title={`${site.title} — Manuel Faysse`}
+  description={site.abstractHtml.replace(/<[^>]*>/g, "")}
+>
+  <article class="landing">
+    <header class="landing-header">
+      <p class="eyebrow">Doctoral thesis</p>
+      <h1>{site.title}</h1>
+      {site.frenchTitle && <p class="landing-subtitle" lang="fr">{site.frenchTitle}</p>}
+      <div class="landing-search-visual" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"></circle><path d="m16 16 4 4"></path></svg>
+        <span>{site.keywords.slice(0, 4).join(" · ")}</span>
+        <kbd>↵</kbd>
+      </div>
+      <p class="landing-index-meta">Indexing {mainChapterCount} chapters and {allEntries.length - mainChapterCount} supporting sections</p>
+      <p class="landing-byline">{site.author}<br /><span>{site.institution}</span></p>
+      <div class="landing-actions">
+        <a class="landing-start" href={`${base}chapters/introduction/`}>Begin reading <span>→</span></a>
+        <a href={`${base}Thesis.pdf`}>Download PDF</a>
+      </div>
+    </header>
+
+    <div class="landing-grid">
+      <section class="landing-abstract" aria-labelledby="abstract-title">
+        <p class="eyebrow">Thesis summary</p>
+        <h2 id="abstract-title">Abstract</h2>
+        <div set:html={site.abstractHtml}></div>
+      </section>
+
+      <nav class="landing-toc" aria-labelledby="contents-title">
+        <p class="eyebrow">Contents</p>
+        <h2 id="contents-title">Read the thesis</h2>
+        <p class="landing-result-count">{allEntries.length} indexed pages</p>
+        {site.outline.map((section) => (
+          <section class="toc-part">
+            <h3>{section.label}</h3>
+            <ol>
+              {section.chapters.map((chapter) => {
+                return (
+                  <li>
+                    <span>{chapter.number || "·"}</span>
+                    <a href={`${base}chapters/${chapter.slug}/`}>
+                      {chapter.title}
+                    </a>
+                  </li>
+                );
+              })}
+            </ol>
+          </section>
+        ))}
+      </nav>
+    </div>
+
+    <section class="landing-details" aria-labelledby="details-title">
+      <div>
+        <p class="eyebrow">Thesis details</p>
+        <h2 id="details-title">Research context</h2>
+      </div>
+      <dl class="thesis-facts">
+        <div><dt>Speciality</dt><dd>{site.speciality}</dd></div>
+        <div><dt>Doctoral school</dt><dd>{site.doctoralSchool}</dd></div>
+        <div><dt>Research unit</dt><dd>{site.researchUnit}</dd></div>
+        <div><dt>Supervision</dt><dd>{site.supervisors.join(" · ")}</dd></div>
+        <div class="keywords"><dt>Keywords</dt><dd>{site.keywords.join(" · ")}</dd></div>
+      </dl>
+      {site.jury.length > 0 && (
+        <div class="jury">
+          <p class="eyebrow">Jury</p>
+          <ul>
+            {site.jury.map((member) => <li><strong>{member.name}</strong><span>{member.role}</span></li>)}
+          </ul>
+        </div>
+      )}
+    </section>
+  </article>
+</ThesisLayout>

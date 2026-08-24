@@ -2,3 +2,8 @@ Thesis.pdf
 /build/
 __pycache__/
 *.py[cod]
+node_modules/
+.astro/
+/dist-web/
+/src/generated/
+/public/generated/

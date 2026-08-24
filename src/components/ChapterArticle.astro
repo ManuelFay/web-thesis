@@ -1,0 +1,65 @@
+---
+const {
+  chapter,
+  partLabel,
+  chapterLabel,
+  previous = null,
+  next = null
+} = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/?$/, "/");
+const html = chapter.html.replaceAll("__BASE__", base);
+---
+
+<article class="chapter">
+  {chapter.dedication && (
+    <section class="babel-dedication" aria-label="Dedication">
+      <blockquote set:html={chapter.dedication.quoteHtml}></blockquote>
+      <cite set:html={chapter.dedication.attributionHtml}></cite>
+    </section>
+  )}
+  <header class="chapter-header">
+    <p class="eyebrow">{partLabel}</p>
+    <p class="chapter-number">{chapterLabel}</p>
+    <h1 set:html={chapter.titleHtml}></h1>
+    {!chapter.pdfOnly && (
+      <div class="chapter-meta">
+        <span>{chapter.stats.words.toLocaleString()} words</span>
+        <span>{chapter.stats.readingMinutes} min read</span>
+        <span>{chapter.stats.citations} sources cited</span>
+      </div>
+    )}
+  </header>
+  {chapter.toc.length > 0 && (
+    <nav class="chapter-toc" aria-label="On this page">
+      <p class="eyebrow">In this chapter</p>
+      <ol>
+        {chapter.toc.filter((item) => item.level === 2).map((item) => (
+          <li><a href={`#${item.id}`}>{item.text}</a></li>
+        ))}
+      </ol>
+    </nav>
+  )}
+  <div class="chapter-body" data-pagefind-body data-pagefind-meta={`kind:${chapter.kind}`} data-pagefind-weight={chapter.kind === "Appendix" ? "0.55" : "1"} set:html={html}></div>
+  <nav class="chapter-footer-nav" aria-label="Chapter navigation">
+    <div>{previous && <a href={previous.href}>← {previous.label}</a>}</div>
+    <div>{next ? <a href={next.href}>{next.label} →</a> : <a href="#content">Back to the beginning ↑</a>}</div>
+  </nav>
+</article>
+
+<script>
+  const revealReferencedEntry = () => {
+    if (!location.hash.startsWith("#bib-")) return;
+    const target = document.querySelector(location.hash);
+    const bibliography = target?.closest("details.bibliography");
+    if (bibliography) bibliography.open = true;
+  };
+
+  revealReferencedEntry();
+  window.addEventListener("hashchange", revealReferencedEntry);
+  document.addEventListener("click", (event) => {
+    const link = event.target instanceof Element ? event.target.closest('a[href^="#bib-"]') : null;
+    if (!link) return;
+    const bibliography = document.querySelector("details.bibliography");
+    if (bibliography) bibliography.open = true;
+  });
+</script>

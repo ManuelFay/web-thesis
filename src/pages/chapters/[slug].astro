@@ -1,0 +1,43 @@
+---
+import ChapterArticle from "../../components/ChapterArticle.astro";
+import ThesisLayout from "../../layouts/ThesisLayout.astro";
+import site from "../../generated/site.json";
+
+export function getStaticPaths() {
+  const chapterModules = import.meta.glob("../../generated/*.json", { eager: true });
+  const ordered = site.outline.flatMap((section) =>
+    section.chapters.map((chapter) => ({ ...chapter, partLabel: section.label }))
+  );
+  return ordered.map((entry, index) => ({
+    params: { slug: entry.slug },
+    props: {
+      chapter: chapterModules[`../../generated/${entry.slug}.json`]?.default,
+      entry,
+      previousEntry: ordered[index - 1] || null,
+      nextEntry: ordered[index + 1] || null
+    }
+  }));
+}
+
+const { chapter, entry, previousEntry, nextEntry } = Astro.props;
+if (!chapter) throw new Error(`Missing generated chapter data for ${entry.slug}`);
+const base = import.meta.env.BASE_URL.replace(/\/?$/, "/");
+const chapterLink = (item) => item && ({ label: item.title, href: `${base}chapters/${item.slug}/` });
+const previous = previousEntry ? chapterLink(previousEntry) : { label: "Contents", href: base };
+const next = chapterLink(nextEntry);
+const chapterLabel = entry.kind === "Back matter" ? entry.kind : `${entry.kind} ${entry.number}`;
+---
+
+<ThesisLayout
+  title={`${chapter.title} — ${site.title}`}
+  description={chapter.description}
+  activeSlug={entry.slug}
+>
+  <ChapterArticle
+    chapter={chapter}
+    partLabel={entry.partLabel}
+    chapterLabel={chapterLabel}
+    previous={previous}
+    next={next}
+  />
+</ThesisLayout>

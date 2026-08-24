@@ -1,0 +1,123 @@
+---
+const base = import.meta.env.BASE_URL.replace(/\/?$/, "/");
+---
+
+<div class="thesis-search" data-search-root data-base={base}>
+  <button class="search-trigger" type="button" aria-haspopup="dialog">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"></circle><path d="m16 16 4 4"></path></svg>
+    <span>Search the thesis</span>
+    <kbd>⌘K</kbd>
+  </button>
+  <dialog class="search-dialog" aria-labelledby="search-title">
+    <div class="search-panel">
+      <div class="search-heading">
+        <label id="search-title" for="thesis-search-input">Search the thesis</label>
+        <button class="search-close" type="button" aria-label="Close search">×</button>
+      </div>
+      <div class="search-input-wrap">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"></circle><path d="m16 16 4 4"></path></svg>
+        <input id="thesis-search-input" type="search" placeholder="Try “late interaction” or “contextual embeddings”" autocomplete="off" spellcheck="false" />
+      </div>
+      <p class="search-status" aria-live="polite">Type to search across every chapter.</p>
+      <ol class="search-results"></ol>
+    </div>
+  </dialog>
+</div>
+
+<script is:inline>
+  for (const root of document.querySelectorAll("[data-search-root]")) {
+    if (!(root instanceof HTMLElement) || root.dataset.ready) continue;
+    root.dataset.ready = "true";
+    const dialog = root.querySelector("dialog");
+    const trigger = root.querySelector(".search-trigger");
+    const close = root.querySelector(".search-close");
+    const input = root.querySelector("input[type='search']");
+    const status = root.querySelector(".search-status");
+    const list = root.querySelector(".search-results");
+    const base = root.dataset.base || "/";
+    let pagefind;
+    let request = 0;
+
+    const loadSearch = async () => {
+      if (pagefind) return pagefind;
+      pagefind = await import(/* @vite-ignore */ `${base}pagefind/pagefind.js`);
+      await pagefind.options({
+        baseUrl: base,
+        highlightParam: "highlight",
+        ranking: { metaWeights: { title: 5, kind: 0 } }
+      });
+      return pagefind;
+    };
+
+    const openSearch = () => {
+      if (!(dialog instanceof HTMLDialogElement)) return;
+      if (!dialog.open) dialog.showModal();
+      requestAnimationFrame(() => input?.focus());
+    };
+
+    const render = async () => {
+      if (!(input instanceof HTMLInputElement) || !(list instanceof HTMLOListElement) || !(status instanceof HTMLElement)) return;
+      const query = input.value.trim();
+      const currentRequest = ++request;
+      list.replaceChildren();
+      if (query.length < 2) {
+        status.textContent = "Type at least two characters to search every chapter.";
+        return;
+      }
+      status.textContent = "Searching…";
+      try {
+        const api = await loadSearch();
+        const search = await api.search(query);
+        const rankedResults = await Promise.all(search.results.map(async (result, index) => ({
+          ...(await result.data()),
+          originalRank: index
+        })));
+        const kindPriority = (result) => result.meta?.kind === "Appendix" ? 1 : result.meta?.kind === "Back matter" ? 2 : 0;
+        const results = rankedResults.sort((left, right) => kindPriority(left) - kindPriority(right) || left.originalRank - right.originalRank);
+        if (currentRequest !== request) return;
+        const sectionResults = results.flatMap((result) => {
+          const chapterTitle = result.meta?.title || "Thesis chapter";
+          const anchored = (result.sub_results || []).filter((subResult) => subResult.anchor || subResult.url?.includes("#"));
+          const matches = anchored.length ? anchored : [{ title: chapterTitle, url: result.url, excerpt: result.excerpt }];
+          return matches.map((match) => ({ ...match, chapterTitle }));
+        });
+        const displayedResults = sectionResults.slice(0, 60);
+        status.textContent = sectionResults.length
+          ? `${sectionResults.length} matching section${sectionResults.length === 1 ? "" : "s"} across ${results.length} chapter${results.length === 1 ? "" : "s"}${sectionResults.length > displayedResults.length ? ` · showing ${displayedResults.length}` : ""}`
+          : `No results for “${query}”.`;
+        for (const result of displayedResults) {
+          const item = document.createElement("li");
+          const link = document.createElement("a");
+          const chapter = document.createElement("span");
+          const title = document.createElement("strong");
+          const excerpt = document.createElement("span");
+          link.href = result.url;
+          chapter.className = "search-result-chapter";
+          chapter.textContent = result.chapterTitle;
+          title.textContent = result.title || result.chapterTitle;
+          excerpt.className = "search-excerpt";
+          excerpt.innerHTML = result.excerpt || "";
+          link.append(chapter, title, excerpt);
+          item.append(link);
+          list.append(item);
+        }
+      } catch {
+        if (currentRequest !== request) return;
+        status.textContent = "Search is available in production builds. Run npm run build, then npm run preview.";
+      }
+    };
+
+    trigger?.addEventListener("click", openSearch);
+    close?.addEventListener("click", () => dialog?.close());
+    dialog?.addEventListener("click", (event) => {
+      if (event.target === dialog) dialog.close();
+    });
+    input?.addEventListener("input", render);
+    document.addEventListener("keydown", (event) => {
+      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
+        event.preventDefault();
+        openSearch();
+      }
+    });
+  }
+</script>
