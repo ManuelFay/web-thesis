@@ -845,7 +845,7 @@ function renderCitation(rawKeys, asSidenote) {
   const inline = `<span class="citation">(${labels.map(({ key, label }) => `<a href="#bib-${escapeAttr(key)}">${escapeHtml(label)}</a>`).join("; ")})</span>`;
   if (!asSidenote) return inline;
   const details = labels.map(({ key, entry, label }) => `<a href="#bib-${escapeAttr(key)}"><strong>${escapeHtml(label)}</strong><span class="citation-title">${escapeHtml(cleanTex(entry?.title || key))}</span></a>`).join("<br>");
-  return renderSidenote(details, true);
+  return renderSidenote(details, true, "citation");
 }
 
 function renderFullCitation(rawKey) {
@@ -860,10 +860,11 @@ function renderFullCitation(rawKey) {
   return `<span class="full-citation">${escapeHtml(authors)} (${escapeHtml(year)}). <em>${escapeHtml(title)}</em>${venue ? `. ${escapeHtml(venue)}` : ""}.</span>`;
 }
 
-function renderSidenote(content, alreadyHtml = false) {
+function renderSidenote(content, alreadyHtml = false, kind = "note") {
   sidenoteCounter += 1;
   const number = sidenoteCounter;
-  return `<label class="sidenote-wrap"><input class="sidenote-toggle" type="checkbox"><sup class="sidenote-number" aria-label="Open sidenote ${number}">${number}</sup><span class="sidenote" data-note="${number}">${alreadyHtml ? content : renderInline(content)}</span></label>`;
+  const modifier = kind === "citation" ? " sidecite" : "";
+  return `<label class="sidenote-wrap${modifier}"><input class="sidenote-toggle" type="checkbox"><sup class="sidenote-number" aria-label="Open ${kind} sidenote ${number}">${number}</sup><span class="sidenote${modifier}" data-note="${number}">${alreadyHtml ? content : renderInline(content)}</span></label>`;
 }
 
 function renderReference(label, command = "autoref") {

@@ -146,7 +146,7 @@ Pushes to `main` trigger `.github/workflows/compile.yaml`. The workflow compiles
 the thesis PDF, builds and validates the Astro website and Pagefind index,
 embeds the freshly compiled PDF in the website, and deploys `dist-web/` to
 GitHub Pages. It can also be started manually from the Actions tab. The PDF at
-`https://manuelfay.github.io/Manuel-s-Thesis/Thesis.pdf` is replaced by each
+`https://manuelfay.github.io/web-thesis/Thesis.pdf` is replaced by each
 successful deployment, so only the latest published version is retained.
 
 For push-triggered builds, the workflow fingerprints the tracked LaTeX,
@@ -159,7 +159,7 @@ compile the PDF, which provides an explicit way to force a fresh build.
 The project-site URL is:
 
 ```text
-https://manuelfay.github.io/Manuel-s-Thesis/
+https://manuelfay.github.io/web-thesis/
 ```
 
 Before the first deployment, open the repository's **Settings → Pages** and set
@@ -205,13 +205,13 @@ and previews. Set `BASE_PATH` when
 building for a GitHub project page, for example:
 
 ```bash
-BASE_PATH=/Manuel-s-Thesis npm run build
+BASE_PATH=/web-thesis npm run build
 ```
 
 The validator also understands the repository base path:
 
 ```bash
-BASE_PATH=/Manuel-s-Thesis npm run check
+BASE_PATH=/web-thesis npm run check
 ```
 
 The conversion logic lives in `scripts/convert-thesis.mjs`. Unsupported LaTeX

@@ -52,8 +52,8 @@ jobs:
         if: github.event_name == 'push'
         continue-on-error: true
         env:
-          PDF_URL: https://manuelfay.github.io/Manuel-s-Thesis/Thesis.pdf
-          FINGERPRINT_URL: https://manuelfay.github.io/Manuel-s-Thesis/pdf-source.sha256
+          PDF_URL: https://manuelfay.github.io/web-thesis/Thesis.pdf
+          FINGERPRINT_URL: https://manuelfay.github.io/web-thesis/pdf-source.sha256
         run: |
           curl --fail --location --retry 3 --retry-all-errors \
             --output /tmp/published-pdf-source.sha256 \
@@ -89,7 +89,7 @@ jobs:
 
       - name: Build and validate website
         env:
-          BASE_PATH: /Manuel-s-Thesis
+          BASE_PATH: /web-thesis
           SITE_URL: https://manuelfay.github.io
           ASTRO_TELEMETRY_DISABLED: "1"
         run: npm run check

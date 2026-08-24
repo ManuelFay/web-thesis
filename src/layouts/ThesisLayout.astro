@@ -30,7 +30,8 @@ const base = import.meta.env.BASE_URL.replace(/\/?$/, "/");
       </a>
       <nav aria-label="Site links">
         <ThesisSearch />
-        <a href={`${base}chapters/introduction/`}>Read</a>
+        <a class="header-about-link" href="https://manuelfay.github.io/">About Manuel</a>
+        <a class="header-read-link" href={`${base}chapters/introduction/`}>Read</a>
         <a class="header-pdf-link" href={`${base}Thesis.pdf`}><span aria-hidden="true">↓</span> PDF</a>
         <button class="theme-toggle" type="button" aria-label="Toggle colour theme">◐</button>
       </nav>
