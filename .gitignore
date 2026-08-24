@@ -7,3 +7,4 @@ node_modules/
 /dist-web/
 /src/generated/
 /public/generated/
+/animations/late_interaction.mp4
