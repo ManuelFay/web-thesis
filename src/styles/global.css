@@ -8,6 +8,9 @@
   --accent: #b9462e;
   --accent-soft: #ead7c8;
   --sage: #dce5d7;
+  --positive: #25745b;
+  --negative: #a53d32;
+  --informative: #315f9b;
   --nav-width: 17rem;
   --margin-width: 17rem;
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -26,6 +29,9 @@
   --accent: #ef8b6e;
   --accent-soft: #543128;
   --sage: #28372d;
+  --positive: #75c6a5;
+  --negative: #f08b80;
+  --informative: #86afe6;
 }
 
 * { box-sizing: border-box; }
@@ -209,22 +215,29 @@ main { min-width: 0; }
 .chapter-figure { clear: both; width: calc(100% + var(--margin-width)); margin: 3.2rem 0; scroll-margin-top: 6.5rem; }
 .figure-media { display: flex; justify-content: center; align-items: center; gap: 1rem; }
 .figure-media.multi { flex-wrap: wrap; align-items: flex-start; }
-.chapter-figure img { display: block; width: min(100%, var(--figure-width, 100%)); height: auto; max-height: min(76vh, 48rem); object-fit: contain; background: white; }
+.chapter-figure img { display: block; width: min(100%, var(--figure-width, 100%)); height: auto; max-height: min(76vh, 48rem); border: 1px solid color-mix(in srgb, var(--line) 76%, var(--ink)); border-radius: .15rem; object-fit: contain; background: white; box-shadow: 0 .22rem .5rem -.3rem color-mix(in srgb, var(--ink) 24%, transparent); }
 .figure-media.multi img { flex: 0 1 calc(var(--figure-width, 100%) - .5rem); }
-.chapter-figure figcaption { max-width: 47rem; margin-top: .9rem; color: var(--muted); font: .73rem/1.55 Inter, sans-serif; }
+.chapter-figure figcaption { max-width: 47rem; margin-top: 1rem; color: var(--muted); font: .73rem/1.55 Inter, sans-serif; }
 .chapter-figure figcaption strong { color: var(--ink); }
 .chapter-figure.margin { float: right; clear: right; width: calc(var(--margin-width) - 2rem); margin: .5rem calc(-1 * var(--margin-width)) 1.5rem 2rem; }
 .chapter-figure.margin img { min-height: 0; }
 .math-display { clear: both; width: calc(100% + var(--margin-width)); margin: 2.3rem 0; padding: 1.2rem; overflow-x: auto; text-align: center; background: var(--paper-raised); border-block: 1px solid var(--line); }
 .math-error { color: var(--accent); font-family: ui-monospace, monospace; }
 .table-wrap { clear: both; width: calc(100% + var(--margin-width)); margin: 3rem 0; overflow-x: auto; scroll-margin-top: 6.5rem; }
-.table-wrap table { width: 100%; border-collapse: collapse; font: .7rem/1.4 Inter, sans-serif; background: var(--paper-raised); }
-.table-wrap th, .table-wrap td { padding: .55rem .65rem; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+.table-wrap table { width: 100%; border: 1px solid color-mix(in srgb, var(--line) 76%, var(--ink)); border-collapse: collapse; font: .7rem/1.4 Inter, sans-serif; background: var(--paper-raised); }
+.table-wrap th, .table-wrap td { padding: .55rem .65rem; border-right: 1px solid color-mix(in srgb, var(--line) 72%, transparent); border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+.table-wrap th:last-child, .table-wrap td:last-child { border-right: 0; }
+.table-wrap tr:last-child > * { border-bottom: 0; }
 .table-wrap tr:first-child { font-weight: 700; }
 .table-wrap caption { padding: .8rem 0; text-align: left; color: var(--muted); }
 .table-delta { display: block; color: var(--muted); font-size: .85em; white-space: nowrap; }
-.table-delta.plus { color: #25745b; }
-.table-delta.minus { color: #a53d32; }
+.table-delta.plus { color: var(--positive); }
+.table-delta.minus { color: var(--negative); }
+.latex-color.positive { color: var(--positive); }
+.latex-color.negative { color: var(--negative); }
+.latex-color.blue { color: var(--informative); }
+.table-delta-inline { display: inline-flex; align-items: baseline; gap: .08em; margin-left: .18em; font-size: .78em; font-weight: 650; white-space: nowrap; }
+.table-delta-inline .katex { font-size: .92em; }
 .chapter-body ul, .chapter-body ol { padding-left: 1.4rem; }
 .chapter-body li { margin: .45rem 0; }
 .bibliography { clear: both; width: calc(100% + var(--margin-width)); margin-top: 6rem; border-top: 1px solid var(--ink); }

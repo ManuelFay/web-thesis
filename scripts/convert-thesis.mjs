@@ -50,6 +50,7 @@ let figureCounter = 0;
 let tableCounter = 0;
 let localLabels = new Set();
 let localReferences = new Map();
+const globalReferences = buildGlobalReferenceIndex();
 
 fs.mkdirSync(outputDir, { recursive: true });
 for (const config of chapterConfigs) generateChapter(config);
@@ -186,6 +187,83 @@ function readChapterSource(config) {
   const end = input.indexOf(config.range[1], start + config.range[0].length);
   if (start < 0 || end < 0) throw new Error(`Could not extract ${config.slug} from ${config.source}`);
   return input.slice(start, end);
+}
+
+function buildGlobalReferenceIndex() {
+  const references = new Map();
+  for (const config of chapterConfigs) {
+    const source = stripComments(expandInputs(readChapterSource(config)));
+    const register = (label, details = {}) => {
+      if (!label || references.has(label)) return;
+      references.set(label, { slug: config.slug, ...details });
+    };
+
+    for (const match of source.matchAll(/\\labch\{([^}]+)\}/g)) {
+      register(`ch:${match[1]}`, { type: config.kind === "Appendix" ? "Appendix" : "Chapter", number: config.number });
+    }
+
+    const counters = { figure: 0, table: 0, equation: 0 };
+    const environmentPattern = /\\begin\{(figure\*?|marginfigure|promptfigure|table\*?|equation\*?|align\*?)\}/g;
+    for (const match of source.matchAll(environmentPattern)) {
+      const environment = match[1];
+      const kind = environment.startsWith("figure") || environment === "marginfigure" || environment === "promptfigure"
+        ? "figure"
+        : environment.startsWith("table") ? "table" : "equation";
+      counters[kind] += 1;
+      if (environment === "promptfigure") {
+        let cursor = match.index + match[0].length;
+        while (/\s/.test(source[cursor] || "")) cursor += 1;
+        if (source[cursor] === "[") cursor = readGroup(source, cursor, "[", "]").end;
+        while (/\s/.test(source[cursor] || "")) cursor += 1;
+        const title = source[cursor] === "{" ? readGroup(source, cursor) : null;
+        cursor = title?.end || cursor;
+        while (/\s/.test(source[cursor] || "")) cursor += 1;
+        const label = source[cursor] === "{" ? readGroup(source, cursor) : null;
+        if (label) register(label.value, { type: "Figure", number: counters.figure });
+      }
+      const end = source.indexOf(`\\end{${environment}}`, match.index + match[0].length);
+      const body = source.slice(match.index, end < 0 ? match.index + match[0].length : end);
+      const type = kind[0].toUpperCase() + kind.slice(1);
+      for (const label of body.matchAll(/\\label\{([^}]+)\}/g)) {
+        register(label[1], { type, number: counters[kind] });
+      }
+    }
+
+    const sectionCounters = [0, 0, 0];
+    const headingPattern = /\\(section|subsection|subsubsection|paragraph)\*?\{/g;
+    for (const match of source.matchAll(headingPattern)) {
+      const level = { section: 0, subsection: 1, subsubsection: 2, paragraph: 2 }[match[1]];
+      sectionCounters[level] += 1;
+      for (let deeper = level + 1; deeper < sectionCounters.length; deeper += 1) sectionCounters[deeper] = 0;
+      const title = readGroup(source, match.index + match[0].length - 1);
+      const nextHeading = source.slice(title.end).search(/\\(?:section|subsection|subsubsection|paragraph)\*?\{/);
+      const extent = nextHeading < 0 ? source.length : title.end + nextHeading;
+      const nearby = source.slice(title.end, extent);
+      const label = nearby.match(/^\s*\\label\{([^}]+)\}/)?.[1];
+      if (!label) continue;
+      const parts = sectionCounters.slice(0, level + 1).filter((part) => part > 0);
+      const number = config.number ? [config.number, ...parts].join(".") : parts.join(".");
+      register(label, {
+        type: match[1] === "paragraph" ? "Section" : match[1][0].toUpperCase() + match[1].slice(1),
+        number
+      });
+    }
+
+    for (const match of source.matchAll(/\\label\{([^}]+)\}/g)) {
+      register(match[1], { type: inferReferenceType(match[1], config) });
+    }
+  }
+  return references;
+}
+
+function inferReferenceType(label, config = null) {
+  if (label.startsWith("fig:") || /:fig:/.test(label)) return "Figure";
+  if (/^(?:table:|tab:)/.test(label) || /:tab:/.test(label)) return "Table";
+  if (/^(?:eq:|equation:)/.test(label)) return "Equation";
+  if (label.startsWith("ch:")) return config?.kind === "Appendix" ? "Appendix" : "Chapter";
+  if (/^(?:appendix:|app:)/.test(label) || /:appendix:/.test(label)) return "Appendix";
+  if (/^(?:subsection:|subsec:|ssec:)/.test(label)) return "Subsection";
+  return "Section";
 }
 
 function readDedication() {
@@ -474,9 +552,31 @@ function renderTable(body) {
     .replace(/\\cmidrule(?:\([^)]*\))?\{[^}]+\}/g, "")
     .replace(/\\(?:cellcolor|columncolor|rowcolor)\{[^}]+\}/g, "");
   const rows = splitTableRows(cleaned).map((row) => row.trim()).filter(Boolean);
+  const activeRowspans = [];
   const htmlRows = rows.map((row) => {
-    const cells = splitTopLevel(row, "&").map(renderTableCell).join("");
-    return `<tr>${cells}</tr>`;
+    const occupied = activeRowspans.map((remaining) => remaining > 0);
+    for (let column = 0; column < activeRowspans.length; column += 1) {
+      if (activeRowspans[column] > 0) activeRowspans[column] -= 1;
+    }
+    const cells = [];
+    let column = 0;
+    for (const rawCell of splitTopLevel(row, "&")) {
+      const empty = rawCell.trim() === "";
+      while (occupied[column] && !empty) column += 1;
+      if (occupied[column] && empty) {
+        column += 1;
+        continue;
+      }
+      const cell = renderTableCell(rawCell);
+      cells.push(cell.html);
+      if (cell.rowspan > 1) {
+        for (let offset = 0; offset < cell.colspan; offset += 1) {
+          activeRowspans[column + offset] = Math.max(activeRowspans[column + offset] || 0, cell.rowspan - 1);
+        }
+      }
+      column += cell.colspan;
+    }
+    return `<tr>${cells.join("")}</tr>`;
   }).join("");
   return `${aliases}<div class="table-wrap" id="${escapeAttr(label)}"><table><caption><strong>Table ${tableCounter}.</strong> ${renderInline(removeOptionalCaption(caption))}</caption><tbody>${htmlRows}</tbody></table></div>`;
 }
@@ -538,7 +638,11 @@ function renderTableCell(rawCell) {
     }
   }
   const attrs = Object.entries(attributes).map(([name, value]) => ` ${name}="${value}"`).join("");
-  return `<td${attrs}>${renderInline(content)}</td>`;
+  return {
+    html: `<td${attrs}>${renderInline(content)}</td>`,
+    colspan: attributes.colspan || 1,
+    rowspan: attributes.rowspan || 1
+  };
 }
 
 function renderEquation(body) {
@@ -707,7 +811,15 @@ function renderInline(input) {
       let after = group.end;
       while (/\s/.test(input[after] || "")) after += 1;
       const content = input[after] === "{" ? readGroup(input, after) : null;
-      output += content ? renderInline(content.value) : "";
+      if (content) {
+        const color = group.value.trim().toLowerCase();
+        const classes = ["latex-color"];
+        if (/^(?:dark)?green(?:!|$)/.test(color)) classes.push("positive");
+        else if (/^red(?:!|$)/.test(color)) classes.push("negative");
+        else if (/^(?:navy)?blue(?:!|$)/.test(color)) classes.push("blue");
+        if (/\\(?:up|down)arrow\b/.test(content.value)) classes.push("table-delta-inline");
+        output += `<span class="${classes.join(" ")}">${renderInline(content.value)}</span>`;
+      }
       i = content ? content.end : group.end;
       continue;
     }
@@ -755,13 +867,17 @@ function renderSidenote(content, alreadyHtml = false) {
 }
 
 function renderReference(label, command = "autoref") {
-  const known = localReferences.get(label);
-  const prefix = label.startsWith("fig:") ? "Figure" : label.startsWith("table:") || label.startsWith("tab:") ? "Table" : label.startsWith("eq:") || label.startsWith("equation:") ? "Equation" : "section";
-  const href = localLabels.has(label) ? `#${escapeAttr(label)}` : "__BASE__Thesis.pdf";
-  const suffix = localLabels.has(label) ? "" : " in the PDF";
-  const text = known
-    ? (command === "ref" ? String(known.number) : `${known.type} ${known.number}`)
-    : (command === "ref" ? `reference${suffix}` : `${prefix}${suffix}`);
+  const known = localReferences.get(label) || globalReferences.get(label);
+  const isLocal = localLabels.has(label);
+  const isOnWebsite = Boolean(known?.slug);
+  const href = isLocal
+    ? `#${escapeAttr(label)}`
+    : isOnWebsite ? `__BASE__chapters/${escapeAttr(known.slug)}/#${escapeAttr(label)}` : "__BASE__Thesis.pdf";
+  const type = known?.type || inferReferenceType(label);
+  const numbered = known?.number !== undefined && known?.number !== null && known.number !== "";
+  const text = command === "ref"
+    ? (numbered ? String(known.number) : type.toLowerCase())
+    : `${type}${numbered ? ` ${known.number}` : ""}${isOnWebsite || isLocal ? "" : " in the PDF"}`;
   return `<a class="cross-ref" href="${href}">${text}</a>`;
 }
 
