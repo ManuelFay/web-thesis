@@ -23,9 +23,13 @@ const mainChapterCount = allEntries.filter((chapter) => chapter.kind === "Chapte
       </div>
       <p class="landing-index-meta">Indexing {mainChapterCount} chapters and {allEntries.length - mainChapterCount} supporting sections</p>
       <p class="landing-byline">{site.author}<br /><span>{site.institution}</span></p>
+      <aside class="landing-status" aria-label="Manuscript status">
+        <strong>Under review</strong>
+        <span>This thesis has not yet been defended or formally validated and remains subject to change.</span>
+      </aside>
       <div class="landing-actions">
         <a class="landing-start" href={`${base}chapters/introduction/`}>Begin reading <span>→</span></a>
-        <a href={`${base}Thesis.pdf`}>Download PDF</a>
+        <a class="landing-download" href={`${base}Thesis.pdf`} download="Manuel-Faysse-Thesis.pdf"><span aria-hidden="true">↓</span> Download PDF</a>
       </div>
     </header>
 

@@ -144,8 +144,17 @@ sources with `\input{...}`.
 
 Pushes to `main` trigger `.github/workflows/compile.yaml`. The workflow compiles
 the thesis PDF, builds and validates the Astro website and Pagefind index,
-uploads the standalone PDF as an Actions artifact, and deploys `dist-web/` to
-GitHub Pages. It can also be started manually from the Actions tab.
+embeds the freshly compiled PDF in the website, and deploys `dist-web/` to
+GitHub Pages. It can also be started manually from the Actions tab. The PDF at
+`https://manuelfay.github.io/Manuel-s-Thesis/Thesis.pdf` is replaced by each
+successful deployment, so only the latest published version is retained.
+
+For push-triggered builds, the workflow fingerprints the tracked LaTeX,
+bibliography, class, style, table, and image sources. When that fingerprint
+matches the version published on GitHub Pages, it reuses the published PDF and
+skips installing TeX Live and recompiling the thesis. A missing or different
+fingerprint falls back to a full PDF build. Manually dispatched workflows always
+compile the PDF, which provides an explicit way to force a fresh build.
 
 The project-site URL is:
 

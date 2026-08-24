@@ -32,23 +32,56 @@ jobs:
           cache: npm
 
       - name: Configure GitHub Pages
-        uses: actions/configure-pages@v5
+        uses: actions/configure-pages@v6
 
       - name: Install website dependencies
         run: npm ci
 
-      - name: Install TeX Live and Poppler
+      - name: Fingerprint PDF sources
+        run: |
+          mkdir -p dist
+          git ls-files -z -- '*.tex' '*.bib' '*.cls' '*.sty' '*.bst' images tables \
+            | sort -z \
+            | xargs -0 sha256sum \
+            | sha256sum \
+            | cut -d ' ' -f 1 > dist/pdf-source.sha256
+          echo "PDF source fingerprint: $(tr -d '\n' < dist/pdf-source.sha256)"
+
+      - name: Reuse currently published PDF
+        id: published_pdf
+        if: github.event_name == 'push'
+        continue-on-error: true
+        env:
+          PDF_URL: https://manuelfay.github.io/Manuel-s-Thesis/Thesis.pdf
+          FINGERPRINT_URL: https://manuelfay.github.io/Manuel-s-Thesis/pdf-source.sha256
+        run: |
+          curl --fail --location --retry 3 --retry-all-errors \
+            --output /tmp/published-pdf-source.sha256 \
+            "$FINGERPRINT_URL?commit=$GITHUB_SHA"
+          cmp dist/pdf-source.sha256 /tmp/published-pdf-source.sha256
+          curl --fail --location --retry 3 --retry-all-errors \
+            --output dist/Thesis.pdf \
+            "$PDF_URL?commit=$GITHUB_SHA"
+          test -s dist/Thesis.pdf
+
+      - name: Install Poppler
         run: |
           sudo apt-get update
-          sudo apt-get install -y texlive-full poppler-utils
+          sudo apt-get install -y poppler-utils
+
+      - name: Install TeX Live
+        if: github.event_name != 'push' || steps.published_pdf.outcome != 'success'
+        run: sudo apt-get install -y texlive-full
 
       - name: Increase TeX parameter stack size
+        if: github.event_name != 'push' || steps.published_pdf.outcome != 'success'
         run: |
           mkdir -p ~/.texmf/web2c
           printf '\nparam_size=100000\n' >> ~/.texmf/web2c/texmf.cnf
           mktexlsr
 
       - name: Compile thesis PDF
+        if: github.event_name != 'push' || steps.published_pdf.outcome != 'success'
         run: |
           mkdir -p build/chapters dist
           latexmk -pdf -interaction=nonstopmode -halt-on-error -outdir=build main.tex
@@ -61,16 +94,11 @@ jobs:
           ASTRO_TELEMETRY_DISABLED: "1"
         run: npm run check
 
-      - name: Upload standalone PDF artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: PDF
-          path: dist/Thesis.pdf
-          if-no-files-found: error
-          retention-days: 14
+      - name: Record PDF source fingerprint
+        run: cp dist/pdf-source.sha256 dist-web/pdf-source.sha256
 
       - name: Upload GitHub Pages artifact
-        uses: actions/upload-pages-artifact@v4
+        uses: actions/upload-pages-artifact@v5
         with:
           path: dist-web
 
@@ -83,4 +111,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
