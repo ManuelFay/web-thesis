@@ -137,12 +137,6 @@ main { min-width: 0; }
 .toc-part a { display: flex; justify-content: space-between; gap: 1rem; text-decoration: none; }
 .toc-part small { align-self: start; padding: .12rem .35rem; border: 1px solid var(--line); color: var(--muted); font-size: .55rem; letter-spacing: .08em; }
 .toc-part .pending { opacity: .62; }
-.landing-about { display: grid; grid-template-columns: minmax(14rem, .65fr) minmax(20rem, 1.35fr); gap: 3rem clamp(3rem, 7vw, 7rem); align-items: center; padding: clamp(4rem, 7vw, 6rem) max(2rem, calc((100% - 62rem) / 2)); border-top: 1px solid var(--line); }
-.landing-about h2 { margin: .8rem 0 0; font: 400 clamp(2rem, 3.5vw, 3.2rem)/1 Georgia, serif; letter-spacing: -.035em; }
-.landing-about-copy p { max-width: 36rem; margin: 0 0 1.35rem; color: var(--muted); font: 1.05rem/1.7 Georgia, serif; }
-.landing-about-copy a { display: inline-flex; align-items: center; gap: .55rem; padding-bottom: .25rem; border-bottom: 1px solid var(--ink); font-size: .76rem; font-weight: 700; letter-spacing: .035em; text-decoration: none; }
-.landing-about-copy a span { color: var(--accent); transition: transform .18s ease; }
-.landing-about-copy a:hover span { transform: translate(.15rem, -.15rem); }
 .landing-details { display: grid; grid-template-columns: minmax(14rem, .65fr) minmax(20rem, 1.35fr); gap: 3rem clamp(3rem, 7vw, 7rem); padding: clamp(5rem, 8vw, 8rem) max(2rem, calc((100% - 62rem) / 2)); border-top: 1px solid var(--line); background: var(--paper-raised); }
 .landing-details h2 { max-width: 9ch; margin: .8rem 0 0; font: 400 clamp(2rem, 3.5vw, 3.2rem)/1 Georgia, serif; letter-spacing: -.035em; }
 .thesis-facts { display: grid; grid-template-columns: 1fr 1fr; gap: 0 2rem; margin: 0; }
@@ -277,7 +271,6 @@ main { min-width: 0; }
   .sidenote-toggle:checked ~ .sidenote { display: block; }
   .chapter-figure.margin { float: none; width: 100%; margin: 2.5rem 0; }
   .landing-grid { grid-template-columns: 1fr; }
-  .landing-about { grid-template-columns: 1fr; }
   .landing-details { grid-template-columns: 1fr; }
   .jury { grid-column: 1; }
 }
@@ -294,7 +287,7 @@ main { min-width: 0; }
   .hero-actions { align-items: stretch; flex-direction: column; }
   .hero-meta { grid-template-columns: 1fr; }
   .premise { grid-template-columns: 1fr; gap: 1rem; padding: 4rem 1.4rem; }
-  .landing-header, .landing-grid, .landing-about { padding-inline: 1.5rem; }
+  .landing-header, .landing-grid { padding-inline: 1.5rem; }
   .landing-header { min-height: auto; padding-block: 5rem; }
   .landing-header h1 { font-size: clamp(3rem, 15vw, 4.7rem); }
   .landing-actions { align-items: center; flex-direction: column; }
