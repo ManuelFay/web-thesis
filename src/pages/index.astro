@@ -35,14 +35,12 @@ const mainChapterCount = allEntries.filter((chapter) => chapter.kind === "Chapte
 
     <div class="landing-grid">
       <section class="landing-abstract" aria-labelledby="abstract-title">
-        <p class="eyebrow">Thesis summary</p>
-        <h2 id="abstract-title">Abstract</h2>
+        <p class="eyebrow" id="abstract-title">Thesis summary</p>
         <div set:html={site.abstractHtml}></div>
       </section>
 
       <nav class="landing-toc" aria-labelledby="contents-title">
-        <p class="eyebrow">Contents</p>
-        <h2 id="contents-title">Read the thesis</h2>
+        <p class="eyebrow" id="contents-title">Contents</p>
         <p class="landing-result-count">{allEntries.length} indexed pages</p>
         {site.outline.map((section) => (
           <section class="toc-part">
